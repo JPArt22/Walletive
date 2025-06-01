@@ -31,5 +31,5 @@ Este proyecto se realiza con fines académicos y su contenido está sujeto a las
 
 ¡Gracias por visitar nuestro repositorio!
 
-![Texto alternativo](https://i.ytimg.com/vi/1gnNJpBEmZE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAbpSLH2_v1JBnWrSgEQlzdP5zDZQ)
+
 
