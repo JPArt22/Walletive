@@ -1,31 +1,29 @@
-# Presentación del Repositorio
+# Walletive
+![Walletive](Documentación/Diagramas/walletive.png)
+## Grupo: TEMU
 
-## Ingeniería de Software I
+## Integrantes activos y colaboradores
 
-Bienvenidos al repositorio del curso **Ingeniería de Software I**. Este espacio ha sido creado para centralizar el trabajo colaborativo de nuestro grupo, documentar avances y gestionar las versiones del proyecto asignado durante el semestre.
+| Nombre completo                        | Contacto                  |
+|----------------------------------------|-------------------------  |
+| Derian Santiago Rojas Leiva            | derojasl@unal.edu.co      |
+| Jhon Edison Prieto Artunduaga          | jhprieto@unal.edu.co      |
+| Juan David Castañeda Cárdenas          | jucastanedaca@unal.edu.co |
+| Omar Darío Zambrano Galindo            | ozabrano@unal.edu.co      |
 
-## Integrantes del grupo
+> Todos los integrantes están activos y colaborando en el desarrollo del proyecto.
 
-Nuestro equipo está conformado por los siguientes estudiantes:
+## Descripción del proyecto
 
-- **Camilo Andrés Beltrán Zabala**
-- **Derian Santiago Rojas Leiva**
-- **Jhon Edison Prieto Artunduaga**
-- **Juan David Castañeda Cárdenas**
-- **Omar Darío Zambrano Galindo**
+*Walletive* es una aplicación de escritorio orientada a la *gestión de finanzas personales*, diseñada especialmente para usuarios sin experiencia técnica. Funciona 100% offline y ofrece un entorno amigable para registrar ingresos y gastos, establecer metas de ahorro, analizar el flujo de efectivo y recibir alertas inteligentes para mejorar la salud financiera del usuario.
 
-## Propósito del repositorio
+La interfaz está pensada para facilitar el uso mediante menús guiados e intuitivos, cumpliendo con las principales buenas prácticas de usabilidad.
 
-En este repositorio se alojarán:
+## Objetivo del sistema
 
-- Documentos de análisis, diseño y desarrollo del proyecto.
-- Código fuente del sistema en desarrollo.
-- Casos de uso, diagramas y documentación técnica.
-- Avances semanales y entregables definidos por el docente.
+El objetivo del sistema es brindar a los usuarios una *herramienta clara y práctica* para gestionar sus finanzas personales. La aplicación permitirá registrar y clasificar ingresos y gastos, establecer metas de ahorro personalizadas, calcular cuánto se debe ahorrar periódicamente para cumplir objetivos financieros, y realizar simulaciones sobre el crecimiento del dinero en el tiempo.
 
-
-
-https://www.freepik.es/vector-gratis/estilo-plano-billetera_256096875.htm#fromView=keyword&page=1&position=4&uuid=615ae060-d1ca-4325-a576-477042f56e79&query=Wallet
+Además, ofrecerá visualizaciones gráficas, alertas inteligentes sobre patrones de gasto y un historial financiero organizado, con el fin de ayudar al usuario a tomar mejores decisiones económicas de manera *autónoma y estructurada*.
 
 ## Licencia
 
@@ -34,7 +32,7 @@ Este proyecto se realiza con fines académicos y su contenido está sujeto a las
 ---
 
 ¡Gracias por visitar nuestro repositorio!
-![Walletive](Documentación/Diagramas/walletive.png)
+
 
 
 
