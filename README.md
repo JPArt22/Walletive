@@ -23,6 +23,10 @@ En este repositorio se alojarán:
 - Casos de uso, diagramas y documentación técnica.
 - Avances semanales y entregables definidos por el docente.
 
+
+
+https://www.freepik.es/vector-gratis/estilo-plano-billetera_256096875.htm#fromView=keyword&page=1&position=4&uuid=615ae060-d1ca-4325-a576-477042f56e79&query=Wallet
+
 ## Licencia
 
 Este proyecto se realiza con fines académicos y su contenido está sujeto a las políticas del curso **Ingeniería de Software I**.
@@ -30,6 +34,7 @@ Este proyecto se realiza con fines académicos y su contenido está sujeto a las
 ---
 
 ¡Gracias por visitar nuestro repositorio!
+![Walletive]([https://drive.google.com/file/d/1rXdhkVinLnKKlMxtybIGm4m7nfQaw-mb/view?usp=drive_link])
 
 
 
