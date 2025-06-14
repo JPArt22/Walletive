@@ -1,4 +1,5 @@
 # Walletive
+<img src="Documentación/Diagramas/walletive.png" alt="Walletive" width="200"/>
 ![Walletive](Documentación/Diagramas/walletive.png)
 ## Grupo: TEMU
 
