@@ -34,7 +34,7 @@ Este proyecto se realiza con fines académicos y su contenido está sujeto a las
 ---
 
 ¡Gracias por visitar nuestro repositorio!
-![Walletive]([https://drive.google.com/file/d/1rXdhkVinLnKKlMxtybIGm4m7nfQaw-mb/view?usp=drive_link])
+![Walletive](Documentación/Diagramas/walletive.png)
 
 
 
