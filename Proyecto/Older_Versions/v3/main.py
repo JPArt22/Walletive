@@ -78,7 +78,7 @@ class Walletive(QMainWindow):
         menu_layout.addWidget(title)
         menu_layout.addSpacing(20)
 
-        botones = ["🏠 Dashboard", "💰 Transacciones", "🎯 Metas", "📊 Reportes", "⚙️ Ajustes"]
+        botones = ["🏠 Dashboard", "💰 Balance", "🎯 Metas", "📊 Reportes", "⚙️ Ajustes"]
         for texto in botones:
             btn = QPushButton(texto)
             btn.setFont(QFont("Segoe UI", 12, QFont.Bold))

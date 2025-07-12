@@ -1,0 +1,7 @@
+TO DO or IMPROVE
+
+--> Pedir nombre en la encuesta y mostrarlo en la interfaz principal ✅
+--> Activar Enter para pasar entre preguntas en la encuesta ✅
+--> Mejorar la interfaz de la encuesta ✅
+--> Merge db_setup con el código main ✅
+--> Mostrar la encuesta una sola vez (si la base datos ya está creada, se debe omitir este proceso) ✅
