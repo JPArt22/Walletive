@@ -1,0 +1,6 @@
+To Do / Improve
+
+--> Pasar todo el código main.py a modelo de capas (GUI, logic, persistence)
+--> Implementar gráficas
+--> Mejorar GUI
+--> Añadir subs de la GUI según corresponda la opción seleccionada
