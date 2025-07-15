@@ -1,2 +1,3 @@
 # entornos virtuales
 .venv/
+__pycache__/
