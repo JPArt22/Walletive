@@ -5,13 +5,13 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QFrame, QHBoxLayout, QLabel, QMainWindow, QMessageBox,
-    QPushButton, QVBoxLayout, QWidget
+    QPushButton, QVBoxLayout, QWidget, QScrollArea
 )
 
 from gui.add_meta_dialog import AddMetaDialog
 from gui.add_movement_dialog import AddMovementDialog
 from gui.initial_survey import InitialSurvey
-from gui.movements_history import MovementsHistory
+from gui.movements_history import MovementsHistoryWidget as MovementsHistory # implementado como QWidget
 from logic.dashboard_logic import DashboardLogic
 from persistence.database_manager import DatabaseManager
 
@@ -60,29 +60,72 @@ class Walletive(QMainWindow):
         title.setStyleSheet("color:#00d9ff;")
         menu_lay.addWidget(title); menu_lay.addSpacing(20)
 
-        for idx, txt in enumerate(
-            ["🏠 Dashboard", "💰 Transacciones", "🎯 Metas", "📊 Reportes", "⚙️ Ajustes"]
-        ):
-            btn = QPushButton(txt)
-            btn.setFont(QFont("Segoe UI", 12, QFont.Bold))
-            btn.setStyleSheet(
-                "QPushButton{background:#1e1e1e;border-radius:10px;padding:10px;text-align:left;}"
-                "QPushButton:hover{background:#006e58;}"
-            )
-            if idx == 1:
-                btn.clicked.connect(self._abrir_menu_transacciones)
-            elif idx == 2:
-                btn.clicked.connect(self._abrir_metas)
-            menu_lay.addWidget(btn)
+        btn_dashboard = QPushButton("🏠 Dashboard")
+        btn_dashboard.clicked.connect(self._mostrar_dashboard)
+        btn_dashboard.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_dashboard.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_dashboard)
+
+        btn_trans = QPushButton("💰 Nueva transacción")
+        btn_trans.clicked.connect(self._abrir_transaccion)
+        btn_trans.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_trans.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_trans)
+
+        btn_hist = QPushButton("📜 Historial")
+        btn_hist.clicked.connect(self._mostrar_historial)
+        btn_hist.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_hist.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_hist)
+
+        btn_metas = QPushButton("🎯 Metas")
+        btn_metas.clicked.connect(self._abrir_metas)
+        btn_metas.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_metas.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_metas)
+
+        btn_reportes = QPushButton("📊 Reportes")
+        btn_reportes.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_reportes.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_reportes)
+
+        btn_ajustes = QPushButton("⚙️ Ajustes")
+        btn_ajustes.setFont(QFont("Segoe UI", 12, QFont.Bold))
+        btn_ajustes.setStyleSheet(self._estilo_boton())
+        menu_lay.addWidget(btn_ajustes)
+
         menu_lay.addStretch()
 
-        # Centro (resumen)
-        center = QFrame(); center.setStyleSheet("background-color:#181818;")
-        center_lay = QVBoxLayout(center)
+        # Centro
+        self.center_frame = QFrame()
+        self.center_frame.setStyleSheet("background-color:#181818;")
+        self.center_layout = QVBoxLayout(self.center_frame)
 
-        saludo = QLabel(f"👋 ¡Hola, {nombre_usuario}!"); saludo.setFont(QFont("Segoe UI", 22, QFont.Bold))
+        # Panel derecho (alertas)
+        right = QFrame(); right.setFixedWidth(340); right.setStyleSheet("background:#121212;")
+        right_lay = QVBoxLayout(right)
+        atitle = QLabel("🔔 ALERTAS"); atitle.setFont(QFont("Segoe UI Semibold", 14))
+        right_lay.addWidget(atitle)
+        alert = QLabel("⚠️ Tu balance es negativo. Revisa tus gastos.") if resumen['balance'] < 0 else QLabel("✅ Sistema configurado correctamente")
+        alert.setStyleSheet("color:#F44336;" if resumen['balance'] < 0 else "color:#4CAF50;")
+        alert.setWordWrap(True); right_lay.addWidget(alert)
+        right_lay.addStretch()
+
+        main_layout.addWidget(menu)
+        main_layout.addWidget(self.center_frame, 1)
+        main_layout.addWidget(right)
+
+        self._cargar_resumen_financiero(nombre_usuario, resumen)
+
+    # ──────────────────────────────
+    def _cargar_resumen_financiero(self, nombre: str, resumen: dict) -> None:
+        self.center_layout.setAlignment(Qt.AlignTop)
+        for i in reversed(range(self.center_layout.count())):
+            self.center_layout.itemAt(i).widget().deleteLater()
+
+        saludo = QLabel(f"👋 ¡Hola, {nombre}!"); saludo.setFont(QFont("Segoe UI", 22, QFont.Bold))
         sub = QLabel("Resumen de estadísticas financieras"); sub.setFont(QFont("Segoe UI", 14)); sub.setStyleSheet("color:#aaa;")
-        center_lay.addWidget(saludo); center_lay.addWidget(sub)
+        self.center_layout.addWidget(saludo); self.center_layout.addWidget(sub)
 
         stats = QFrame(); stats.setStyleSheet("background:#1f1f1f;border-radius:12px;")
         stats_lay = QVBoxLayout(stats)
@@ -97,42 +140,35 @@ class Walletive(QMainWindow):
 
         for w in (ingreso, gasto, balance, metas):
             w.setFont(QFont("Segoe UI", 14)); stats_lay.addWidget(w)
-        stats_lay.addStretch(); center_lay.addWidget(stats)
 
-        # Panel derecho (alertas)
-        right = QFrame(); right.setFixedWidth(340); right.setStyleSheet("background:#121212;")
-        right_lay = QVBoxLayout(right)
-        atitle = QLabel("🔔 ALERTAS"); atitle.setFont(QFont("Segoe UI Semibold", 14))
-        right_lay.addWidget(atitle)
-        alert = QLabel("⚠️ Tu balance es negativo. Revisa tus gastos.") if resumen['balance'] < 0 else QLabel("✅ Sistema configurado correctamente")
-        alert.setStyleSheet("color:#F44336;" if resumen['balance'] < 0 else "color:#4CAF50;")
-        alert.setWordWrap(True); right_lay.addWidget(alert)
-        right_lay.addStretch()
-
-        main_layout.addWidget(menu)
-        main_layout.addWidget(center, 1)
-        main_layout.addWidget(right)
+        stats_lay.addStretch(); self.center_layout.addWidget(stats)
 
     # ──────────────── TRANSACCIONES ────────────────
-    def _abrir_menu_transacciones(self) -> None:
-        msg = QMessageBox(self)
-        msg.setWindowTitle("Transacciones")
-        msg.setText("Selecciona una opción:")
-        ver_btn = msg.addButton("Ver historial de movimientos", QMessageBox.ActionRole)
-        add_btn = msg.addButton("Agregar transacción", QMessageBox.ActionRole)
-        msg.addButton("Cancelar", QMessageBox.RejectRole)
-        msg.exec_()
-
-        if msg.clickedButton() == add_btn:
-            dlg = AddMovementDialog(self.db_manager, self)
-            dlg.exec_()
-            self._mostrar_dashboard()        # refrescar resumen
-        elif msg.clickedButton() == ver_btn:
-            dlg = MovementsHistory(self.db_manager, self)
-            dlg.exec_()
+    def _abrir_transaccion(self) -> None:
+        dlg = AddMovementDialog(self.db_manager, self)
+        dlg.exec_()
+        self._mostrar_dashboard()
 
     # ──────────────── METAS ────────────────
     def _abrir_metas(self) -> None:
         dlg = AddMetaDialog(self.db_manager, self)
         dlg.exec_()
         self._mostrar_dashboard()
+
+    # ──────────────── HISTORIAL ────────────────
+    def _mostrar_historial(self) -> None:
+        for i in reversed(range(self.center_layout.count())):
+            self.center_layout.itemAt(i).widget().deleteLater()
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        contenido = MovementsHistory(self.db_manager)
+        scroll.setWidget(contenido)
+        self.center_layout.addWidget(scroll)
+
+    # ──────────────────────────────
+    def _estilo_boton(self) -> str:
+        return (
+            "QPushButton{background:#1e1e1e;border-radius:10px;padding:10px;text-align:left;}"
+            "QPushButton:hover{background:#006e58;}"
+        )
