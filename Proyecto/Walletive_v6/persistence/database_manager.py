@@ -200,3 +200,38 @@ class DatabaseManager:
         except sqlite3.Error as exc:
             print(f"❌ Error al obtener resumen: {exc}")
             return {"ingresos": 0.0, "gastos": 0.0, "metas": 0.0, "balance": 0.0}
+
+
+    # ─────────────────────── OBT / EDIT / DEL ────────────────────────
+    def obtener_movimiento(self, mov_id: int) -> Optional[tuple]:
+        with sqlite3.connect(self.db_path) as conn:
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT id, tipo, descripcion, monto, categoria_id FROM Movimientos WHERE id=?",
+                (mov_id,),
+            )
+            return cur.fetchone()
+
+    def actualizar_movimiento(
+        self,
+        mov_id: int,
+        tipo: int,
+        descripcion: str,
+        monto: Number,
+        categoria_id: Optional[int],
+    ) -> None:
+        with sqlite3.connect(self.db_path) as conn:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                UPDATE Movimientos
+                SET tipo = ?, descripcion = ?, monto = ?, categoria_id = ?
+                WHERE id = ?
+                """,
+                (tipo, descripcion, monto, categoria_id, mov_id),
+            )
+
+    def eliminar_movimiento(self, mov_id: int) -> None:
+        with sqlite3.connect(self.db_path) as conn:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM Movimientos WHERE id=?", (mov_id,))

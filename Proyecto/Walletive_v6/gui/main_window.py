@@ -118,7 +118,7 @@ class Walletive(QMainWindow):
         msg = QMessageBox(self)
         msg.setWindowTitle("Transacciones")
         msg.setText("Selecciona una opción:")
-        ver_btn = msg.addButton("Ver historial", QMessageBox.ActionRole)
+        ver_btn = msg.addButton("Ver historial de movimientos", QMessageBox.ActionRole)
         add_btn = msg.addButton("Agregar transacción", QMessageBox.ActionRole)
         msg.addButton("Cancelar", QMessageBox.RejectRole)
         msg.exec_()
