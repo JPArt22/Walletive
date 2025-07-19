@@ -6,9 +6,10 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QDialog, QVBoxLayout, QFormLayout, QLineEdit, 
     QDoubleSpinBox, QComboBox, QPushButton, QCheckBox,
-    QMessageBox, QHBoxLayout  # Añadido QHBoxLayout
+    QMessageBox, QHBoxLayout, QLabel
 )
 
+from gui.styles import STYLES, get_color, get_font
 from logic.movement_logic import MovementLogic
 
 
@@ -34,23 +35,36 @@ class AddMovementDialog(QDialog):
         super().__init__(parent)
         self.logic = mov_logic
         self.setWindowTitle("Registrar movimiento")
-        self.setFixedWidth(380)
+        self.setFixedWidth(420)
+        self.setStyleSheet(STYLES['dialog'])
         self._build_ui()
 
     # ──────────────────────────────────────────────────────────
     def _build_ui(self) -> None:
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(32, 32, 32, 32)
+        layout.setSpacing(24)
+
+        # Título
+        title = QLabel("💰 Nueva Transacción")
+        title.setStyleSheet(STYLES['title'])
+        title.setAlignment(Qt.AlignHCenter)
+        layout.addWidget(title)
+
         form = QFormLayout()
+        form.setSpacing(16)
 
         # Tipo de movimiento
         self.tipo_cb = QComboBox()
         self.tipo_cb.addItems(["Ingreso", "Gasto"])
+        self.tipo_cb.setStyleSheet(STYLES['combo_box'])
         self.tipo_cb.currentIndexChanged.connect(self._on_tipo_changed)
         form.addRow("Tipo:", self.tipo_cb)
 
         # Descripción
         self.desc_le = QLineEdit()
         self.desc_le.setPlaceholderText("Descripción…")
+        self.desc_le.setStyleSheet(STYLES['input_field'])
         form.addRow("Descripción:", self.desc_le)
 
         # Monto
@@ -58,20 +72,26 @@ class AddMovementDialog(QDialog):
         self.monto_sb.setMaximum(1e12)
         self.monto_sb.setPrefix("$ ")
         self.monto_sb.setDecimals(2)
+        self.monto_sb.setStyleSheet(STYLES['spin_box'])
         form.addRow("Monto:", self.monto_sb)
 
         # Categoría
         self.cat_cb = QComboBox()
         self.cat_cb.addItems(list(self.CATEGORIES.keys()))
+        self.cat_cb.setStyleSheet(STYLES['combo_box'])
         form.addRow("Categoría:", self.cat_cb)
 
-        # Meta de ahorro
+        # Meta de ahorro (solo visible para ingresos)
         self.meta_check = QCheckBox("Abonar a meta de ahorro")
+        self.meta_check.setStyleSheet(STYLES['check_box'])
         self.meta_check.stateChanged.connect(self._toggle_meta_combo)
+        self.meta_check.setVisible(False)  # Inicialmente oculto
         form.addRow(self.meta_check)
 
         self.meta_combo = QComboBox()
         self.meta_combo.setEnabled(False)
+        self.meta_combo.setVisible(False)  # Inicialmente oculto
+        self.meta_combo.setStyleSheet(STYLES['combo_box'])
         form.addRow("Meta:", self.meta_combo)
 
         # Cargar metas activas
@@ -81,10 +101,16 @@ class AddMovementDialog(QDialog):
 
         # Botones
         hbox = QHBoxLayout()
+        hbox.setSpacing(12)
+        
         back_btn = QPushButton("← Volver")
+        back_btn.setStyleSheet(STYLES['secondary_button'])
         back_btn.clicked.connect(self.reject)
+        
         save_btn = QPushButton("Guardar")
+        save_btn.setStyleSheet(STYLES['primary_button'])
         save_btn.clicked.connect(self._guardar)
+        
         hbox.addWidget(back_btn)
         hbox.addStretch()
         hbox.addWidget(save_btn)

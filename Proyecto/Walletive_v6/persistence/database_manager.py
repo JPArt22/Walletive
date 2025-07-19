@@ -186,7 +186,7 @@ class DatabaseManager:
                 cur.execute(
                     """
                     INSERT INTO MetasAhorro
-                    (descripcion, monto_objetivo, estado_actual, estado_logro, fecha_limite)
+                    (descripcion, monto_objetivo, monto_actual, estado_actual, fecha_limite)
                     VALUES (?,?,0,0,?)
                     """,
                     (descripcion, monto_objetivo, fecha_limite),

@@ -14,6 +14,7 @@ from gui.initial_survey import InitialSurvey
 from gui.movements_history import MovementsHistory
 from gui.meta_widget import MetaWidget
 from gui.edit_meta_dialog import EditMetaDialog
+from gui.styles import STYLES, get_font, get_color
 from logic.dashboard_logic import DashboardLogic
 from logic.movement_logic import MovementLogic
 from persistence.database_manager import DatabaseManager
@@ -29,7 +30,7 @@ class Walletive(QMainWindow):
 
         self.setWindowTitle("Walletive – Finanzas Personales")
         self.setFixedSize(1600, 900)
-        self.setStyleSheet("background-color:#181818;color:white;")
+        self.setStyleSheet(STYLES['main_window'])
 
         if self.db_manager.usuario_existe():
             self._mostrar_dashboard()
@@ -52,66 +53,83 @@ class Walletive(QMainWindow):
         root = QWidget()
         self.setCentralWidget(root)
         main_layout = QHBoxLayout(root)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
 
         # Menú lateral
-        menu = QFrame(); menu.setFixedWidth(280)
-        menu.setStyleSheet("background-color:#121212;")
+        menu = QFrame()
+        menu.setFixedWidth(280)
+        menu.setStyleSheet(STYLES['sidebar'])
         menu_lay = QVBoxLayout(menu)
+        menu_lay.setContentsMargins(16, 24, 16, 24)
+        menu_lay.setSpacing(8)
 
-        title = QLabel("WALLETIVE"); title.setAlignment(Qt.AlignHCenter)
-        title.setFont(QFont("Segoe UI Black", 18))
-        title.setStyleSheet("color:#00d9ff;")
-        menu_lay.addWidget(title); menu_lay.addSpacing(20)
+        # Logo y título
+        title = QLabel("WALLETIVE")
+        title.setAlignment(Qt.AlignHCenter)
+        title.setStyleSheet(STYLES['title'])
+        menu_lay.addWidget(title)
+        menu_lay.addSpacing(32)
 
+        # Botones del menú
         btn_dashboard = QPushButton("🏠 Dashboard")
         btn_dashboard.clicked.connect(self._mostrar_dashboard)
-        btn_dashboard.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_dashboard.setStyleSheet(self._estilo_boton())
+        btn_dashboard.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_dashboard)
 
         btn_trans = QPushButton("💰 Nueva transacción")
         btn_trans.clicked.connect(self._abrir_transaccion)
-        btn_trans.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_trans.setStyleSheet(self._estilo_boton())
+        btn_trans.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_trans)
 
         btn_hist = QPushButton("📜 Historial")
         btn_hist.clicked.connect(self._mostrar_historial)
-        btn_hist.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_hist.setStyleSheet(self._estilo_boton())
+        btn_hist.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_hist)
 
-        btn_metas = QPushButton("🎯 Metas")
+        btn_metas = QPushButton("🎯 Metas de Ahorro")
         btn_metas.clicked.connect(self._abrir_metas)
-        btn_metas.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_metas.setStyleSheet(self._estilo_boton())
+        btn_metas.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_metas)
 
         btn_reportes = QPushButton("📊 Reportes")
-        btn_reportes.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_reportes.setStyleSheet(self._estilo_boton())
+        btn_reportes.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_reportes)
 
         btn_ajustes = QPushButton("⚙️ Ajustes")
-        btn_ajustes.setFont(QFont("Segoe UI", 12, QFont.Bold))
-        btn_ajustes.setStyleSheet(self._estilo_boton())
+        btn_ajustes.setStyleSheet(STYLES['sidebar_button'])
         menu_lay.addWidget(btn_ajustes)
 
         menu_lay.addStretch()
 
         # Centro
         self.center_frame = QFrame()
-        self.center_frame.setStyleSheet("background-color:#181818;")
+        self.center_frame.setStyleSheet(f"background-color: {get_color('background')};")
         self.center_layout = QVBoxLayout(self.center_frame)
+        self.center_layout.setContentsMargins(32, 32, 32, 32)
+        self.center_layout.setSpacing(24)
 
         # Panel derecho (alertas)
-        right = QFrame(); right.setFixedWidth(340); right.setStyleSheet("background:#121212;")
+        right = QFrame()
+        right.setFixedWidth(340)
+        right.setStyleSheet(STYLES['sidebar'])
         right_lay = QVBoxLayout(right)
-        atitle = QLabel("🔔 ALERTAS"); atitle.setFont(QFont("Segoe UI Semibold", 14))
+        right_lay.setContentsMargins(16, 24, 16, 24)
+        right_lay.setSpacing(16)
+        
+        atitle = QLabel("🔔 Alertas")
+        atitle.setStyleSheet(STYLES['heading'])
         right_lay.addWidget(atitle)
-        alert = QLabel("⚠️ Tu balance es negativo. Revisa tus gastos.") if resumen['balance'] < 0 else QLabel("✅ Sistema configurado correctamente")
-        alert.setStyleSheet("color:#F44336;" if resumen['balance'] < 0 else "color:#4CAF50;")
-        alert.setWordWrap(True); right_lay.addWidget(alert)
+        
+        if resumen['balance'] < 0:
+            alert = QLabel("⚠️ Tu balance es negativo. Revisa tus gastos.")
+            alert.setStyleSheet(f"color: {get_color('error')}; {STYLES['body_text']}")
+        else:
+            alert = QLabel("✅ Sistema configurado correctamente")
+            alert.setStyleSheet(f"color: {get_color('success')}; {STYLES['body_text']}")
+        
+        alert.setWordWrap(True)
+        right_lay.addWidget(alert)
         right_lay.addStretch()
 
         main_layout.addWidget(menu)
@@ -122,31 +140,22 @@ class Walletive(QMainWindow):
 
         # Sección de metas
         metas_frame = QFrame()
-        metas_frame.setStyleSheet("background:#1f1f1f;border-radius:12px;")
+        metas_frame.setStyleSheet(STYLES['card'])
         
         # Crear scroll area para las metas
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("""
-            QScrollArea {
-                border: none;
-                background: transparent;
-            }
-            QScrollArea > QWidget > QWidget {
-                background: transparent;
-            }
-        """)
+        scroll.setStyleSheet(STYLES['scroll_area'])
 
         # Contenedor para las metas
         metas_container = QWidget()
         self.metas_layout = QVBoxLayout(metas_container)
-        self.metas_layout.setSpacing(10)
-        self.metas_layout.setContentsMargins(15, 15, 15, 15)
+        self.metas_layout.setSpacing(16)
+        self.metas_layout.setContentsMargins(24, 24, 24, 24)
 
         # Título de la sección
         head_metas = QLabel("🎯 Metas de Ahorro")
-        head_metas.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        head_metas.setStyleSheet("color:#00d9ff; margin-bottom: 15px;")
+        head_metas.setStyleSheet(STYLES['heading'])
         self.metas_layout.addWidget(head_metas)
 
         # Configurar scroll
@@ -272,20 +281,29 @@ class Walletive(QMainWindow):
 
     # ──────────────────────────────
     def _cargar_resumen_financiero(self, nombre: str, resumen: dict) -> None:
-        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
-        ingreso.setStyleSheet("color:#4CAF50; font-size: 14px;")
-        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}")
-        gasto.setStyleSheet("color:#F44336; font-size: 14px;")
-        bal = resumen['balance']
-        color_bal = "#4CAF50" if bal >= 0 else "#F44336"
-        balance = QLabel(f"📈 Balance: ${bal:,.2f}")
-        balance.setStyleSheet(f"color:{color_bal}; font-size: 14px;")
+        # Título del resumen
+        balance_title = QLabel("📊 Balance")
+        balance_title.setStyleSheet(STYLES['heading'])
+        self.center_layout.addWidget(balance_title)
         
+        # Card del resumen
         stats = QFrame()
-        stats.setStyleSheet("background:#1f1f1f;border-radius:12px;")
+        stats.setStyleSheet(STYLES['card'])
         stats_layout = QVBoxLayout(stats)
-        stats_layout.setContentsMargins(10, 10, 10, 10)
-        stats_layout.setSpacing(5)
+        stats_layout.setContentsMargins(24, 24, 24, 24)
+        stats_layout.setSpacing(16)
+        
+        # Valores del resumen
+        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
+        ingreso.setStyleSheet(f"color: {get_color('success')}; {STYLES['body_text']}")
+        
+        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}")
+        gasto.setStyleSheet(f"color: {get_color('error')}; {STYLES['body_text']}")
+        
+        bal = resumen['balance']
+        color_bal = get_color('success') if bal >= 0 else get_color('error')
+        balance = QLabel(f"📈 Balance: ${bal:,.2f}")
+        balance.setStyleSheet(f"color: {color_bal}; {STYLES['body_text']}")
         
         stats_layout.addWidget(ingreso)
         stats_layout.addWidget(gasto)
@@ -322,9 +340,9 @@ class Walletive(QMainWindow):
                             balance_widget = layout.itemAt(2).widget()
                             if isinstance(balance_widget, QLabel) and "📈 Balance:" in balance_widget.text():
                                 bal = resumen['balance']
-                                color_bal = "#4CAF50" if bal >= 0 else "#F44336"
+                                color_bal = get_color('success') if bal >= 0 else get_color('error')
                                 balance_widget.setText(f"📈 Balance: ${bal:,.2f}")
-                                balance_widget.setStyleSheet(f"color:{color_bal}; font-size: 14px;")
+                                balance_widget.setStyleSheet(f"color: {color_bal}; {STYLES['body_text']}")
                             
                             print("✅ Resumen financiero actualizado")
                             break
@@ -361,13 +379,7 @@ class Walletive(QMainWindow):
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
+        scroll.setStyleSheet(STYLES['scroll_area'])
         contenido = MovementsHistory(self.db_manager)
         scroll.setWidget(contenido)
         self.center_layout.addWidget(scroll)
-
-    # ──────────────────────────────
-    def _estilo_boton(self) -> str:
-        return (
-            "QPushButton{background:#1e1e1e;border-radius:10px;padding:10px;text-align:left;}"
-            "QPushButton:hover{background:#006e58;}"
-        )
