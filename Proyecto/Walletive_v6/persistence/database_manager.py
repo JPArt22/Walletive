@@ -382,4 +382,4 @@ class DatabaseManager:
                 """, (tipo, descripcion, monto, categoria_id, metas_id))
                 conn.commit()
         except sqlite3.Error as e:
-            print(f"Error agregando movimiento: {e}")
+            print(f"Error agregando movimiento: {e}")       
