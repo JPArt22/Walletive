@@ -25,110 +25,115 @@ from gui.add_movement_dialog import AddMovementDialog
 from persistence.database_manager import DatabaseManager
 
 
-class MovementsHistoryWidget(QFrame):
-    """Widget para mostrar historial de movimientos con opciones de editar y eliminar."""
+class MovementsHistory(QWidget):
+    """Historial embebido con edición y eliminación."""
 
     HEADERS = ["Fecha", "Tipo", "Descripción", "Monto", "Acciones"]
     COLOR_BG = {
-        1: QColor("#1e4620"),  # verde oscuro
-        2: QColor("#4a1717"),  # rojo oscuro
-        3: QColor("#4d4212"),  # amarillo oscuro
+        1: QColor("#1e4620"),  # ingreso
+        2: QColor("#4a1717"),  # gasto
+        3: QColor("#4d4212"),  # meta
     }
 
-    def __init__(self, db: DatabaseManager, parent=None) -> None:
+    def __init__(self, db: DatabaseManager, parent=None):
         super().__init__(parent)
         self.db = db
-        self.setStyleSheet("color:white;background:#1f1f1f;")
         self._ids: List[int] = []
 
-        layout = QVBoxLayout(self)
-        title = QLabel("🧾 Últimos movimientos")
-        title.setFont(QFont("Segoe UI", 14, QFont.Bold))
-        layout.addWidget(title)
+        root = QVBoxLayout(self)
+        title = QLabel("🧾 Últimos movimientos"); title.setFont(QFont("Segoe UI", 14, QFont.Bold))
+        root.addWidget(title)
 
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        content = QWidget()
-        scroll.setWidget(content)
-
-        self.inner_layout = QVBoxLayout(content)
+        scroll = QScrollArea(); scroll.setWidgetResizable(True)
+        cont = QWidget(); scroll.setWidget(cont)
         self.table = QTableWidget(0, len(self.HEADERS))
         self.table.setHorizontalHeaderLabels(self.HEADERS)
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionMode(QTableWidget.NoSelection)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.inner_layout.addWidget(self.table)
+        QVBoxLayout(cont).addWidget(self.table)
 
-        layout.addWidget(scroll)
-        self._cargar_datos()
+        root.addWidget(scroll)
+        self._cargar()
 
-    def refrescar(self):
-        self._cargar_datos()
-
-    def _cargar_datos(self) -> None:
-        self.table.setRowCount(0)
-        self._ids.clear()
-
+    # ──────────────────────────────────────────────
+    def _cargar(self):
+        self.table.setRowCount(0); self._ids.clear()
         tipomap = {1: "Ingreso", 2: "Gasto", 3: "Meta"}
         with sqlite3.connect(self.db.db_path) as conn:
             cur = conn.cursor()
-            cur.execute(
-                """
-                SELECT id, fecha, tipo, descripcion, monto
-                FROM Movimientos
-                ORDER BY fecha DESC
-                LIMIT 300
-                """
-            )
+            cur.execute("SELECT id, fecha, tipo, descripcion, monto FROM Movimientos ORDER BY fecha DESC LIMIT 300")
             rows: List[Tuple] = cur.fetchall()
 
-        for _, (mov_id, fecha, tipo, desc, monto) in enumerate(rows):
-            row = self.table.rowCount()
-            self.table.insertRow(row)
-            self._ids.append(mov_id)
-
+        for mov_id, fecha, tipo, desc, monto in rows:
+            row = self.table.rowCount(); self.table.insertRow(row); self._ids.append(mov_id)
             datos = [fecha, tipomap.get(tipo, "?"), desc, f"${monto:,.2f}"]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(self.COLOR_BG.get(tipo, QColor("#222")))
                 self.table.setItem(row, col, item)
 
-            acciones = QWidget()
-            h = QHBoxLayout(acciones)
-            h.setContentsMargins(0, 0, 0, 0)
+            # acciones
+            cell = QWidget(); h = QHBoxLayout(cell); h.setContentsMargins(0,0,0,0)
+            b_edit = QPushButton("⚙️"); b_edit.setToolTip("Editar")
+            b_del  = QPushButton("❌"); b_del.setToolTip("Eliminar")
+            b_edit.clicked.connect(partial(self._editar, mov_id))
+            b_del.clicked.connect(partial(self._eliminar, mov_id))
+            h.addWidget(b_edit); h.addWidget(b_del); h.addStretch()
+            self.table.setCellWidget(row, 4, cell)
 
-            btn_edit = QPushButton("⚙️")
-            btn_edit.setToolTip("Editar")
-            btn_edit.clicked.connect(partial(self._editar, mov_id))
+    # ──────────────────────────────────────────────
+    def _editar(self, mov_id: int):
+        """Edita un movimiento existente"""
+        try:
+            # Obtener datos del movimiento
+            dato = self.db.obtener_movimiento(mov_id)
+            if not dato:
+                QMessageBox.warning(self, "Error", "Movimiento no encontrado")
+                return
+                
+            _, tipo, desc, monto, cat = dato
+            
+            # Crear MovementLogic
+            mov_logic = MovementLogic(self.db)
+            
+            # Abrir diálogo de edición
+            dlg = AddMovementDialog(mov_logic, self)
+            dlg.tipo_cb.setCurrentIndex(tipo - 1)  # 1-based to 0-based index
+            dlg.desc_le.setText(desc)
+            dlg.monto_sb.setValue(monto)
+            
+            if cat is not None:
+                # Encontrar el índice correcto en el combo de categorías
+                for i, (name, cat_id) in enumerate(dlg.CATEGORIES.items()):
+                    if cat_id == cat:
+                        dlg.cat_cb.setCurrentIndex(i)
+                        break
+            
+            if dlg.exec_():
+                # Actualizar movimiento
+                nuevo_tipo = 1 if dlg.tipo_cb.currentText() == "Ingreso" else 2
+                nueva_desc = dlg.desc_le.text().strip() or "(Sin descripción)"
+                nuevo_monto = float(dlg.monto_sb.value())
+                nueva_cat = dlg.CATEGORIES[dlg.cat_cb.currentText()]
+                
+                self.db.actualizar_movimiento(
+                    mov_id=mov_id,
+                    tipo=nuevo_tipo,
+                    descripcion=nueva_desc,
+                    monto=nuevo_monto,
+                    categoria_id=nueva_cat
+                )
+                
+                # Recargar tabla
+                self._cargar()
+                
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo editar: {str(e)}")
 
-            btn_del = QPushButton("❌")
-            btn_del.setToolTip("Eliminar")
-            btn_del.clicked.connect(partial(self._eliminar, mov_id))
-
-            h.addWidget(btn_edit)
-            h.addWidget(btn_del)
-            h.addStretch()
-            self.table.setCellWidget(row, 4, acciones)
-
-    def _editar(self, mov_id: int) -> None:
-        data = self.db.obtener_movimiento(mov_id)
-        if not data:
-            QMessageBox.warning(self, "Error", "Movimiento no encontrado.")
-            return
-        _, tipo, desc, monto, cat_id = data
-        dlg = AddMovementDialog(self.db, self)
-        dlg.tipo_cb.setCurrentIndex(0 if tipo == 1 else 1)
-        dlg.desc_le.setText(desc)
-        dlg.monto_sb.setValue(monto)
-        if cat_id is not None:
-            dlg.cat_cb.setCurrentIndex(cat_id)
-
-        if dlg.exec_():
-            self.db.eliminar_movimiento(mov_id)
-            self._cargar_datos()
-
-    def _eliminar(self, mov_id: int) -> None:
+    # ──────────────────────────────────────────────
+    def _eliminar(self, mov_id: int):
         if QMessageBox.question(self, "Confirmar", "¿Eliminar movimiento definitivamente?") == QMessageBox.Yes:
             self.db.eliminar_movimiento(mov_id)
-            self._cargar_datos()
+            self._cargar()

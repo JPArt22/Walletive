@@ -1,4 +1,4 @@
-# Walletive_v6/gui/add_meta_dialog.py
+# gui/add_meta_dialog.py
 from __future__ import annotations
 
 from PyQt5.QtCore import Qt

@@ -24,11 +24,23 @@ class DatabaseManager:
 
     # ─────────────────────────  CREAR TABLAS ──────────────────────────
     def init_database(self) -> None:
+        """Inicializa la base de datos con las tablas necesarias"""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cur = conn.cursor()
-                cur.execute("PRAGMA foreign_keys = ON;")
-
+                
+                # Tabla MetasAhorro
+                cur.execute("""
+                    CREATE TABLE IF NOT EXISTS MetasAhorro (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        descripcion TEXT NOT NULL,
+                        monto_objetivo REAL NOT NULL,
+                        estado_actual INTEGER DEFAULT 0,
+                        fecha_limite TEXT
+                    )
+                """)
+                
+                # Tabla Movimientos
                 cur.execute(
                     """
                     CREATE TABLE IF NOT EXISTS Movimientos (
@@ -41,20 +53,6 @@ class DatabaseManager:
                         metas_id     INTEGER,
                         FOREIGN KEY (metas_id) REFERENCES MetasAhorro(id)
                           ON DELETE SET NULL
-                    );
-                    """
-                )
-
-                cur.execute(
-                    """
-                    CREATE TABLE IF NOT EXISTS MetasAhorro (
-                        id             INTEGER PRIMARY KEY AUTOINCREMENT,
-                        descripcion    TEXT NOT NULL,
-                        monto_objetivo REAL NOT NULL,
-                        estado_actual  INTEGER NOT NULL CHECK (estado_actual IN (0,1)),
-                        estado_logro   INTEGER NOT NULL CHECK (estado_logro IN (0,1)),
-                        fecha_inicio   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        fecha_limite   TIMESTAMP NOT NULL
                     );
                     """
                 )
@@ -122,6 +120,14 @@ class DatabaseManager:
         except sqlite3.Error as exc:
             print(f"❌ Error al registrar movimiento: {exc}")
 
+    def add(self, *args, **kwargs):
+        """
+        Compatibilidad con lógica antigua: redirige a registrar_movimiento.
+        Permite que el resto del código que aún invoque db.add(...) siga funcionando.
+        """
+        return self.registrar_movimiento(*args, **kwargs)
+
+    # ───────────────────────────── METAS ─────────────────────────────
     def crear_meta(
         self,
         descripcion: str,
@@ -153,6 +159,11 @@ class DatabaseManager:
             print(f"❌ Error al crear meta: {exc}")
             return -1
 
+    # Alias en inglés para compatibilidad con GUI u otras capas
+    def create_meta(self, *args, **kwargs):
+        """Alias de compatibilidad: redirige a `crear_meta`."""
+        return self.crear_meta(*args, **kwargs)
+
     # ────────────────────── ENCUESTA INICIAL (YA EXISTE) ───────────────
     def guardar_datos_encuesta(
         self, nombre_usuario: str, respuestas: List[Any]
@@ -179,28 +190,27 @@ class DatabaseManager:
         config = self.cargar_configuracion()
         return config.get("nombre_usuario", "Usuario") if config else "Usuario"
 
-    def obtener_resumen_financiero(self) -> dict[str, float]:
+    def obtener_resumen_financiero(self) -> dict:
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cur = conn.cursor()
-                cur.execute("SELECT SUM(monto) FROM Movimientos WHERE tipo = 1")
-                ingresos = cur.fetchone()[0] or 0.0
-                cur.execute("SELECT SUM(monto) FROM Movimientos WHERE tipo = 2")
-                gastos = cur.fetchone()[0] or 0.0
-                cur.execute(
-                    "SELECT SUM(monto_objetivo) FROM MetasAhorro WHERE estado_actual = 0"
-                )
-                metas = cur.fetchone()[0] or 0.0
-            return {
-                "ingresos": ingresos,
-                "gastos": gastos,
-                "metas": metas,
-                "balance": ingresos - gastos,
-            }
-        except sqlite3.Error as exc:
-            print(f"❌ Error al obtener resumen: {exc}")
-            return {"ingresos": 0.0, "gastos": 0.0, "metas": 0.0, "balance": 0.0}
-
+                cur.execute("""
+                    SELECT COALESCE(SUM(monto), 0)
+                    FROM Movimientos
+                    WHERE tipo = 1 AND (metas_id IS NULL OR metas_id = 0)
+                """)
+                ingresos = cur.fetchone()[0]
+                cur.execute("""
+                    SELECT COALESCE(SUM(monto), 0)
+                    FROM Movimientos
+                    WHERE tipo = 2
+                """)
+                gastos = cur.fetchone()[0]
+                balance = ingresos - gastos
+                return {"ingresos": ingresos, "gastos": gastos, "balance": balance}
+        except sqlite3.Error as e:
+            print(f"❌ Error al obtener resumen financiero: {e}")
+            return {"ingresos": 0, "gastos": 0, "balance": 0}
 
     # ─────────────────────── OBT / EDIT / DEL ────────────────────────
     def obtener_movimiento(self, mov_id: int) -> Optional[tuple]:
@@ -235,3 +245,141 @@ class DatabaseManager:
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("DELETE FROM Movimientos WHERE id=?", (mov_id,))
+
+    # ────────────────────────────── NUEVOS MÉTODOS ─────────────────────────────
+    def obtener_metas_activas(self) -> List[tuple]:
+        """Devuelve las metas activas (no completadas)"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    SELECT 
+                        id,
+                        descripcion,
+                        monto_objetivo,
+                        (SELECT COALESCE(SUM(monto), 0) 
+                         FROM Movimientos 
+                         WHERE metas_id = MetasAhorro.id 
+                         AND tipo = 1) as monto_actual
+                    FROM MetasAhorro 
+                    WHERE estado_actual = 0
+                    ORDER BY id DESC
+                """)
+                metas = cur.fetchall()
+                print(f"Metas obtenidas de BD: {metas}")  # Debug
+                return metas
+        except sqlite3.Error as exc:
+            print(f"❌ Error al obtener metas activas: {exc}")
+            return []
+
+    def obtener_progreso_meta(self, meta_id: int) -> tuple:
+        """Devuelve el progreso actual de una meta específica"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                SELECT m.descripcion, m.monto_objetivo,
+                       COALESCE(SUM(mov.monto), 0) as monto_actual
+                FROM MetasAhorro m
+                LEFT JOIN Movimientos mov ON mov.metas_id = m.id
+                WHERE m.id = ?
+                GROUP BY m.id
+            """,
+                    (meta_id,),
+                )
+                return cur.fetchone() or (None, 0, 0)
+        except sqlite3.Error as exc:
+            print(f"❌ Error al obtener progreso de meta: {exc}")
+            return (None, 0, 0)
+
+    def actualizar_estado_meta(self, meta_id: int) -> None:
+        """Actualiza el estado de una meta basado en su progreso actual"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                
+                # Obtener objetivo y progreso actual
+                cur.execute("""
+                    SELECT m.monto_objetivo,
+                           (SELECT COALESCE(SUM(mov.monto), 0)
+                            FROM Movimientos mov
+                            WHERE mov.metas_id = m.id AND mov.tipo IN (1, 3))
+                    FROM MetasAhorro m
+                    WHERE m.id = ?
+                """, (meta_id,))
+                
+                objetivo, actual = cur.fetchone()
+                
+                # Actualizar estado si se alcanzó el objetivo
+                if actual >= objetivo:
+                    cur.execute("""
+                        UPDATE MetasAhorro 
+                        SET estado_logro = 1
+                        WHERE id = ?
+                    """, (meta_id,))
+                    conn.commit()
+        except sqlite3.Error as e:
+            print(f"Error actualizando estado de meta: {e}")
+
+    def actualizar_progreso_meta(self, meta_id: int) -> dict:
+        """Actualiza y devuelve el progreso actual de una meta"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    SELECT 
+                        m.id,
+                        m.descripcion,
+                        m.monto_objetivo,
+                        COALESCE((
+                            SELECT SUM(mov.monto)
+                            FROM Movimientos mov
+                            WHERE mov.metas_id = m.id
+                            AND mov.tipo = 1
+                        ), 0) as monto_actual,
+                        m.estado_actual
+                    FROM MetasAhorro m
+                    WHERE m.id = ?
+                """, (meta_id,))
+                
+                result = cur.fetchone()
+                if result:
+                    id, desc, objetivo, actual, estado_actual = result
+                    porcentaje = (actual / objetivo) * 100 if objetivo > 0 else 0
+                    
+                    # Actualizar estado si está completada
+                    if porcentaje >= 100 and estado_actual == 0:
+                        cur.execute("""
+                            UPDATE MetasAhorro
+                            SET estado_actual = 1
+                            WHERE id = ?
+                        """, (meta_id,))
+                        conn.commit()
+                    
+                    progreso = {
+                        "id": id,
+                        "descripcion": desc,
+                        "objetivo": objetivo,
+                        "monto_actual": actual,
+                        "porcentaje": porcentaje
+                    }
+                    print(f"Progreso actualizado: {progreso}")  # Agrega esta línea
+                    return progreso
+                return None
+        except sqlite3.Error as e:
+            print(f"Error actualizando progreso de meta: {e}")
+            return None
+
+    def agregar_movimiento(self, tipo: int, descripcion: str, monto: float, categoria_id: int, metas_id: int = None) -> None:
+        """Agrega un nuevo movimiento a la base de datos"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id, metas_id)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (tipo, descripcion, monto, categoria_id, metas_id))
+                conn.commit()
+        except sqlite3.Error as e:
+            print(f"Error agregando movimiento: {e}")

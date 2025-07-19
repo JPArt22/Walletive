@@ -11,8 +11,11 @@ from PyQt5.QtWidgets import (
 from gui.add_meta_dialog import AddMetaDialog
 from gui.add_movement_dialog import AddMovementDialog
 from gui.initial_survey import InitialSurvey
-from gui.movements_history import MovementsHistoryWidget as MovementsHistory # implementado como QWidget
+from gui.movements_history import MovementsHistory
+from gui.meta_widget import MetaWidget
+from gui.edit_meta_dialog import EditMetaDialog
 from logic.dashboard_logic import DashboardLogic
+from logic.movement_logic import MovementLogic
 from persistence.database_manager import DatabaseManager
 
 
@@ -117,37 +120,129 @@ class Walletive(QMainWindow):
 
         self._cargar_resumen_financiero(nombre_usuario, resumen)
 
+        # Sección de metas
+        metas_frame = QFrame()
+        metas_frame.setStyleSheet("background:#1f1f1f;border-radius:12px;")
+        self.metas_layout = QVBoxLayout(metas_frame)
+
+        # Crear scroll area para las metas
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("""
+            QScrollArea {
+                border: none;
+                background: transparent;
+            }
+            QScrollArea > QWidget > QWidget {
+                background: transparent;
+            }
+        """)
+
+        # Contenedor para las metas
+        metas_container = QWidget()
+        self.metas_layout = QVBoxLayout(metas_container)
+        self.metas_layout.setSpacing(10)
+        self.metas_layout.setContentsMargins(15, 15, 15, 15)
+
+        # Título de la sección
+        head_metas = QLabel("🎯 Metas de Ahorro")
+        head_metas.setFont(QFont("Segoe UI", 16, QFont.Bold))
+        head_metas.setStyleSheet("color:#00d9ff; margin-bottom: 15px;")
+        self.metas_layout.addWidget(head_metas)
+
+        # Actualizar metas
+        self.actualizar_metas_dashboard()
+
+        # Configurar scroll
+        scroll.setWidget(metas_container)
+        self.center_layout.addWidget(scroll)
+
+    def actualizar_metas_dashboard(self):
+        """Actualiza el dashboard con las metas activas"""
+        try:
+            # Limpiar el layout actual
+            for i in reversed(range(self.metas_layout.count())): 
+                widget = self.metas_layout.itemAt(i).widget()
+                if widget is not None:
+                    widget.deleteLater()
+            
+            # Obtener las metas activas
+            metas_info = self.dashboard_logic.obtener_metas_dashboard()
+            print(f"Metas info: {metas_info}")  # Agrega esta línea
+            
+            # Agregar las metas al layout
+            for meta_info in metas_info:
+                meta_widget = MetaWidget(
+                    meta_info,
+                    on_delete=self._eliminar_meta,
+                    on_edit=self._editar_meta
+                )
+                self.metas_layout.addWidget(meta_widget)
+            
+            # Añade un espaciador al final
+            self.metas_layout.addStretch()
+        except Exception as e:
+            print(f"Error actualizando metas dashboard: {e}")
+
+    def _eliminar_meta(self, meta_id: int):
+        """Elimina una meta y actualiza el dashboard"""
+        try:
+            reply = QMessageBox.question(
+                self, 
+                'Confirmar eliminación',
+                '¿Estás seguro de que deseas eliminar esta meta?',
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+            if reply == QMessageBox.Yes:
+                self.dashboard_logic.meta_logic.delete_goal(meta_id)
+                self.actualizar_metas_dashboard()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo eliminar la meta: {str(e)}")
+
+    def _editar_meta(self, meta_id: int):
+        try:
+            meta_info = self.dashboard_logic.meta_logic.get_progress(meta_id)
+            if meta_info:
+                dlg = EditMetaDialog(self.dashboard_logic.meta_logic, meta_info, self)
+                if dlg.exec_():
+                    self.actualizar_metas_dashboard()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo editar la meta: {str(e)}")
+
     # ──────────────────────────────
     def _cargar_resumen_financiero(self, nombre: str, resumen: dict) -> None:
-        self.center_layout.setAlignment(Qt.AlignTop)
-        for i in reversed(range(self.center_layout.count())):
-            self.center_layout.itemAt(i).widget().deleteLater()
-
-        saludo = QLabel(f"👋 ¡Hola, {nombre}!"); saludo.setFont(QFont("Segoe UI", 22, QFont.Bold))
-        sub = QLabel("Resumen de estadísticas financieras"); sub.setFont(QFont("Segoe UI", 14)); sub.setStyleSheet("color:#aaa;")
-        self.center_layout.addWidget(saludo); self.center_layout.addWidget(sub)
-
-        stats = QFrame(); stats.setStyleSheet("background:#1f1f1f;border-radius:12px;")
-        stats_lay = QVBoxLayout(stats)
-        head = QLabel("📊 Resumen Financiero"); head.setFont(QFont("Segoe UI", 16, QFont.Bold)); head.setStyleSheet("color:#00d9ff;")
-        stats_lay.addWidget(head)
-
-        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}"); ingreso.setStyleSheet("color:#4CAF50;")
-        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}"); gasto.setStyleSheet("color:#F44336;")
-        bal_col = "#4CAF50" if resumen['balance'] >= 0 else "#F44336"
-        balance = QLabel(f"📈 Balance: ${resumen['balance']:,.2f}"); balance.setStyleSheet(f"color:{bal_col};")
-        metas = QLabel(f"🎯 Metas: ${resumen['metas']:,.2f}"); metas.setStyleSheet("color:#FF9800;")
-
-        for w in (ingreso, gasto, balance, metas):
-            w.setFont(QFont("Segoe UI", 14)); stats_lay.addWidget(w)
-
-        stats_lay.addStretch(); self.center_layout.addWidget(stats)
+        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
+        ingreso.setStyleSheet("color:#4CAF50; font-size: 14px;")
+        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}")
+        gasto.setStyleSheet("color:#F44336; font-size: 14px;")
+        bal = resumen['balance']
+        color_bal = "#4CAF50" if bal >= 0 else "#F44336"
+        balance = QLabel(f"📈 Balance: ${bal:,.2f}")
+        balance.setStyleSheet(f"color:{color_bal}; font-size: 14px;")
+        
+        stats = QFrame()
+        stats.setStyleSheet("background:#1f1f1f;border-radius:12px;")
+        stats_layout = QVBoxLayout(stats)
+        stats_layout.setContentsMargins(10, 10, 10, 10)
+        stats_layout.setSpacing(5)
+        
+        stats_layout.addWidget(ingreso)
+        stats_layout.addWidget(gasto)
+        stats_layout.addWidget(balance)
+        
+        self.center_layout.addWidget(stats)
 
     # ──────────────── TRANSACCIONES ────────────────
     def _abrir_transaccion(self) -> None:
-        dlg = AddMovementDialog(self.db_manager, self)
-        dlg.exec_()
-        self._mostrar_dashboard()
+        """Abre el diálogo para añadir una nueva transacción"""
+        try:
+            mov_logic = MovementLogic(self.db_manager)
+            dlg = AddMovementDialog(mov_logic, self)
+            if dlg.exec_():
+                self._mostrar_dashboard()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo abrir el diálogo: {str(e)}")
 
     # ──────────────── METAS ────────────────
     def _abrir_metas(self) -> None:

@@ -1,6 +1,7 @@
 # logic/dashboard_logic.py
 
 from persistence.database_manager import DatabaseManager
+from logic.meta_logic import MetaLogic
 
 class DashboardLogic:
     """
@@ -9,6 +10,7 @@ class DashboardLogic:
     """
     def __init__(self):
         self.db = DatabaseManager()
+        self.meta_logic = MetaLogic(self.db)
 
     def obtener_resumen(self) -> dict:
         """
@@ -16,12 +18,13 @@ class DashboardLogic:
         para el consumo de la GUI.
         """
         data = self.db.obtener_resumen_financiero()
-        # Aquí podrías añadir cálculos adicionales, alertas, recomendaciones, etc.
+        metas_info = self.obtener_metas_dashboard()
+        
         return {
             "ingresos": data["ingresos"],
             "gastos": data["gastos"],
-            "metas": data["metas"],
             "balance": data["balance"],
+            "metas_dashboard": metas_info,
             "alerta": "⚠️ Tu balance es negativo. Revisa tus gastos."
                       if data["balance"] < 0
                       else "✅ Sistema configurado correctamente",
@@ -31,3 +34,27 @@ class DashboardLogic:
                 else "💡 Revisa tus gastos variables para mejorar tu balance."
             )
         }
+
+    def obtener_metas_dashboard(self) -> list:
+        """
+        Obtiene las metas formateadas para el dashboard.
+        Se espera que meta_logic.list_goals() devuelva cada meta con las claves:
+          "id", "descripcion", "monto_actual", "monto_objetivo", "logrado", "fecha_limite"
+        """
+        metas = self.meta_logic.list_goals()  # Asegúrate de que esta función devuelva los datos necesarios
+        meta_list = []
+        for meta in metas:
+            monto_actual = meta.get("monto_actual", 0)
+            monto_objetivo = meta.get("monto_objetivo", 0)
+            porcentaje = (monto_actual / monto_objetivo * 100) if monto_objetivo > 0 else 0
+            meta_list.append({
+                "id": meta["id"],
+                "descripcion": meta["descripcion"],
+                "monto_actual": monto_actual,
+                "objetivo": monto_objetivo,
+                "porcentaje": porcentaje,
+                "logrado": meta.get("logrado", False),
+                "fecha_limite": meta["fecha_limite"],
+                "progreso": f"{monto_actual:.2f}/{monto_objetivo:.2f}"
+            })
+        return meta_list
