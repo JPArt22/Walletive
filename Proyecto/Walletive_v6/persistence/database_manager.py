@@ -17,9 +17,9 @@ class DatabaseManager:
     del usuario (walletive_config.json).
     """
 
-    def __init__(self, db_path: str | Path = "walletive.db") -> None:
+    def __init__(self, db_path: str | Path = "/home/derianbv/ingesoft1/Walletive/walletive.db") -> None:
         self.db_path: str = str(db_path)
-        self.config_path: str = "walletive_config.json"
+        self.config_path: str = "/home/derianbv/ingesoft1/Walletive/walletive_config.json"
         self.init_database()
 
     # ─────────────────────────  CREAR TABLAS ──────────────────────────
