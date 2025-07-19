@@ -13,7 +13,7 @@ COLORS = {
     # Colores de acento
     'accent': '#5865f2',               # Azul Discord
     'accent_hover': '#4752c4',         # Azul Discord hover
-    'accent_secondary': '#57f287',     # Verde Discord
+    'accent_secondary': '#57f287',     # Verde Discord original
     'accent_danger': '#ed4245',        # Rojo Discord
     'accent_warning': '#faa61a',       # Naranja Discord
     
@@ -23,7 +23,7 @@ COLORS = {
     'text_muted': '#72767d',           # Texto atenuado
     
     # Colores de estado
-    'success': '#57f287',              # Verde éxito
+    'success': '#57f287',              # Verde éxito original
     'error': '#ed4245',                # Rojo error
     'warning': '#faa61a',              # Naranja advertencia
     'info': '#5865f2',                 # Azul información
@@ -75,10 +75,11 @@ STYLES = {
     
     'sidebar_button': f"""
         QPushButton {{
-            background-color: transparent;
+            background-color: {COLORS['background_tertiary']};
+            border: 1px solid {COLORS['background_elevated']};
             border-radius: 8px;
             padding: 12px 16px;
-            margin: 2px 8px;
+            margin: 4px 8px;
             text-align: left;
             font-family: {get_font('body', 14, 'medium')};
             color: {COLORS['text_secondary']};
@@ -86,10 +87,12 @@ STYLES = {
         }}
         QPushButton:hover {{
             background-color: {COLORS['background_elevated']};
+            border: 1px solid {COLORS['accent']};
             color: {COLORS['text_primary']};
         }}
         QPushButton:pressed {{
             background-color: {COLORS['accent']};
+            border: 1px solid {COLORS['accent']};
             color: {COLORS['text_primary']};
         }}
     """,
@@ -143,6 +146,26 @@ STYLES = {
             color: {COLORS['text_muted']};
             font-size: 13px;
             font-weight: 400;
+        }}
+    """,
+    
+    'success_text': f"""
+        QLabel {{
+            font-family: {get_font('body', 14, 'normal')};
+            color: {COLORS['success']};
+            font-size: 14px;
+            font-weight: 400;
+            text-decoration: underline;
+        }}
+    """,
+    
+    'error_text': f"""
+        QLabel {{
+            font-family: {get_font('body', 14, 'normal')};
+            color: {COLORS['error']};
+            font-size: 14px;
+            font-weight: 400;
+            text-decoration: underline;
         }}
     """,
     
@@ -361,6 +384,25 @@ STYLES = {
             background-color: {COLORS['meta_complete']};
             border-radius: 12px;
             padding: 16px;
+        }}
+    """,
+    
+    'meta_title': f"""
+        QLabel {{
+            font-family: {get_font('heading', 20, 'bold')};
+            color: {COLORS['text_primary']};
+            font-size: 20px;
+            font-weight: 700;
+        }}
+    """,
+    
+    'meta_info': f"""
+        QLabel {{
+            font-family: {get_font('body', 14, 'normal')};
+            color: {COLORS['text_primary']};
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
         }}
     """
 }

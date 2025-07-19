@@ -70,7 +70,7 @@ class MetaLogic:
             cur = conn.cursor()
             cur.execute(
                 """
-                SELECT descripcion, monto_objetivo, monto_actual, estado_logro, fecha_limite
+                SELECT descripcion, monto_objetivo, monto_actual, fecha_limite
                 FROM MetasAhorro
                 WHERE id = ?
                 """,
@@ -79,10 +79,11 @@ class MetaLogic:
             meta_row = cur.fetchone()
             if not meta_row:
                 return None
-            desc, objetivo, ahorrado, logrado, fecha_limite = meta_row
+            desc, objetivo, ahorrado, fecha_limite = meta_row
 
         porc = (ahorrado / objetivo * 100) if objetivo else 0
         restante = max(objetivo - ahorrado, 0)
+        logrado = ahorrado >= objetivo
 
         return {
             "id": meta_id,
@@ -91,7 +92,7 @@ class MetaLogic:
             "ahorrado": ahorrado,
             "restante": restante,
             "porcentaje": round(porc, 2),
-            "logrado": bool(logrado),
+            "logrado": logrado,
             "fecha_limite": fecha_limite,
         }
 
@@ -102,16 +103,16 @@ class MetaLogic:
             cur = conn.cursor()
             cur.execute(
                 """
-                SELECT m.id, m.descripcion, m.monto_objetivo, m.monto_actual,
-                       m.estado_logro, m.fecha_limite
+                SELECT m.id, m.descripcion, m.monto_objetivo, m.monto_actual, m.fecha_limite
                 FROM MetasAhorro m
                 ORDER BY m.fecha_limite ASC;
                 """
             )
             rows = cur.fetchall()
 
-        for (mid, desc, obj, ahorrado, logrado, fecha_limite) in rows:
+        for (mid, desc, obj, ahorrado, fecha_limite) in rows:
             porc = (ahorrado / obj * 100) if obj else 0
+            logrado = ahorrado >= obj
             metas.append(
                 {
                     "id": mid,
@@ -120,7 +121,7 @@ class MetaLogic:
                     "ahorrado": ahorrado,
                     "restante": max(obj - ahorrado, 0),
                     "porcentaje": round(porc, 2),
-                    "logrado": bool(logrado),
+                    "logrado": logrado,
                     "fecha_limite": fecha_limite,
                 }
             )
@@ -128,22 +129,10 @@ class MetaLogic:
 
     # ──────────────────────────── PRIVADOS ─────────────────────────────
     def _update_goal_status(self, meta_id: int) -> None:
-        """Recalcula si la meta está alcanzada y actualiza `estado_logro`."""
-        with sqlite3.connect(self._db_path) as conn:
-            cur = conn.cursor()
-            cur.execute("SELECT monto_objetivo, monto_actual FROM MetasAhorro WHERE id = ?", (meta_id,))
-            row = cur.fetchone()
-            if not row:
-                return
-            objetivo: float = row[0]
-            ahorrado: float = row[1]
-
-            logrado = 1 if ahorrado >= objetivo else 0
-            cur.execute(
-                "UPDATE MetasAhorro SET estado_logro = ? WHERE id = ?",
-                (logrado, meta_id),
-            )
-            conn.commit()
+        """Recalcula si la meta está alcanzada (método mantenido por compatibilidad)."""
+        # Ya no necesitamos actualizar estado_logro porque no existe esa columna
+        # El estado se calcula dinámicamente en get_progress y list_goals
+        pass
 
     # ─────────────────────────── UTILIDADES ────────────────────────────
     def update_goal(self, meta_id: int, descripcion: str, monto_objetivo: float) -> None:
@@ -157,7 +146,9 @@ class MetaLogic:
                     WHERE id = ?
                 """, (descripcion, monto_objetivo, meta_id))
                 conn.commit()
+                print(f"✅ Meta {meta_id} actualizada: '{descripcion}' - ${monto_objetivo:.2f}")
         except sqlite3.Error as e:
+            print(f"❌ Error actualizando meta: {e}")
             raise Exception(f"Error actualizando meta: {e}")
 
     def delete_goal(self, meta_id: int) -> None:

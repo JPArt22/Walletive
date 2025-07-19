@@ -239,7 +239,7 @@ class DatabaseManager:
                 cur.execute("""
                     SELECT COALESCE(SUM(monto), 0)
                     FROM Movimientos
-                    WHERE tipo = 1 AND (metas_id IS NULL OR metas_id = 0)
+                    WHERE tipo = 1
                 """)
                 ingresos = cur.fetchone()[0]
                 cur.execute("""
@@ -350,7 +350,7 @@ class DatabaseManager:
                 if actual >= objetivo:
                     cur.execute("""
                         UPDATE MetasAhorro 
-                        SET estado_logro = 1
+                        SET estado_actual = 1
                         WHERE id = ?
                     """, (meta_id,))
                     conn.commit()

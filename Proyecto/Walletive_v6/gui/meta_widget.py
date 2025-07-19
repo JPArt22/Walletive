@@ -24,15 +24,15 @@ class MetaWidget(QWidget):
         self.container.setStyleSheet(bg_style)
         
         layout = QVBoxLayout(self.container)
-        layout.setSpacing(16)
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(20)  # Más espaciado entre elementos
+        layout.setContentsMargins(24, 24, 24, 24)  # Más padding
         
         # Header: título y botones
         header = QHBoxLayout()
-        header.setSpacing(12)
+        header.setSpacing(16)
         
         self.title = QLabel(self.meta_info["descripcion"])
-        self.title.setStyleSheet(STYLES['heading'])
+        self.title.setStyleSheet(STYLES['meta_title'])  # Título más grande
         self.title.setWordWrap(True)
         
         btn_layout = QHBoxLayout()
@@ -62,6 +62,7 @@ class MetaWidget(QWidget):
         progress_value = min(int(self.meta_info["porcentaje"]), 100)
         self.progress_bar.setValue(progress_value)
         self.progress_bar.setStyleSheet(STYLES['progress_bar'])
+        self.progress_bar.setFixedHeight(16)  # Altura fija para la barra
         layout.addWidget(self.progress_bar)
         
         # Mostrar progreso numérico: "ahorrado/meta" y el porcentaje
@@ -82,15 +83,21 @@ class MetaWidget(QWidget):
             dias = max(diferencia.days, 0)
             meses_restantes = dias // 30
             dias_restantes = dias % 30
-            fecha_text = f"Fecha límite: {mes_nombre} {fecha_limite.year}, te quedan {meses_restantes} meses y {dias_restantes} días"
+            
+            if self.meta_info["porcentaje"] >= 100:
+                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {mes_nombre} {fecha_limite.year}"
+            else:
+                fecha_text = f"📅 Fecha límite: {mes_nombre} {fecha_limite.year} • Te quedan {meses_restantes} meses y {dias_restantes} días"
+                
         except Exception as e:
-            fecha_text = f"Fecha límite: {self.meta_info.get('fecha_limite', 'N/A')}"
-        
-        if self.meta_info["porcentaje"] >= 100:
-            fecha_text = "¡Meta completada! 🎉 " + fecha_text
+            if self.meta_info["porcentaje"] >= 100:
+                fecha_text = "🎉 ¡Meta completada!"
+            else:
+                fecha_text = f"📅 Fecha límite: {self.meta_info.get('fecha_limite', 'N/A')}"
             
         self.info = QLabel(fecha_text)
-        self.info.setStyleSheet(STYLES['muted_text'])
+        self.info.setStyleSheet(STYLES['meta_info'])  # Mejor legibilidad
+        self.info.setWordWrap(True)
         layout.addWidget(self.info)
         
         main_layout.addWidget(self.container)
@@ -102,6 +109,9 @@ class MetaWidget(QWidget):
         # Actualizar color de fondo
         bg_style = STYLES['meta_widget_complete'] if self.meta_info["porcentaje"] >= 100 else STYLES['meta_widget']
         self.container.setStyleSheet(bg_style)
+        
+        # Actualizar título
+        self.title.setText(self.meta_info["descripcion"])
         
         # Actualizar barra de progreso - asegurar que no exceda 100%
         progress_value = min(int(self.meta_info["porcentaje"]), 100)
@@ -121,12 +131,17 @@ class MetaWidget(QWidget):
             dias = max(diferencia.days, 0)
             meses_restantes = dias // 30
             dias_restantes = dias % 30
-            fecha_text = f"Fecha límite: {mes_nombre} {fecha_limite.year}, te quedan {meses_restantes} meses y {dias_restantes} días"
+            
+            if self.meta_info["porcentaje"] >= 100:
+                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {mes_nombre} {fecha_limite.year}"
+            else:
+                fecha_text = f"📅 Fecha límite: {mes_nombre} {fecha_limite.year} • Te quedan {meses_restantes} meses y {dias_restantes} días"
+                
         except Exception as e:
-            fecha_text = f"Fecha límite: {self.meta_info.get('fecha_limite', 'N/A')}"
-        
-        if self.meta_info["porcentaje"] >= 100:
-            fecha_text = "¡Meta completada! 🎉 " + fecha_text
+            if self.meta_info["porcentaje"] >= 100:
+                fecha_text = "🎉 ¡Meta completada!"
+            else:
+                fecha_text = f"📅 Fecha límite: {self.meta_info.get('fecha_limite', 'N/A')}"
             
         self.info.setText(fecha_text)
         

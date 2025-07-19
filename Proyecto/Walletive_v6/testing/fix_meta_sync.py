@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ !/usr/bin/env python3
 """
 Script para sincronizar metas y verificar el estado
 """

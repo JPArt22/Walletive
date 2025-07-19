@@ -1,5 +1,6 @@
 # Walletive_v6/gui/main_window.py
 from __future__ import annotations
+import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
@@ -25,7 +26,22 @@ class Walletive(QMainWindow):
 
     def __init__(self) -> None:
         super().__init__()
-        self.db_manager = DatabaseManager()
+        
+        # Determinar la ruta correcta de la base de datos
+        # Si estamos en el directorio del proyecto, usar la BD del directorio raíz
+        current_dir = os.getcwd()
+        if 'Proyecto/Walletive_v6' in current_dir:
+            # Estamos en el directorio del proyecto, usar BD del directorio raíz
+            db_path = os.path.join(current_dir, '..', '..', 'walletive.db')
+            config_path = os.path.join(current_dir, '..', '..', 'walletive_config.json')
+        else:
+            # Estamos en el directorio raíz, usar BD local
+            db_path = "walletive.db"
+            config_path = "walletive_config.json"
+        
+        print(f"🔍 Usando base de datos: {os.path.abspath(db_path)}")
+        
+        self.db_manager = DatabaseManager(db_path)
         self.dashboard_logic = DashboardLogic()
 
         self.setWindowTitle("Walletive – Finanzas Personales")
@@ -295,15 +311,17 @@ class Walletive(QMainWindow):
         
         # Valores del resumen
         ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
-        ingreso.setStyleSheet(f"color: {get_color('success')}; {STYLES['body_text']}")
+        ingreso.setStyleSheet(STYLES['success_text'])
         
         gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}")
-        gasto.setStyleSheet(f"color: {get_color('error')}; {STYLES['body_text']}")
+        gasto.setStyleSheet(STYLES['error_text'])
         
         bal = resumen['balance']
-        color_bal = get_color('success') if bal >= 0 else get_color('error')
         balance = QLabel(f"📈 Balance: ${bal:,.2f}")
-        balance.setStyleSheet(f"color: {color_bal}; {STYLES['body_text']}")
+        if bal >= 0:
+            balance.setStyleSheet(STYLES['success_text'])
+        else:
+            balance.setStyleSheet(STYLES['error_text'])
         
         stats_layout.addWidget(ingreso)
         stats_layout.addWidget(gasto)
@@ -340,9 +358,11 @@ class Walletive(QMainWindow):
                             balance_widget = layout.itemAt(2).widget()
                             if isinstance(balance_widget, QLabel) and "📈 Balance:" in balance_widget.text():
                                 bal = resumen['balance']
-                                color_bal = get_color('success') if bal >= 0 else get_color('error')
                                 balance_widget.setText(f"📈 Balance: ${bal:,.2f}")
-                                balance_widget.setStyleSheet(f"color: {color_bal}; {STYLES['body_text']}")
+                                if bal >= 0:
+                                    balance_widget.setStyleSheet(STYLES['success_text'])
+                                else:
+                                    balance_widget.setStyleSheet(STYLES['error_text'])
                             
                             print("✅ Resumen financiero actualizado")
                             break
@@ -369,8 +389,8 @@ class Walletive(QMainWindow):
     # ──────────────── METAS ────────────────
     def _abrir_metas(self) -> None:
         dlg = AddMetaDialog(self.db_manager, self)
-        dlg.exec_()
-        self._mostrar_dashboard()
+        if dlg.exec_():
+            self._mostrar_dashboard()
 
     # ──────────────── HISTORIAL ────────────────
     def _mostrar_historial(self) -> None:
