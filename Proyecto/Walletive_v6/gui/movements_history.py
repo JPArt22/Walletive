@@ -63,7 +63,18 @@ class MovementsHistory(QWidget):
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionMode(QTableWidget.NoSelection)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        
+        # Configurar el redimensionamiento de columnas
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)  # Fecha
+        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Tipo
+        header.setSectionResizeMode(2, QHeaderView.Stretch)           # Descripción
+        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)  # Monto
+        header.setSectionResizeMode(4, QHeaderView.Fixed)             # Acciones - ancho fijo
+        
+        # Establecer ancho fijo para la columna de acciones
+        self.table.setColumnWidth(4, 100)  # 100px para los botones
+        
         self.table.setStyleSheet(STYLES['table'])
         
         QVBoxLayout(cont).addWidget(self.table)
@@ -102,18 +113,18 @@ class MovementsHistory(QWidget):
             # acciones para movimientos
             cell = QWidget()
             h = QHBoxLayout(cell)
-            h.setContentsMargins(8, 4, 8, 4)
-            h.setSpacing(8)
+            h.setContentsMargins(4, 2, 4, 2)  # Reducir márgenes
+            h.setSpacing(4)  # Reducir espaciado
             
             b_edit = QPushButton("⚙️")
             b_edit.setToolTip("Editar")
             b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(32, 32)
+            b_edit.setFixedSize(28, 28)  # Botones más pequeños
             
             b_del = QPushButton("❌")
             b_del.setToolTip("Eliminar")
             b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(32, 32)
+            b_del.setFixedSize(28, 28)  # Botones más pequeños
             
             b_edit.clicked.connect(partial(self._editar, mov_id))
             b_del.clicked.connect(partial(self._eliminar, mov_id))
@@ -138,18 +149,18 @@ class MovementsHistory(QWidget):
             # acciones para metas
             cell = QWidget()
             h = QHBoxLayout(cell)
-            h.setContentsMargins(8, 4, 8, 4)
-            h.setSpacing(8)
+            h.setContentsMargins(4, 2, 4, 2)  # Reducir márgenes
+            h.setSpacing(4)  # Reducir espaciado
             
             b_edit = QPushButton("⚙️")
             b_edit.setToolTip("Editar Meta")
             b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(32, 32)
+            b_edit.setFixedSize(28, 28)  # Botones más pequeños
             
             b_del = QPushButton("❌")
             b_del.setToolTip("Eliminar Meta")
             b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(32, 32)
+            b_del.setFixedSize(28, 28)  # Botones más pequeños
             
             b_edit.clicked.connect(partial(self._editar_meta, meta_id))
             b_del.clicked.connect(partial(self._eliminar_meta, meta_id))
@@ -259,49 +270,28 @@ class MovementsHistory(QWidget):
             
             # Importar el diálogo de edición de metas
             from gui.edit_meta_dialog import EditMetaDialog
+            from logic.meta_logic import MetaLogic
+            
+            # Crear meta_info con los datos de la meta
+            meta_info = {
+                "id": meta_id,
+                "descripcion": desc,
+                "objetivo": objetivo,
+                "actual": actual,
+                "estado": estado,
+                "fecha_limite": fecha_limite
+            }
+            
+            # Crear MetaLogic
+            meta_logic = MetaLogic(self.db)
             
             # Abrir diálogo de edición
-            dlg = EditMetaDialog(self.db, self)
-            dlg.desc_le.setText(desc)
-            dlg.monto_sb.setValue(objetivo)
-            
-            # Configurar fecha límite si existe
-            if fecha_limite:
-                from PyQt5.QtCore import QDate
-                try:
-                    fecha = QDate.fromString(fecha_limite.split()[0], "yyyy-MM-dd")
-                    dlg.fecha_de.setDate(fecha)
-                except:
-                    pass
+            dlg = EditMetaDialog(meta_logic, meta_info, self)
             
             if dlg.exec_():
-                # Obtener nuevos valores
-                nueva_desc = dlg.desc_le.text().strip()
-                nuevo_objetivo = dlg.monto_sb.value()
-                nueva_fecha = dlg.fecha_de.date().toString("yyyy-MM-dd")
-                
-                # Validar datos
-                if not nueva_desc:
-                    QMessageBox.warning(self, "Error", "La descripción no puede estar vacía")
-                    return
-                
-                if nuevo_objetivo <= 0:
-                    QMessageBox.warning(self, "Error", "El monto objetivo debe ser mayor a 0")
-                    return
-                
-                # Actualizar meta en la base de datos
-                with sqlite3.connect(self.db.db_path) as conn:
-                    cur = conn.cursor()
-                    cur.execute("""
-                        UPDATE MetasAhorro 
-                        SET descripcion = ?, monto_objetivo = ?, fecha_limite = ?
-                        WHERE id = ?
-                    """, (nueva_desc, nuevo_objetivo, nueva_fecha, meta_id))
-                    conn.commit()
-                
-                # Recargar tabla
+                # El diálogo ya maneja la actualización internamente
+                # Solo recargar la tabla
                 self._cargar()
-                QMessageBox.information(self, "Éxito", "Meta actualizada correctamente")
                 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo editar la meta: {str(e)}")
@@ -311,10 +301,10 @@ class MovementsHistory(QWidget):
         """Elimina una meta de ahorro"""
         if QMessageBox.question(self, "Confirmar", "¿Eliminar meta de ahorro definitivamente?") == QMessageBox.Yes:
             try:
-                with sqlite3.connect(self.db.db_path) as conn:
-                    cur = conn.cursor()
-                    cur.execute("DELETE FROM MetasAhorro WHERE id = ?", (meta_id,))
-                    conn.commit()
+                # Usar MetaLogic para eliminar
+                from logic.meta_logic import MetaLogic
+                meta_logic = MetaLogic(self.db)
+                meta_logic.delete_goal(meta_id)
                 
                 self._cargar()
                 QMessageBox.information(self, "Éxito", "Meta eliminada correctamente")
