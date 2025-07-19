@@ -39,15 +39,19 @@ class DashboardLogic:
         """
         Obtiene las metas formateadas para el dashboard.
         Se espera que meta_logic.list_goals() devuelva cada meta con las claves:
-          "id", "descripcion", "monto_actual", "monto_objetivo", "logrado", "fecha_limite"
+          "id", "descripcion", "ahorrado", "objetivo", "logrado", "fecha_limite"
         """
+        print("🔍 Obteniendo metas para dashboard...")
         metas = self.meta_logic.list_goals()  # Asegúrate de que esta función devuelva los datos necesarios
+        print(f"📋 Metas raw: {metas}")
+        
         meta_list = []
         for meta in metas:
-            monto_actual = meta.get("monto_actual", 0)
-            monto_objetivo = meta.get("monto_objetivo", 0)
+            monto_actual = meta.get("ahorrado", 0)  # Cambiado de "monto_actual" a "ahorrado"
+            monto_objetivo = meta.get("objetivo", 0)
             porcentaje = (monto_actual / monto_objetivo * 100) if monto_objetivo > 0 else 0
-            meta_list.append({
+            
+            meta_info = {
                 "id": meta["id"],
                 "descripcion": meta["descripcion"],
                 "monto_actual": monto_actual,
@@ -56,5 +60,9 @@ class DashboardLogic:
                 "logrado": meta.get("logrado", False),
                 "fecha_limite": meta["fecha_limite"],
                 "progreso": f"{monto_actual:.2f}/{monto_objetivo:.2f}"
-            })
+            }
+            meta_list.append(meta_info)
+            print(f"   📊 Meta procesada: {meta_info['descripcion']} - ${monto_actual:.2f}/${monto_objetivo:.2f} ({porcentaje:.1f}%)")
+        
+        print(f"✅ Total metas procesadas: {len(meta_list)}")
         return meta_list

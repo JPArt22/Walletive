@@ -35,10 +35,20 @@ class DatabaseManager:
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         descripcion TEXT NOT NULL,
                         monto_objetivo REAL NOT NULL,
+                        monto_actual REAL DEFAULT 0,
                         estado_actual INTEGER DEFAULT 0,
                         fecha_limite TEXT
                     )
                 """)
+                
+                # Verificar si existe la columna monto_actual, si no, añadirla
+                cur.execute("PRAGMA table_info(MetasAhorro)")
+                columns = [column[1] for column in cur.fetchall()]
+                if 'monto_actual' not in columns:
+                    cur.execute("ALTER TABLE MetasAhorro ADD COLUMN monto_actual REAL DEFAULT 0")
+                    print("✅ Columna monto_actual añadida a MetasAhorro")
+                    # Sincronizar metas existentes después de añadir la columna
+                    self.sincronizar_metas_existentes()
                 
                 # Tabla Movimientos
                 cur.execute(
@@ -107,18 +117,50 @@ class DatabaseManager:
         monto = self._to_number(monto)
         if tipo not in (1, 2, 3):
             raise ValueError("Tipo inválido (debe ser 1, 2 o 3)")
+        
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cur = conn.cursor()
-                cur.execute(
-                    """
-                    INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id, metas_id)
-                    VALUES (?,?,?,?,?)
-                    """,
-                    (tipo, descripcion, monto, categoria_id, metas_id),
-                )
+            # Usar una sola conexión para todo
+            conn = sqlite3.connect(self.db_path, timeout=30.0)
+            cur = conn.cursor()
+            
+            # Insertar el movimiento
+            cur.execute(
+                """
+                INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id, metas_id)
+                VALUES (?,?,?,?,?)
+                """,
+                (tipo, descripcion, monto, categoria_id, metas_id),
+            )
+            
+            # Si es un ingreso asociado a una meta, actualizar inmediatamente
+            if tipo == 1 and metas_id:
+                # Calcular la suma total de ingresos para esta meta
+                cur.execute("""
+                    SELECT COALESCE(SUM(monto), 0)
+                    FROM Movimientos
+                    WHERE metas_id = ? AND tipo = 1
+                """, (metas_id,))
+                
+                monto_total = cur.fetchone()[0]
+                
+                # Actualizar el monto_actual en la tabla MetasAhorro
+                cur.execute("""
+                    UPDATE MetasAhorro
+                    SET monto_actual = ?
+                    WHERE id = ?
+                """, (monto_total, metas_id))
+                
+                print(f"✅ Meta {metas_id} actualizada en la misma transacción: monto_actual = {monto_total}")
+            
+            # Commit todo junto
+            conn.commit()
+            conn.close()
+            
         except sqlite3.Error as exc:
             print(f"❌ Error al registrar movimiento: {exc}")
+            if 'conn' in locals():
+                conn.close()
+            raise
 
     def add(self, *args, **kwargs):
         """
@@ -248,7 +290,7 @@ class DatabaseManager:
 
     # ────────────────────────────── NUEVOS MÉTODOS ─────────────────────────────
     def obtener_metas_activas(self) -> List[tuple]:
-        """Devuelve las metas activas (no completadas)"""
+        """Devuelve las metas activas (todas las metas)"""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cur = conn.cursor()
@@ -257,12 +299,8 @@ class DatabaseManager:
                         id,
                         descripcion,
                         monto_objetivo,
-                        (SELECT COALESCE(SUM(monto), 0) 
-                         FROM Movimientos 
-                         WHERE metas_id = MetasAhorro.id 
-                         AND tipo = 1) as monto_actual
+                        monto_actual
                     FROM MetasAhorro 
-                    WHERE estado_actual = 0
                     ORDER BY id DESC
                 """)
                 metas = cur.fetchall()
@@ -279,12 +317,9 @@ class DatabaseManager:
                 cur = conn.cursor()
                 cur.execute(
                     """
-                SELECT m.descripcion, m.monto_objetivo,
-                       COALESCE(SUM(mov.monto), 0) as monto_actual
+                SELECT m.descripcion, m.monto_objetivo, m.monto_actual
                 FROM MetasAhorro m
-                LEFT JOIN Movimientos mov ON mov.metas_id = m.id
                 WHERE m.id = ?
-                GROUP BY m.id
             """,
                     (meta_id,),
                 )
@@ -332,12 +367,7 @@ class DatabaseManager:
                         m.id,
                         m.descripcion,
                         m.monto_objetivo,
-                        COALESCE((
-                            SELECT SUM(mov.monto)
-                            FROM Movimientos mov
-                            WHERE mov.metas_id = m.id
-                            AND mov.tipo = 1
-                        ), 0) as monto_actual,
+                        m.monto_actual,
                         m.estado_actual
                     FROM MetasAhorro m
                     WHERE m.id = ?
@@ -374,12 +404,61 @@ class DatabaseManager:
     def agregar_movimiento(self, tipo: int, descripcion: str, monto: float, categoria_id: int, metas_id: int = None) -> None:
         """Agrega un nuevo movimiento a la base de datos"""
         try:
+            # Usar una sola conexión para todo
+            conn = sqlite3.connect(self.db_path, timeout=30.0)
+            cur = conn.cursor()
+            
+            # Insertar el movimiento
+            cur.execute("""
+                INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id, metas_id)
+                VALUES (?, ?, ?, ?, ?)
+            """, (tipo, descripcion, monto, categoria_id, metas_id))
+            
+            # Si es un ingreso asociado a una meta, actualizar inmediatamente
+            if tipo == 1 and metas_id:
+                # Calcular la suma total de ingresos para esta meta
+                cur.execute("""
+                    SELECT COALESCE(SUM(monto), 0)
+                    FROM Movimientos
+                    WHERE metas_id = ? AND tipo = 1
+                """, (metas_id,))
+                
+                monto_total = cur.fetchone()[0]
+                
+                # Actualizar el monto_actual en la tabla MetasAhorro
+                cur.execute("""
+                    UPDATE MetasAhorro
+                    SET monto_actual = ?
+                    WHERE id = ?
+                """, (monto_total, metas_id))
+                
+                print(f"✅ Meta {metas_id} actualizada en agregar_movimiento: monto_actual = {monto_total}")
+            
+            # Commit todo junto
+            conn.commit()
+            conn.close()
+            
+        except sqlite3.Error as e:
+            print(f"Error agregando movimiento: {e}")
+            if 'conn' in locals():
+                conn.close()
+
+
+
+    def sincronizar_metas_existentes(self) -> None:
+        """Sincroniza todas las metas existentes con el nuevo campo monto_actual"""
+        try:
             with sqlite3.connect(self.db_path) as conn:
                 cur = conn.cursor()
-                cur.execute("""
-                    INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id, metas_id)
-                    VALUES (?, ?, ?, ?, ?)
-                """, (tipo, descripcion, monto, categoria_id, metas_id))
-                conn.commit()
-        except sqlite3.Error as e:
-            print(f"Error agregando movimiento: {e}")       
+                
+                # Obtener todas las metas
+                cur.execute("SELECT id FROM MetasAhorro")
+                metas = cur.fetchall()
+                
+                for (meta_id,) in metas:
+                    self._actualizar_monto_actual_meta(meta_id)
+                
+                print(f"✅ Sincronización completada para {len(metas)} metas")
+                
+        except sqlite3.Error as exc:
+            print(f"❌ Error al sincronizar metas existentes: {exc}")       

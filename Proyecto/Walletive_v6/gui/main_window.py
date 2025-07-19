@@ -123,8 +123,7 @@ class Walletive(QMainWindow):
         # Sección de metas
         metas_frame = QFrame()
         metas_frame.setStyleSheet("background:#1f1f1f;border-radius:12px;")
-        self.metas_layout = QVBoxLayout(metas_frame)
-
+        
         # Crear scroll area para las metas
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -150,39 +149,100 @@ class Walletive(QMainWindow):
         head_metas.setStyleSheet("color:#00d9ff; margin-bottom: 15px;")
         self.metas_layout.addWidget(head_metas)
 
-        # Actualizar metas
-        self.actualizar_metas_dashboard()
-
         # Configurar scroll
         scroll.setWidget(metas_container)
         self.center_layout.addWidget(scroll)
+        
+        # Actualizar metas después de configurar el layout
+        self.actualizar_metas_dashboard()
 
     def actualizar_metas_dashboard(self):
         """Actualiza el dashboard con las metas activas"""
         try:
-            # Limpiar el layout actual
-            for i in reversed(range(self.metas_layout.count())): 
-                widget = self.metas_layout.itemAt(i).widget()
-                if widget is not None:
+            print("🔄 Actualizando dashboard de metas...")
+            
+            # Obtener las metas activas directamente de la BD
+            metas_raw = self.db_manager.obtener_metas_activas()
+            print(f"📊 Metas obtenidas de BD: {len(metas_raw)} metas")
+            
+            # Crear diccionario de widgets existentes por ID de meta
+            existing_widgets = {}
+            widgets_to_remove = []
+            
+            for i in range(self.metas_layout.count()): 
+                item = self.metas_layout.itemAt(i)
+                if item.widget() is not None:
+                    widget = item.widget()
+                    # No eliminar el título
+                    if isinstance(widget, QLabel) and "🎯 Metas de Ahorro" in widget.text():
+                        continue
+                    # Guardar widgets de metas existentes
+                    if hasattr(widget, 'meta_info'):
+                        existing_widgets[widget.meta_info['id']] = widget
+                    else:
+                        widgets_to_remove.append(widget)
+            
+            # Eliminar widgets que no son metas
+            for widget in widgets_to_remove:
+                self.metas_layout.removeWidget(widget)
+                widget.deleteLater()
+            
+            # Procesar cada meta
+            for meta_raw in metas_raw:
+                meta_id, descripcion, objetivo, actual = meta_raw
+                porcentaje = (actual / objetivo * 100) if objetivo > 0 else 0
+                
+                meta_info = {
+                    "id": meta_id,
+                    "descripcion": descripcion,
+                    "monto_actual": actual,
+                    "objetivo": objetivo,
+                    "porcentaje": porcentaje,
+                    "logrado": porcentaje >= 100,
+                    "fecha_limite": "2026-07-01",  # Placeholder
+                    "progreso": f"{actual:.2f}/{objetivo:.2f}"
+                }
+                
+                print(f"   📊 Meta: {descripcion} - ${actual:.2f}/${objetivo:.2f} ({porcentaje:.1f}%)")
+                
+                # Si el widget ya existe, actualizarlo
+                if meta_id in existing_widgets:
+                    existing_widgets[meta_id].update_progress(meta_info)
+                    print(f"   🔄 Widget actualizado para meta {meta_id}")
+                else:
+                    # Crear nuevo widget
+                    meta_widget = MetaWidget(
+                        meta_info,
+                        on_delete=self._eliminar_meta,
+                        on_edit=self._editar_meta
+                    )
+                    self.metas_layout.addWidget(meta_widget)
+                    print(f"   ➕ Nuevo widget creado para meta {meta_id}")
+            
+            # Eliminar widgets de metas que ya no existen
+            for meta_id, widget in existing_widgets.items():
+                if not any(meta_raw[0] == meta_id for meta_raw in metas_raw):
+                    self.metas_layout.removeWidget(widget)
                     widget.deleteLater()
+                    print(f"   🗑️ Widget eliminado para meta {meta_id}")
             
-            # Obtener las metas activas
-            metas_info = self.dashboard_logic.obtener_metas_dashboard()
-            print(f"Metas info: {metas_info}")  # Agrega esta línea
+            # Añade un espaciador al final si no existe
+            has_stretch = False
+            for i in range(self.metas_layout.count()):
+                item = self.metas_layout.itemAt(i)
+                if item.spacerItem():
+                    has_stretch = True
+                    break
             
-            # Agregar las metas al layout
-            for meta_info in metas_info:
-                meta_widget = MetaWidget(
-                    meta_info,
-                    on_delete=self._eliminar_meta,
-                    on_edit=self._editar_meta
-                )
-                self.metas_layout.addWidget(meta_widget)
+            if not has_stretch:
+                self.metas_layout.addStretch()
             
-            # Añade un espaciador al final
-            self.metas_layout.addStretch()
+            print("✅ Dashboard de metas actualizado")
+            
         except Exception as e:
-            print(f"Error actualizando metas dashboard: {e}")
+            print(f"❌ Error actualizando metas dashboard: {e}")
+            import traceback
+            traceback.print_exc()
 
     def _eliminar_meta(self, meta_id: int):
         """Elimina una meta y actualiza el dashboard"""
@@ -233,6 +293,47 @@ class Walletive(QMainWindow):
         
         self.center_layout.addWidget(stats)
 
+    def _actualizar_resumen_financiero(self) -> None:
+        """Actualiza el resumen financiero sin recrear todo el dashboard"""
+        try:
+            # Obtener nuevo resumen
+            resumen = self.db_manager.obtener_resumen_financiero()
+            
+            # Buscar y actualizar los widgets de resumen existentes
+            for i in range(self.center_layout.count()):
+                item = self.center_layout.itemAt(i)
+                if item.widget() is not None:
+                    widget = item.widget()
+                    if isinstance(widget, QFrame):
+                        # Verificar si es el frame de estadísticas
+                        layout = widget.layout()
+                        if layout and layout.count() >= 3:
+                            # Actualizar ingresos
+                            ingreso_widget = layout.itemAt(0).widget()
+                            if isinstance(ingreso_widget, QLabel) and "💰 Ingresos:" in ingreso_widget.text():
+                                ingreso_widget.setText(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
+                            
+                            # Actualizar gastos
+                            gasto_widget = layout.itemAt(1).widget()
+                            if isinstance(gasto_widget, QLabel) and "💸 Gastos:" in gasto_widget.text():
+                                gasto_widget.setText(f"💸 Gastos: ${resumen['gastos']:,.2f}")
+                            
+                            # Actualizar balance
+                            balance_widget = layout.itemAt(2).widget()
+                            if isinstance(balance_widget, QLabel) and "📈 Balance:" in balance_widget.text():
+                                bal = resumen['balance']
+                                color_bal = "#4CAF50" if bal >= 0 else "#F44336"
+                                balance_widget.setText(f"📈 Balance: ${bal:,.2f}")
+                                balance_widget.setStyleSheet(f"color:{color_bal}; font-size: 14px;")
+                            
+                            print("✅ Resumen financiero actualizado")
+                            break
+            
+        except Exception as e:
+            print(f"❌ Error actualizando resumen financiero: {e}")
+            import traceback
+            traceback.print_exc()
+
     # ──────────────── TRANSACCIONES ────────────────
     def _abrir_transaccion(self) -> None:
         """Abre el diálogo para añadir una nueva transacción"""
@@ -240,7 +341,10 @@ class Walletive(QMainWindow):
             mov_logic = MovementLogic(self.db_manager)
             dlg = AddMovementDialog(mov_logic, self)
             if dlg.exec_():
-                self._mostrar_dashboard()
+                # Actualizar metas y resumen financiero
+                self.actualizar_metas_dashboard()
+                self._actualizar_resumen_financiero()
+                print("🔄 Dashboard actualizado después de transacción")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo abrir el diálogo: {str(e)}")
 

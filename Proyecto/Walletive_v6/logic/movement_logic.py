@@ -88,6 +88,7 @@ class MovementLogic:
                     # Notificar al dashboard para que se actualice
                     if hasattr(self, "on_meta_updated"):
                         self.on_meta_updated(meta_id, progreso)
+                    print(f"✅ Meta {meta_id} actualizada automáticamente")
 
             return True
         except Exception as e:

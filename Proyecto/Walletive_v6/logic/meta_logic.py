@@ -70,7 +70,7 @@ class MetaLogic:
             cur = conn.cursor()
             cur.execute(
                 """
-                SELECT descripcion, monto_objetivo, estado_logro, fecha_limite
+                SELECT descripcion, monto_objetivo, monto_actual, estado_logro, fecha_limite
                 FROM MetasAhorro
                 WHERE id = ?
                 """,
@@ -79,15 +79,7 @@ class MetaLogic:
             meta_row = cur.fetchone()
             if not meta_row:
                 return None
-            desc, objetivo, logrado, fecha_limite = meta_row
-
-            cur.execute(
-                """SELECT COALESCE(SUM(monto), 0)
-                   FROM Movimientos
-                   WHERE metas_id = ? AND tipo = 3""",
-                (meta_id,),
-            )
-            ahorrado: float = cur.fetchone()[0]
+            desc, objetivo, ahorrado, logrado, fecha_limite = meta_row
 
         porc = (ahorrado / objetivo * 100) if objetivo else 0
         restante = max(objetivo - ahorrado, 0)
@@ -110,12 +102,9 @@ class MetaLogic:
             cur = conn.cursor()
             cur.execute(
                 """
-                SELECT m.id, m.descripcion, m.monto_objetivo,
-                       COALESCE(SUM(v.monto), 0) AS ahorrado,
+                SELECT m.id, m.descripcion, m.monto_objetivo, m.monto_actual,
                        m.estado_logro, m.fecha_limite
                 FROM MetasAhorro m
-                LEFT JOIN Movimientos v ON v.metas_id = m.id AND v.tipo = 3
-                GROUP BY m.id
                 ORDER BY m.fecha_limite ASC;
                 """
             )
@@ -142,17 +131,12 @@ class MetaLogic:
         """Recalcula si la meta está alcanzada y actualiza `estado_logro`."""
         with sqlite3.connect(self._db_path) as conn:
             cur = conn.cursor()
-            cur.execute("SELECT monto_objetivo FROM MetasAhorro WHERE id = ?", (meta_id,))
+            cur.execute("SELECT monto_objetivo, monto_actual FROM MetasAhorro WHERE id = ?", (meta_id,))
             row = cur.fetchone()
             if not row:
                 return
             objetivo: float = row[0]
-
-            cur.execute(
-                "SELECT COALESCE(SUM(monto), 0) FROM Movimientos WHERE metas_id = ? AND tipo = 3",
-                (meta_id,),
-            )
-            ahorrado: float = cur.fetchone()[0]
+            ahorrado: float = row[1]
 
             logrado = 1 if ahorrado >= objetivo else 0
             cur.execute(

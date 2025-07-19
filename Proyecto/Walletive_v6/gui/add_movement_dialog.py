@@ -124,13 +124,13 @@ class AddMovementDialog(QDialog):
             cat_id = self.CATEGORIES[self.cat_cb.currentText()]
             meta_id = self.meta_combo.currentData() if self.meta_check.isChecked() else None
             
+            print(f"💾 Guardando movimiento: tipo={tipo}, desc='{desc}', monto=${monto}, meta_id={meta_id}")
+            
             if self.logic.add(tipo, desc, monto, cat_id, meta_id):
                 QMessageBox.information(self, "Éxito", "Movimiento guardado ✔")
-                # Actualizar el dashboard después de guardar
-                if self.parent():
-                    self.parent().actualizar_metas_dashboard()
                 self.accept()
             else:
                 raise Exception("No se pudo guardar el movimiento")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo guardar: {e}")
+            print(f"❌ Error en _guardar: {e}")
