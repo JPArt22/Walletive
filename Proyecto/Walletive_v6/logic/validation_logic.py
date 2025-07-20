@@ -52,8 +52,7 @@ class ValidationLogic:
     def validate_meta_data(
         descripcion: str,
         monto_objetivo: Number,
-        meses: int,
-        frecuencia: str
+        meses: int
     ) -> Tuple[bool, str]:
         """
         Valida los datos de una meta de ahorro.
@@ -72,11 +71,6 @@ class ValidationLogic:
         # Validar meses
         if meses <= 0 or meses > 120:  # Máximo 10 años
             return False, "Los meses deben estar entre 1 y 120."
-        
-        # Validar frecuencia
-        frecuencias_validas = ["Mensual", "Semanal", "Diario"]
-        if frecuencia not in frecuencias_validas:
-            return False, "Frecuencia no válida."
         
         return True, ""
 

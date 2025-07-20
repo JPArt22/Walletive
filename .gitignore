@@ -1,3 +1,15 @@
 # entornos virtuales
 .venv/
 __pycache__/
+
+# Archivos de testing
+
+# Archivos de verificación temporales
+verificar_*.py
+test_botones_historial.py
+test_saludo.py
+
+# Base de datos de desarrollo
+walletive.db
+
+

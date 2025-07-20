@@ -1,0 +1,15 @@
+# Dependencias principales para Walletive v6
+PyQt5>=5.15.0
+
+# Dependencias para desarrollo (opcionales)
+pytest>=6.0.0
+black>=21.0.0
+flake8>=3.9.0
+
+# Dependencias opcionales para futuras funcionalidades
+# Para generar reportes en PDF (opcional)
+# reportlab>=3.5.0
+
+# Para análisis de datos (opcional)
+# pandas>=1.3.0
+# matplotlib>=3.4.0 

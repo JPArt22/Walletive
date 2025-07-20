@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QHeaderView,
+    QComboBox,
 )
 
 from gui.add_movement_dialog import AddMovementDialog
@@ -44,6 +45,8 @@ class MovementsHistory(QWidget):
         self.db = db
         self._ids: List[int] = []
         self.formatting_logic = FormattingLogic()
+        self.categoria_filtro = None  # Para filtrar por categoría
+        self.movement_logic = MovementLogic(db)  # Para agregar movimientos
 
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
@@ -60,6 +63,29 @@ class MovementsHistory(QWidget):
             }
         """)
         root.addWidget(title)
+
+        # Controles de filtro
+        controls_layout = QHBoxLayout()
+        controls_layout.setSpacing(12)
+        
+        # Filtro por categoría
+        filtro_label = QLabel("Filtrar por categoría:")
+        filtro_label.setStyleSheet(f"color: {get_color('text_primary')}; font-family: {get_font('body', 14, 'normal')}; font-size: 14px;")
+        
+        self.categoria_combo = QComboBox()
+        self.categoria_combo.addItem("Todas las categorías", None)
+        self.categoria_combo.addItems([
+            "General", "Alimentación", "Transporte", "Entretenimiento", 
+            "Salud", "Educación", "Vivienda", "Otros"
+        ])
+        self.categoria_combo.setStyleSheet(STYLES['combo_box'])
+        self.categoria_combo.currentTextChanged.connect(self._on_categoria_changed)
+        
+        controls_layout.addWidget(filtro_label)
+        controls_layout.addWidget(self.categoria_combo)
+        controls_layout.addStretch()
+        
+        root.addLayout(controls_layout)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -86,7 +112,7 @@ class MovementsHistory(QWidget):
         header.setSectionResizeMode(4, QHeaderView.Fixed)             # Acciones - ancho fijo
         
         # Establecer ancho fijo para la columna de acciones
-        self.table.setColumnWidth(4, 100)  # 100px para botones más cómodos
+        self.table.setColumnWidth(4, 90)  # 90px justo para botones de iconos
         
         self.table.setStyleSheet(STYLES['table'])
         
@@ -99,98 +125,58 @@ class MovementsHistory(QWidget):
     def _cargar(self):
         self.table.setRowCount(0)
         self._ids.clear()
-        tipomap = {1: "Ingreso", 2: "Gasto", 3: "Meta de Ahorro"}
         
-        # Obtener movimientos
+        categorias = ["General", "Alimentación", "Transporte", "Entretenimiento", 
+                      "Salud", "Educación", "Vivienda", "Otros"]
+        
+        # Obtener movimientos y metas sin filtros SQL complejos
         with sqlite3.connect(self.db.db_path) as conn:
             cur = conn.cursor()
-            cur.execute("SELECT id, fecha, tipo, descripcion, monto FROM Movimientos ORDER BY fecha DESC LIMIT 300")
+            cur.execute("SELECT id, fecha, tipo, descripcion, monto, categoria_id FROM Movimientos ORDER BY fecha DESC LIMIT 300")
             movimientos: List[Tuple] = cur.fetchall()
             
-            # Obtener metas de ahorro
-            cur.execute("SELECT id, fecha_limite, descripcion, monto_objetivo FROM MetasAhorro ORDER BY fecha_limite DESC")
-            metas: List[Tuple] = cur.fetchall()
+            # Ya no queremos mostrar metas en el historial
+            metas: List[Tuple] = []  # No cargar metas
 
-        # Procesar movimientos
-        for mov_id, fecha, tipo, desc, monto in movimientos:
+        # ──────────── MOVIMIENTOS ────────────
+        for mov_id, fecha, tipo, desc, monto, categoria_id in movimientos:
+            # Filtrar por categoría para ingresos y gastos
+            if self.categoria_filtro:
+                try:
+                    cat_match_id = categorias.index(self.categoria_filtro) + 1
+                    if categoria_id != cat_match_id:
+                        continue  # No coincide la categoría seleccionada
+                except ValueError:
+                    continue  # Categoría inválida, omitir
+            # Para ingresos (tipo 1) o si no hay filtro, siempre mostrar
             row = self.table.rowCount()
             self.table.insertRow(row)
             self._ids.append(mov_id)
-            
-            # Usar la lógica de formateo centralizada
-            fecha_formateada = self.formatting_logic.format_date(fecha)
-            tipo_formateado = self.formatting_logic.format_movement_type(tipo)
-            monto_formateado = self.formatting_logic.format_currency(monto)
-            
-            datos = [fecha_formateada, tipo_formateado, desc, monto_formateado]
+
+            fecha_fmt = self.formatting_logic.format_date(fecha)
+            tipo_fmt = self.formatting_logic.format_movement_type(tipo)
+            monto_fmt = self.formatting_logic.format_currency(monto)
+
+            datos = [fecha_fmt, tipo_fmt, desc, monto_fmt]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(self.COLOR_BG.get(tipo, QColor("#222")))
                 self.table.setItem(row, col, item)
 
-            # acciones para movimientos
+            # Botones acciones (igual que antes)
             cell = QWidget()
             h = QHBoxLayout(cell)
-            h.setContentsMargins(4, 2, 4, 2)  # Márgenes para botones de texto
-            h.setSpacing(4)  # Espaciado para botones de texto
-            
-            b_edit = QPushButton("Editar")
-            b_edit.setToolTip("Editar")
-            b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(35, 25)  # Botón más pequeño
-            
-            b_del = QPushButton("Eliminar")
-            b_del.setToolTip("Eliminar")
-            b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(35, 25)  # Botón más pequeño
-            
+            h.setContentsMargins(4, 2, 4, 2)
+            h.setSpacing(4)
+            b_edit = QPushButton("⚙️"); b_edit.setFixedSize(35, 25); b_edit.setStyleSheet(STYLES['secondary_button']); b_edit.setToolTip("Editar")
+            b_del = QPushButton("✕"); b_del.setFixedSize(35, 25); b_del.setStyleSheet(STYLES['danger_button']); b_del.setToolTip("Eliminar")
             b_edit.clicked.connect(partial(self._editar, mov_id))
             b_del.clicked.connect(partial(self._eliminar, mov_id))
-            
-            h.addWidget(b_edit)
-            h.addWidget(b_del)
-            h.addStretch()
+            h.addWidget(b_edit); h.addWidget(b_del); h.addStretch()
             self.table.setCellWidget(row, 4, cell)
 
-        # Procesar metas de ahorro
-        for meta_id, fecha, desc, monto in metas:
-            row = self.table.rowCount()
-            self.table.insertRow(row)
-            self._ids.append(f"meta_{meta_id}")  # Prefijo para identificar metas
-            
-            # Usar la lógica de formateo centralizada
-            fecha_formateada = self.formatting_logic.format_date(fecha)
-            monto_formateado = self.formatting_logic.format_currency(monto)
-            
-            datos = [fecha_formateada, "Meta de Ahorro", desc, monto_formateado]
-            for col, val in enumerate(datos):
-                item = QTableWidgetItem(str(val))
-                item.setBackground(QColor("#4d4212"))  # Amarillo oscuro para metas
-                self.table.setItem(row, col, item)
-
-            # acciones para metas
-            cell = QWidget()
-            h = QHBoxLayout(cell)
-            h.setContentsMargins(4, 2, 4, 2)  # Márgenes para botones de texto
-            h.setSpacing(4)  # Espaciado para botones de texto
-            
-            b_edit = QPushButton("Editar")
-            b_edit.setToolTip("Editar Meta")
-            b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(35, 25)  # Botón más pequeño
-            
-            b_del = QPushButton("Eliminar")
-            b_del.setToolTip("Eliminar Meta")
-            b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(35, 25)  # Botón más pequeño
-            
-            b_edit.clicked.connect(partial(self._editar_meta, meta_id))
-            b_del.clicked.connect(partial(self._eliminar_meta, meta_id))
-            
-            h.addWidget(b_edit)
-            h.addWidget(b_del)
-            h.addStretch()
-            self.table.setCellWidget(row, 4, cell)
+        # ───────────── METAS ─────────────
+        # Ya no se muestran metas en este historial
 
     # ──────────────────────────────────────────────
     def _editar(self, mov_id: int):
@@ -321,15 +307,39 @@ class MovementsHistory(QWidget):
     # ──────────────────────────────────────────────
     def _eliminar_meta(self, meta_id: int):
         """Elimina una meta de ahorro"""
-        if QMessageBox.question(self, "Confirmar", "¿Eliminar meta de ahorro definitivamente?") == QMessageBox.Yes:
-            try:
-                # Usar MetaLogic para eliminar
-                from logic.meta_logic import MetaLogic
-                meta_logic = MetaLogic(self.db)
-                meta_logic.delete_goal(meta_id)
+        try:
+            reply = QMessageBox.question(
+                self, 
+                'Confirmar eliminación',
+                '¿Estás seguro de que deseas eliminar esta meta de ahorro?',
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+            
+            if reply == QMessageBox.Yes:
+                # Eliminar la meta
+                with sqlite3.connect(self.db.db_path) as conn:
+                    cur = conn.cursor()
+                    cur.execute("DELETE FROM MetasAhorro WHERE id = ?", (meta_id,))
+                    conn.commit()
                 
-                self._cargar()
-                QMessageBox.information(self, "Éxito", "Meta eliminada correctamente")
+                print(f"✅ Meta eliminada: {meta_id}")
+                self._cargar()  # Recargar la tabla
                 
-            except Exception as e:
-                QMessageBox.critical(self, "Error", f"No se pudo eliminar la meta: {str(e)}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo eliminar la meta: {str(e)}")
+            print(f"❌ Error eliminando meta: {e}")
+
+    def _on_categoria_changed(self, categoria: str):
+        """Maneja el cambio de filtro por categoría"""
+        if categoria == "Todas las categorías":
+            self.categoria_filtro = None
+        else:
+            self.categoria_filtro = categoria
+        
+        print(f"🔍 Filtrando por categoría: {categoria}")
+        self._cargar()  # Recargar con el filtro aplicado
+
+    def actualizar_historial(self):
+        """Método público para actualizar el historial desde fuera"""
+        self._cargar()

@@ -25,8 +25,9 @@ class InitialSurveyLogic:
         total_deuda = self._to_float(self.respuestas[5]) if tiene_deudas else 0.0
         cuota_mensual = self._to_float(self.respuestas[6]) if tiene_deudas else 0.0
         tiene_meta = self.respuestas[7] == "Sí"
-        meta_ahorro = self._to_float(self.respuestas[8]) if tiene_meta else 0.0
-        meses_meta = int(self.respuestas[9]) if tiene_meta else 0
+        descripcion_meta = self.respuestas[8] if tiene_meta else ""
+        meta_ahorro = self._to_float(self.respuestas[9]) if tiene_meta else 0.0
+        meses_meta = int(self.respuestas[10]) if tiene_meta else 0
 
         # Cálculo de ahorro potencial
         ahorro_estimado = ingreso - (fijos + variables + cuota_mensual)
@@ -46,12 +47,23 @@ class InitialSurveyLogic:
             "ahorro_estimado": ahorro_estimado
         }
 
-        # Llamada a la capa de persistencia
+        # --- CORRECCIÓN ---
+        # 1. Guardar primero todas las respuestas de la encuesta
         self.db.guardar_datos_encuesta(nombre, [
             ingreso, fijos, variables,
             "Sí" if tiene_deudas else "No", total_deuda, cuota_mensual,
-            "Sí" if tiene_meta else "No", meta_ahorro, meses_meta
+            "Sí" if tiene_meta else "No", descripcion_meta, meta_ahorro, meses_meta
         ])
+
+        # 2. Si el usuario indicó que tiene una meta, la creamos en la BD
+        if tiene_meta and descripcion_meta.strip() and meta_ahorro > 0 and meses_meta > 0:
+            print(f"🌱 Creando meta inicial: '{descripcion_meta}' por ${meta_ahorro} en {meses_meta} meses.")
+            self.db.crear_meta(
+                descripcion=descripcion_meta,
+                monto_objetivo=meta_ahorro,
+                meses=meses_meta
+            )
+        # --------------------
 
         return ahorro_estimado
 

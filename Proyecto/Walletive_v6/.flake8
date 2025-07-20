@@ -1,0 +1,18 @@
+[flake8]
+max-line-length = 100
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    *.pyc,
+    walletive_backup.db,
+    testing/walletive_backup.db,
+    testing/clean_duplicates.py,
+    testing/linter_report.txt
+ignore = 
+    E501,
+    W503,
+    F401
+per-file-ignores =
+    __init__.py:F401
+    testing/Test*.py:F401 

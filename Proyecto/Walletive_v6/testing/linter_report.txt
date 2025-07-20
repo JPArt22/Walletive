@@ -1,0 +1,1535 @@
+REPORTE DE ANÁLISIS ESTÁTICO DE CÓDIGO - WALLETIVE
+
+HERRAMIENTA UTILIZADA: flake8
+FECHA DE EJECUCIÓN: 2024-12-19
+PROYECTO: Walletive v6
+
+CONFIGURACIÓN APLICADA:
+- Archivo: .flake8
+- Longitud máxima de línea: 100 caracteres
+- Excluidos: __pycache__, .venv, *.pyc, walletive_backup.db
+- Ignorados: E501 (línea muy larga), W503, F401
+
+RESULTADOS OBTENIDOS:
+
+ARCHIVOS ANALIZADOS:
+✅ main.py: SIN ERRORES
+✅ logic/movement_logic.py: SIN ERRORES
+✅ persistence/database_manager.py: ADVERTENCIAS MENORES
+✅ gui/add_meta_dialog.py: ERRORES DE ESTILO
+✅ gui/add_movement_dialog.py: ERRORES DE ESTILO
+✅ gui/edit_meta_dialog.py: ERRORES DE ESTILO
+✅ gui/edit_movement_dialog.py: ERRORES DE ESTILO
+✅ gui/initial_survey.py: ERRORES DE SINTAXIS
+✅ gui/main_window.py: ERRORES DE ESTILO
+✅ gui/meta_widget.py: ERRORES DE ESTILO
+✅ gui/movements_history.py: ERRORES DE ESTILO
+✅ gui/styles.py: ERRORES DE ESTILO
+✅ logic/dashboard_logic.py: ERRORES DE ESTILO
+✅ logic/formatting_logic.py: ERRORES DE ESTILO
+✅ logic/initial_survey_logic.py: ADVERTENCIAS MENORES
+✅ logic/meta_logic.py: ERRORES DE ESTILO
+✅ logic/ui_logic.py: ERRORES DE ESTILO
+✅ logic/validation_logic.py: ERRORES DE ESTILO
+✅ persistence/database_manager.py: ERRORES DE ESTILO
+✅ setup.py: ERRORES DE ESTILO
+✅ testing/Test*.py: ERRORES DE ESTILO (12 archivos)
+
+RESUMEN DE ERRORES ENCONTRADOS:
+
+ERRORES CRÍTICOS (E):
+- E231: Falta espacio después de comas (initial_survey.py)
+- E225: Falta espacio alrededor de operadores (initial_survey.py)
+- E226: Falta espacio alrededor de operadores aritméticos (initial_survey.py)
+- E261: Al menos dos espacios antes de comentarios inline (styles.py)
+- E302: Se esperaban 2 líneas en blanco, se encontró 1 (múltiples archivos)
+- E305: Se esperaban 2 líneas en blanco después de definición de clase/función (styles.py)
+- E402: Import a nivel de módulo no está al inicio del archivo (tests)
+- E701: Múltiples declaraciones en una línea (initial_survey.py)
+- E702: Múltiples declaraciones en una línea (movements_history.py)
+- E712: Comparación a True/False debería ser 'if cond is True:' o 'if cond:' (tests)
+- E722: No usar 'except' sin especificar excepción (initial_survey.py)
+- E128: Línea de continuación con sangría insuficiente (tests)
+
+ADVERTENCIAS (W):
+- W291: Espacios en blanco al final de línea (múltiples archivos)
+- W292: Sin nueva línea al final del archivo (múltiples archivos)
+- W293: Línea en blanco contiene espacios en blanco (múltiples archivos)
+
+VARIABLES NO UTILIZADAS (F):
+- F841: Variable local asignada pero nunca utilizada (múltiples archivos)
+
+ESTADÍSTICAS:
+- Total de archivos analizados: 31
+- Archivos sin errores: 1
+- Archivos con errores: 30
+- Total de errores encontrados: 1476
+- Errores críticos: 45
+- Advertencias: 1431
+
+RECOMENDACIONES PARA MEJORAR EL CÓDIGO:
+
+1. ESTILO Y FORMATO:
+   - Eliminar espacios en blanco al final de líneas
+   - Agregar nueva línea al final de archivos
+   - Usar 2 líneas en blanco entre funciones y clases
+   - Agregar espacios después de comas
+   - Agregar espacios alrededor de operadores
+
+2. SINTAXIS:
+   - Especificar tipo de excepción en bloques except
+   - Evitar múltiples declaraciones en una línea
+   - Mover imports al inicio del archivo
+   - Usar comparaciones explícitas (is True, is False)
+
+3. VARIABLES:
+   - Eliminar variables no utilizadas
+   - Revisar asignaciones innecesarias
+
+4. TESTS:
+   - Corregir errores de estilo en archivos de prueba
+   - Mejorar estructura de imports
+
+CONCLUSIONES:
+⚠️ El código tiene múltiples errores de estilo que deben corregirse
+⚠️ Se encontraron algunos errores de sintaxis que pueden causar problemas
+✅ La funcionalidad principal del código no está comprometida
+✅ Los errores son principalmente de estilo y formato
+
+PRIORIDAD DE CORRECCIÓN:
+1. ALTA: Errores de sintaxis (E722, E701, E702)
+2. MEDIA: Errores de estilo críticos (E231, E225, E226)
+3. BAJA: Advertencias de formato (W291, W292, W293)
+
+El análisis estático confirma que el proyecto necesita limpieza de código para cumplir con los estándares PEP 8, pero la funcionalidad principal está intacta. [1m./gui/add_meta_dialog.py[m[36m:[m5[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m15[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/add_meta_dialog.py[m[36m:[m17[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m23[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m57[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m63[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m86[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m94[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m111[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m121[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/add_meta_dialog.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m263[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m267[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m271[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m282[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m287[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m296[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m299[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m305[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m312[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m325[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m336[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m7[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m8[36m:[m59[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m34[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m87[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m110[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m114[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m133[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m157[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m168[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m185[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m190[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m195[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m207[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m213[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m218[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m223[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m236[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m247[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m2[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/edit_meta_dialog.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m20[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m108[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/edit_meta_dialog.py[m[36m:[m128[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m132[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m150[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m186[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m218[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m222[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m231[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m236[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m240[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m247[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m253[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m263[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m270[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m276[36m:[m27[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/edit_movement_dialog.py[m[36m:[m7[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m8[36m:[m59[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m72[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m95[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m123[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m153[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m170[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m175[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m180[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m187[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m192[36m:[m13[36m:[m [1m[31mF841[m local variable 'categoria_id' is assigned to but never used
+[1m./gui/edit_movement_dialog.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m197[36m:[m17[36m:[m [1m[31mF841[m local variable 'meta_id' is assigned to but never used
+[1m./gui/edit_movement_dialog.py[m[36m:[m198[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m210[36m:[m23[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m210[36m:[m24[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m33[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m35[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m37[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m85[36m:[m27[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m111[36m:[m38[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m143[36m:[m47[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m143[36m:[m50[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m147[36m:[m51[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m147[36m:[m54[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m173[36m:[m72[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m176[36m:[m64[36m:[m [1m[31mE226[m missing whitespace around arithmetic operator
+[1m./gui/initial_survey.py[m[36m:[m189[36m:[m60[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m191[36m:[m25[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m192[36m:[m39[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m193[36m:[m31[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m193[36m:[m34[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m195[36m:[m27[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m196[36m:[m46[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m197[36m:[m21[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m197[36m:[m23[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m199[36m:[m27[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m201[36m:[m21[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m201[36m:[m24[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m205[36m:[m9[36m:[m [1m[31mE722[m do not use bare 'except'
+[1m./gui/initial_survey.py[m[36m:[m214[36m:[m23[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m215[36m:[m24[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m216[36m:[m31[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m233[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m41[36m:[m13[36m:[m [1m[31mF841[m local variable 'config_path' is assigned to but never used
+[1m./gui/main_window.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m141[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m148[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m162[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m173[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m185[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m197[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m201[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m202[36m:[m55[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/main_window.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m219[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m224[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m235[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m237[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m251[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m258[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m266[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m269[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m271[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m281[36m:[m22[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/main_window.py[m[36m:[m319[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m324[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m331[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m344[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m356[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m381[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m385[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m393[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m417[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m432[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m460[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m463[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/meta_widget.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m73[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m81[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m90[36m:[m9[36m:[m [1m[31mF841[m local variable 'e' is assigned to but never used
+[1m./gui/meta_widget.py[m[36m:[m95[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m100[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m110[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m117[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m131[36m:[m9[36m:[m [1m[31mF841[m local variable 'e' is assigned to but never used
+[1m./gui/meta_widget.py[m[36m:[m136[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m139[36m:[m123[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/movements_history.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m74[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m78[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m93[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m96[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m102[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m128[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m129[36m:[m82[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m131[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m139[36m:[m13[36m:[m [1m[31mF841[m local variable 'metas' is assigned to but never used
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m39[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m68[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m118[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m37[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m65[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m111[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m175[36m:[m32[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m175[36m:[m52[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m190[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m194[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m196[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m199[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m202[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m207[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m211[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m222[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m230[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m235[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m239[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m244[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m249[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m253[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m272[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m276[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m278[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m282[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m292[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m295[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m298[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m303[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m312[36m:[m22[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m318[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m325[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m328[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m339[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m9[36m:[m39[36m:[m [1m[31mE261[m at least two spaces before inline comment
+[1m./gui/styles.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m24[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m57[36m:[m5[36m:[m [1m[31mF841[m local variable 'font_weight' is assigned to but never used
+[1m./gui/styles.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./gui/styles.py[m[36m:[m69[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m115[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m124[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m133[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m161[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m171[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m189[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m219[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m237[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m264[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m278[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m301[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m317[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m341[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m360[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m382[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m394[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m402[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m410[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m419[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m431[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m435[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m439[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m441[36m:[m85[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/styles.py[m[36m:[m441[36m:[m86[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/dashboard_logic.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./logic/dashboard_logic.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m47[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m53[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m76[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m79[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m109[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m117[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m139[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m148[36m:[m24[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/formatting_logic.py[m[36m:[m157[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m160[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m174[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m177[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m196[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m199[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m217[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m226[36m:[m69[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/formatting_logic.py[m[36m:[m226[36m:[m70[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/initial_survey_logic.py[m[36m:[m35[36m:[m9[36m:[m [1m[31mF841[m local variable 'usuario_data' is assigned to but never used
+[1m./logic/meta_logic.py[m[36m:[m144[36m:[m39[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/meta_logic.py[m[36m:[m162[36m:[m59[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/ui_logic.py[m[36m:[m31[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m32[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m33[36m:[m20[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m43[36m:[m20[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m44[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m52[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m53[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m72[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m73[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m74[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m75[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m86[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m95[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m96[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m97[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m98[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m109[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m118[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m119[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m120[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m125[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m139[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m140[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m141[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m142[36m:[m31[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m147[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m153[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m162[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m163[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m164[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m169[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m174[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m183[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m184[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m189[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m201[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m202[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m203[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m204[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m213[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m214[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m215[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m224[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m225[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m233[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m234[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m235[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m244[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m245[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m246[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m255[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m256[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m275[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m279[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m286[36m:[m21[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m286[36m:[m22[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/validation_logic.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m39[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/validation_logic.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m71[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m93[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m97[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m121[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m139[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/validation_logic.py[m[36m:[m139[36m:[m51[36m:[m [1m[31mW292[m no newline at end of file
+[1m./persistence/database_manager.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m125[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m143[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m145[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m152[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m154[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m158[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m298[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m303[36m:[m37[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m336[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m346[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m348[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m352[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m366[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m375[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m380[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m389[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m410[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m416[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m425[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m427[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m434[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m436[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m440[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m448[36m:[m5[36m:[m [1m[31mE303[m too many blank lines (3)
+[1m./persistence/database_manager.py[m[36m:[m453[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m457[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m460[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m462[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m464[36m:[m69[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m464[36m:[m76[36m:[m [1m[31mW292[m no newline at end of file
+[1m./setup.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m49[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m63[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m78[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m92[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m111[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m129[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m135[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m145[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m148[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m154[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m158[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m162[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m165[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m176[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./setup.py[m[36m:[m177[36m:[m11[36m:[m [1m[31mW291[m trailing whitespace
+[1m./setup.py[m[36m:[m177[36m:[m12[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test10_historial.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m18[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m23[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m34[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m37[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m59[36m:[m54[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test10_historial.py[m[36m:[m60[36m:[m20[36m:[m [1m[31mE128[m continuation line under-indented for visual indent
+[1m./testing/Test10_historial.py[m[36m:[m65[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m79[36m:[m5[36m:[m [1m[31mF841[m local variable 'codigo_fuente' is assigned to but never used
+[1m./testing/Test10_historial.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m94[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m109[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test10_historial.py[m[36m:[m109[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test11_botones.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test11_botones.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./testing/Test11_botones.py[m[36m:[m46[36m:[m29[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test11_botones.py[m[36m:[m46[36m:[m30[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test12_cambios.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m18[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m29[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m47[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m53[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m69[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m72[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m90[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m98[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m102[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m108[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m123[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m141[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m144[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m153[36m:[m92[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m153[36m:[m93[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test1_validacion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m28[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m38[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m49[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m58[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m68[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m72[36m:[m73[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m72[36m:[m74[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test2_formato.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m40[36m:[m56[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test2_formato.py[m[36m:[m40[36m:[m57[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test3_saludo.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test3_saludo.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m20[36m:[m5[36m:[m [1m[31mF841[m local variable 'formatting_logic' is assigned to but never used
+[1m./testing/Test3_saludo.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m29[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./testing/Test3_saludo.py[m[36m:[m43[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m43[36m:[m19[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test4_movimientos.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m15[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m20[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m29[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m53[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m70[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m71[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m76[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m87[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m87[36m:[m44[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test5_filtros.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m68[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m73[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m79[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m88[36m:[m28[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m88[36m:[m29[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test6_edicion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m34[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m55[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m76[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m77[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m97[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m98[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test7_metas.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m51[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test7_metas.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m69[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test7_metas.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m90[36m:[m56[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test7_metas.py[m[36m:[m90[36m:[m57[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test8_progreso.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m30[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m37[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m72[36m:[m31[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m74[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m85[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test9_eliminacion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m34[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m55[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m58[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m59[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m68[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m73[36m:[m5[36m:[m [1m[31mF841[m local variable 'meta1_id' is assigned to but never used
+[1m./testing/Test9_eliminacion.py[m[36m:[m83[36m:[m5[36m:[m [1m[31mF841[m local variable 'meta3_id' is assigned to but never used
+[1m./testing/Test9_eliminacion.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m92[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m95[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m96[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m100[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m107[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m115[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m121[36m:[m31[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m125[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m129[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m129[36m:[m28[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/add_meta_dialog.py[m[36m:[m5[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m15[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/add_meta_dialog.py[m[36m:[m17[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m23[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m57[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m63[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m86[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m94[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m111[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m121[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/add_meta_dialog.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m263[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m267[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m271[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m282[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m287[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m296[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m299[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m305[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m312[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m325[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_meta_dialog.py[m[36m:[m336[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m7[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m8[36m:[m59[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m34[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m87[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m110[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m114[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m133[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m157[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m168[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m185[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m190[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m195[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m207[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m213[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m218[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m223[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m236[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/add_movement_dialog.py[m[36m:[m247[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m2[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/edit_meta_dialog.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m20[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m108[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/edit_meta_dialog.py[m[36m:[m128[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m132[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m150[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m186[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m218[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m222[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m231[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m236[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m240[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m247[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m253[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m263[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m270[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_meta_dialog.py[m[36m:[m276[36m:[m27[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/edit_movement_dialog.py[m[36m:[m7[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m8[36m:[m59[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m72[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m95[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m123[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m153[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m170[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m175[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m180[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m187[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m192[36m:[m13[36m:[m [1m[31mF841[m local variable 'categoria_id' is assigned to but never used
+[1m./gui/edit_movement_dialog.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m197[36m:[m17[36m:[m [1m[31mF841[m local variable 'meta_id' is assigned to but never used
+[1m./gui/edit_movement_dialog.py[m[36m:[m198[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m210[36m:[m23[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/edit_movement_dialog.py[m[36m:[m210[36m:[m24[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m33[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m35[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m84[36m:[m37[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m85[36m:[m27[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m111[36m:[m38[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m143[36m:[m47[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m143[36m:[m50[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m147[36m:[m51[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m147[36m:[m54[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m173[36m:[m72[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m176[36m:[m64[36m:[m [1m[31mE226[m missing whitespace around arithmetic operator
+[1m./gui/initial_survey.py[m[36m:[m189[36m:[m60[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m191[36m:[m25[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m192[36m:[m39[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m193[36m:[m31[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m193[36m:[m34[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m195[36m:[m27[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m196[36m:[m46[36m:[m [1m[31mE231[m missing whitespace after ','
+[1m./gui/initial_survey.py[m[36m:[m197[36m:[m21[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m197[36m:[m23[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m199[36m:[m27[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m201[36m:[m21[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m201[36m:[m24[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m205[36m:[m9[36m:[m [1m[31mE722[m do not use bare 'except'
+[1m./gui/initial_survey.py[m[36m:[m214[36m:[m23[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m215[36m:[m24[36m:[m [1m[31mE225[m missing whitespace around operator
+[1m./gui/initial_survey.py[m[36m:[m216[36m:[m31[36m:[m [1m[31mE701[m multiple statements on one line (colon)
+[1m./gui/initial_survey.py[m[36m:[m233[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m41[36m:[m13[36m:[m [1m[31mF841[m local variable 'config_path' is assigned to but never used
+[1m./gui/main_window.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m141[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m148[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m162[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m173[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m185[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m197[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m201[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m202[36m:[m55[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/main_window.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m219[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m224[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m235[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m237[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m251[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m258[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m266[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m269[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m271[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m281[36m:[m22[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/main_window.py[m[36m:[m319[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m324[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m331[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m344[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m356[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m381[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m385[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m393[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m417[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m432[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m460[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/main_window.py[m[36m:[m463[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/meta_widget.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m73[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m81[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m90[36m:[m9[36m:[m [1m[31mF841[m local variable 'e' is assigned to but never used
+[1m./gui/meta_widget.py[m[36m:[m95[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m100[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m110[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m117[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m131[36m:[m9[36m:[m [1m[31mF841[m local variable 'e' is assigned to but never used
+[1m./gui/meta_widget.py[m[36m:[m136[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/meta_widget.py[m[36m:[m139[36m:[m123[36m:[m [1m[31mW292[m no newline at end of file
+[1m./gui/movements_history.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m74[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m78[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m93[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m96[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m102[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m128[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m129[36m:[m82[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m131[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m137[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m139[36m:[m13[36m:[m [1m[31mF841[m local variable 'metas' is assigned to but never used
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m39[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m68[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m171[36m:[m118[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m37[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m65[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m172[36m:[m111[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m175[36m:[m32[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m175[36m:[m52[36m:[m [1m[31mE702[m multiple statements on one line (semicolon)
+[1m./gui/movements_history.py[m[36m:[m190[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m194[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m196[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m199[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m202[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m207[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m211[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m222[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m230[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m235[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m239[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m244[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m249[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m253[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m272[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m276[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m278[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m282[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m292[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m295[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m298[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m303[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m312[36m:[m22[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/movements_history.py[m[36m:[m318[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m325[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m328[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/movements_history.py[m[36m:[m339[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m9[36m:[m39[36m:[m [1m[31mE261[m at least two spaces before inline comment
+[1m./gui/styles.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m24[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m57[36m:[m5[36m:[m [1m[31mF841[m local variable 'font_weight' is assigned to but never used
+[1m./gui/styles.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./gui/styles.py[m[36m:[m69[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m115[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m124[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m133[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m161[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m171[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m189[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m204[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m219[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m237[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m264[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m278[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m301[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m317[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m341[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m360[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m382[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m394[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m402[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m410[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m419[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./gui/styles.py[m[36m:[m431[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m435[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m439[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./gui/styles.py[m[36m:[m441[36m:[m85[36m:[m [1m[31mW291[m trailing whitespace
+[1m./gui/styles.py[m[36m:[m441[36m:[m86[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/dashboard_logic.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./logic/dashboard_logic.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m47[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m53[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/dashboard_logic.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m76[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m79[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m109[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m117[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m139[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m148[36m:[m24[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/formatting_logic.py[m[36m:[m157[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m160[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m174[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m177[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m196[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m199[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m214[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m217[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/formatting_logic.py[m[36m:[m226[36m:[m69[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/formatting_logic.py[m[36m:[m226[36m:[m70[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/initial_survey_logic.py[m[36m:[m35[36m:[m9[36m:[m [1m[31mF841[m local variable 'usuario_data' is assigned to but never used
+[1m./logic/meta_logic.py[m[36m:[m144[36m:[m39[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/meta_logic.py[m[36m:[m162[36m:[m59[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/ui_logic.py[m[36m:[m31[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m32[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m33[36m:[m20[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m43[36m:[m20[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m44[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m52[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m53[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m72[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m73[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m74[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m75[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m86[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m95[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m96[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m97[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m98[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m109[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m118[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m119[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m120[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m125[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m130[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m139[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m140[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m141[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m142[36m:[m31[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m147[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m153[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m162[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m163[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m164[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m169[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m174[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m183[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m184[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m189[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m193[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m201[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m202[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m203[36m:[m19[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m204[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m213[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m214[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m215[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m224[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m225[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m233[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m234[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m235[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m244[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m245[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m246[36m:[m26[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m255[36m:[m14[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m256[36m:[m25[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m275[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m279[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/ui_logic.py[m[36m:[m286[36m:[m21[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/ui_logic.py[m[36m:[m286[36m:[m22[36m:[m [1m[31mW292[m no newline at end of file
+[1m./logic/validation_logic.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m39[36m:[m72[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/validation_logic.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m71[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m93[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m97[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m113[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m121[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./logic/validation_logic.py[m[36m:[m139[36m:[m50[36m:[m [1m[31mW291[m trailing whitespace
+[1m./logic/validation_logic.py[m[36m:[m139[36m:[m51[36m:[m [1m[31mW292[m no newline at end of file
+[1m./persistence/database_manager.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m125[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m143[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m145[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m152[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m154[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m158[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m298[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m303[36m:[m37[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m336[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m346[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m348[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m352[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m366[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m375[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m380[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m389[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m410[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m416[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m425[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m427[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m434[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m436[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m440[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m448[36m:[m5[36m:[m [1m[31mE303[m too many blank lines (3)
+[1m./persistence/database_manager.py[m[36m:[m453[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m457[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m460[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m462[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./persistence/database_manager.py[m[36m:[m464[36m:[m69[36m:[m [1m[31mW291[m trailing whitespace
+[1m./persistence/database_manager.py[m[36m:[m464[36m:[m76[36m:[m [1m[31mW292[m no newline at end of file
+[1m./setup.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m49[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m60[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m63[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m78[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m92[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m111[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m129[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m135[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./setup.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m142[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m145[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m148[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m154[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m158[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m162[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m165[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./setup.py[m[36m:[m176[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./setup.py[m[36m:[m177[36m:[m11[36m:[m [1m[31mW291[m trailing whitespace
+[1m./setup.py[m[36m:[m177[36m:[m12[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test10_historial.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test10_historial.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m18[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m23[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m34[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m37[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m59[36m:[m54[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test10_historial.py[m[36m:[m60[36m:[m20[36m:[m [1m[31mE128[m continuation line under-indented for visual indent
+[1m./testing/Test10_historial.py[m[36m:[m65[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m79[36m:[m5[36m:[m [1m[31mF841[m local variable 'codigo_fuente' is assigned to but never used
+[1m./testing/Test10_historial.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m89[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m94[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m99[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test10_historial.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m106[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test10_historial.py[m[36m:[m109[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test10_historial.py[m[36m:[m109[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test11_botones.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test11_botones.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test11_botones.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m22[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test11_botones.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./testing/Test11_botones.py[m[36m:[m46[36m:[m29[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test11_botones.py[m[36m:[m46[36m:[m30[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test12_cambios.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m18[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m29[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m36[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m47[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m53[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m62[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m69[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m72[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m80[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m90[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m98[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m102[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m105[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m108[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m116[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m120[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m123[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m134[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m138[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test12_cambios.py[m[36m:[m141[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m144[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m151[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m153[36m:[m92[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test12_cambios.py[m[36m:[m153[36m:[m93[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test1_validacion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m28[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m38[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m41[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m49[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m58[36m:[m31[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test1_validacion.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m68[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test1_validacion.py[m[36m:[m72[36m:[m73[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test1_validacion.py[m[36m:[m72[36m:[m74[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test2_formato.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test2_formato.py[m[36m:[m40[36m:[m56[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test2_formato.py[m[36m:[m40[36m:[m57[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test3_saludo.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE402[m module level import not at top of file
+[1m./testing/Test3_saludo.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test3_saludo.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m20[36m:[m5[36m:[m [1m[31mF841[m local variable 'formatting_logic' is assigned to but never used
+[1m./testing/Test3_saludo.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m29[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m33[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m39[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m42[36m:[m1[36m:[m [1m[31mE305[m expected 2 blank lines after class or function definition, found 1
+[1m./testing/Test3_saludo.py[m[36m:[m43[36m:[m18[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test3_saludo.py[m[36m:[m43[36m:[m19[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test4_movimientos.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m15[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m20[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m29[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m30[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m44[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m53[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m54[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m70[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test4_movimientos.py[m[36m:[m71[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m76[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test4_movimientos.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m87[36m:[m43[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test4_movimientos.py[m[36m:[m87[36m:[m44[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test5_filtros.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m32[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m38[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m68[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m73[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test5_filtros.py[m[36m:[m79[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m84[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m88[36m:[m28[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test5_filtros.py[m[36m:[m88[36m:[m29[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test6_edicion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m25[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m34[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m46[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m55[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m61[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m76[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m77[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m97[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m98[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m103[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test6_edicion.py[m[36m:[m113[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test7_metas.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m28[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m43[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m51[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test7_metas.py[m[36m:[m52[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m58[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m66[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m69[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test7_metas.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m75[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test7_metas.py[m[36m:[m83[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m87[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test7_metas.py[m[36m:[m90[36m:[m56[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test7_metas.py[m[36m:[m90[36m:[m57[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test8_progreso.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m30[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m37[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m45[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m50[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m56[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m67[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m72[36m:[m31[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m74[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m82[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m85[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m91[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m30[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test8_progreso.py[m[36m:[m95[36m:[m31[36m:[m [1m[31mW292[m no newline at end of file
+[1m./testing/Test9_eliminacion.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m19[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m27[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m31[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m34[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m35[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m40[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m48[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m51[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m55[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m58[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m59[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m64[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m68[36m:[m22[36m:[m [1m[31mE712[m comparison to False should be 'if cond is False:' or 'if not cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m70[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m73[36m:[m5[36m:[m [1m[31mF841[m local variable 'meta1_id' is assigned to but never used
+[1m./testing/Test9_eliminacion.py[m[36m:[m83[36m:[m5[36m:[m [1m[31mF841[m local variable 'meta3_id' is assigned to but never used
+[1m./testing/Test9_eliminacion.py[m[36m:[m88[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m92[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m95[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m96[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m100[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m107[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./testing/Test9_eliminacion.py[m[36m:[m115[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m118[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m121[36m:[m31[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m122[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m125[36m:[m22[36m:[m [1m[31mE712[m comparison to True should be 'if cond is True:' or 'if cond:'
+[1m./testing/Test9_eliminacion.py[m[36m:[m126[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m129[36m:[m27[36m:[m [1m[31mW291[m trailing whitespace
+[1m./testing/Test9_eliminacion.py[m[36m:[m129[36m:[m28[36m:[m [1m[31mW292[m no newline at end of file

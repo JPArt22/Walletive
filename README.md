@@ -1,34 +1,72 @@
-# Walletive
-<img src="Documentación/Diagramas/walletive.png" alt="Walletive" width="200"/>
+# Walletive 🚀
 
-## Grupo: TEMU
+<p align="center">
+  <img src="Documentación/Diagramas/walletive.png" alt="Walletive Logo" width="200"/>
+</p>
 
-## Integrantes activos y colaboradores
+<p align="center">
+  <strong>Tu gestor de finanzas personales, simple y offline.</strong>
+</p>
 
-| Nombre completo                        | Contacto                  |
-|----------------------------------------|-------------------------  |
-| Derian Santiago Rojas Leiva            | derojasl@unal.edu.co      |
-| Jhon Edison Prieto Artunduaga          | jhprieto@unal.edu.co      |
-| Juan David Castañeda Cárdenas          | jucastanedaca@unal.edu.co |
-| Omar Darío Zambrano Galindo            | ozabrano@unal.edu.co      |
+---
 
-> Todos los integrantes están activos y colaborando en el desarrollo del proyecto.
+## 📝 Descripción
 
-## Descripción del proyecto
+**Walletive** es una aplicación de escritorio diseñada para que cualquier persona pueda gestionar sus finanzas personales de manera sencilla y efectiva, sin necesidad de conocimientos técnicos. Funciona 100% offline, garantizando la privacidad y seguridad de tu información financiera.
 
-*Walletive* es una aplicación de escritorio orientada a la *gestión de finanzas personales*, diseñada especialmente para usuarios sin experiencia técnica. Funciona 100% offline y ofrece un entorno amigable para registrar ingresos y gastos, establecer metas de ahorro, analizar el flujo de efectivo y recibir alertas inteligentes para mejorar la salud financiera del usuario.
+Con Walletive, puedes:
+*   **Registrar** tus ingresos y gastos.
+*   Establecer y seguir **metas de ahorro**.
+*   **Analizar** tu flujo de efectivo con un dashboard inteligente.
+*   Recibir **alertas y recomendaciones** para mejorar tu salud financiera.
 
-La interfaz está pensada para facilitar el uso mediante menús guiados e intuitivos, cumpliendo con las principales buenas prácticas de usabilidad.
+## ⚙️ Requisitos
 
-## Objetivo del sistema
+*   **Python 3.7 o superior**.
+*   **Git** para clonar el repositorio.
 
-El objetivo del sistema es brindar a los usuarios una *herramienta clara y práctica* para gestionar sus finanzas personales. La aplicación permitirá registrar y clasificar ingresos y gastos, establecer metas de ahorro personalizadas, calcular cuánto se debe ahorrar periódicamente para cumplir objetivos financieros, y realizar simulaciones sobre el crecimiento del dinero en el tiempo.
+## 🚀 Instalación y Ejecución
 
-Además, ofrecerá visualizaciones gráficas, alertas inteligentes sobre patrones de gasto y un historial financiero organizado, con el fin de ayudar al usuario a tomar mejores decisiones económicas de manera *autónoma y estructurada*.
+Sigue estos sencillos pasos para tener Walletive funcionando en tu computador:
 
-## Licencia
+### 1. Clona el Repositorio
+Abre una terminal y ejecuta el siguiente comando para descargar el proyecto:
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd Walletive
+```
 
-Este proyecto se realiza con fines académicos y su contenido está sujeto a las políticas del curso **Ingeniería de Software I**.
+### 2. Ejecuta el Script de Configuración
+Este script se encargará de todo: creará un entorno virtual, instalará las dependencias y preparará la base de datos.
+```bash
+python setup.py
+```
+*Si usas Linux o macOS, puede que necesites usar `python3` en lugar de `python`.*
+
+### 3. Inicia la Aplicación
+Una vez completada la configuración, ejecuta la aplicación con el siguiente comando:
+```bash
+# En Windows
+.venv\\Scripts\\python.exe Proyecto/Walletive_v6/main.py
+
+# En Linux/macOS
+.venv/bin/python Proyecto/Walletive_v6/main.py
+```
+
+Al iniciar por primera vez, se te presentará una **encuesta inicial** para personalizar tu experiencia.
+
+## 📁 Estructura del Proyecto
+
+El código está organizado siguiendo una arquitectura limpia que separa responsabilidades:
+
+*   **`Proyecto/Walletive_v6/gui/`**: Contiene toda la interfaz de usuario (ventanas, diálogos, widgets).
+*   **`Proyecto/Walletive_v6/logic/`**: Alberga la lógica de negocio (validaciones, cálculos, formato).
+*   **`Proyecto/Walletive_v6/persistence/`**: Se encarga de la interacción con la base de datos.
+*   **`Proyecto/Walletive_v6/testing/`**: Contiene todas las pruebas unitarias.
+
+## 📄 Licencia
+
+Este proyecto se realiza con fines académicos para el curso de **Ingeniería de Software I**.
 
 ---
 

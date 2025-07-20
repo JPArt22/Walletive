@@ -1,0 +1,15 @@
+[flake8]
+max-line-length = 100
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    *.pyc,
+    walletive_backup.db,
+    clean_duplicates.py
+ignore = 
+    E501,  # line too long
+    W503,  # line break before binary operator
+    F401   # imported but unused
+per-file-ignores =
+    __init__.py:F401 

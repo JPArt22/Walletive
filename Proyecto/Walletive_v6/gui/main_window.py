@@ -186,6 +186,24 @@ class Walletive(QMainWindow):
         # Actualizar metas después de configurar el layout
         self.actualizar_metas_dashboard()
 
+    def _editar_meta(self, meta_id: int):
+        """Abre el diálogo para editar una meta existente."""
+        meta_actual = self.db_manager.obtener_meta_por_id(meta_id)
+        if not meta_actual:
+            QMessageBox.warning(self, "Error", "No se encontró la meta seleccionada.")
+            return
+
+        dialog = EditMetaDialog(meta_actual, self)
+        if dialog.exec_() == EditMetaDialog.Accepted:
+            nueva_descripcion, nuevo_objetivo, nueva_fecha = dialog.get_data()
+            
+            # Actualizar en la base de datos
+            self.db_manager.actualizar_meta(meta_id, nueva_descripcion, nuevo_objetivo, nueva_fecha)
+            
+            # Actualizar la vista del dashboard
+            self.actualizar_metas_dashboard()
+            QMessageBox.information(self, "Éxito", "La meta ha sido actualizada correctamente.")
+
     def actualizar_metas_dashboard(self):
         """Actualiza el dashboard con las metas activas"""
         try:
@@ -290,18 +308,23 @@ class Walletive(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo eliminar la meta: {str(e)}")
 
-    def _editar_meta(self, meta_id: int):
-        try:
-            meta_info = self.dashboard_logic.meta_logic.get_progress(meta_id)
-            if meta_info:
-                dlg = EditMetaDialog(self.dashboard_logic.meta_logic, meta_info, self)
-                if dlg.exec_():
-                    self.actualizar_metas_dashboard()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo editar la meta: {str(e)}")
-
     # ──────────────────────────────
     def _cargar_resumen_financiero(self, nombre: str, resumen: dict) -> None:
+        # Saludo personalizado
+        saludo = QLabel(f"👋 ¡Hola {nombre}!")
+        saludo.setStyleSheet(f"""
+            QLabel {{
+                font-family: {get_font('heading', 28, 'bold')};
+                color: {get_color('text_primary')};
+                font-size: 28px;
+                font-weight: bold;
+                text-decoration: none;
+                padding: 16px 0px;
+                margin-bottom: 8px;
+            }}
+        """)
+        self.center_layout.addWidget(saludo)
+        
         # Título del resumen
         balance_title = QLabel("📊 Balance General")
         balance_title.setStyleSheet(STYLES['heading'] + "font-size: 20px; font-weight: bold; text-decoration: none;")

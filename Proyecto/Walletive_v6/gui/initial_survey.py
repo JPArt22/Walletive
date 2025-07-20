@@ -35,6 +35,7 @@ class InitialSurvey(QWidget):
             {"texto": "📊 ¿Cuál es el monto total actual de tus deudas?", "tipo": "float", "condicion": lambda d: d[4] == "Sí", "placeholder": "Ejemplo: 5000000"},
             {"texto": "💸 ¿Cuánto pagas mensualmente por tus deudas?", "tipo": "float", "condicion": lambda d: d[4] == "Sí", "placeholder": "Ejemplo: 400000"},
             {"texto": "🎯 ¿Tienes una meta de ahorro en mente?", "tipo": "bool"},
+            {"texto": "✍️ Describe tu meta de ahorro", "tipo": "text", "condicion": lambda d: d[7] == "Sí", "placeholder": "Ejemplo: Viaje a la playa"},
             {"texto": "💎 ¿Cuál es el monto que deseas ahorrar?", "tipo": "float", "condicion": lambda d: d[7] == "Sí", "placeholder": "Ejemplo: 3000000"},
             {"texto": "📅 ¿En cuántos meses deseas alcanzar esa meta?", "tipo": "int", "condicion": lambda d: d[7] == "Sí", "placeholder": "Ejemplo: 12"},
         ]

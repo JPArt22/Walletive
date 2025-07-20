@@ -132,6 +132,9 @@ class AddMetaDialog(QDialog):
         self.setModal(True)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         
+        # Flag para prevenir duplicación
+        self._is_saving = False
+        
         self.setup_ui()
 
     def setup_ui(self):
@@ -217,40 +220,9 @@ class AddMetaDialog(QDialog):
         """)
         form.addRow("Tiempo para completar:", self.meses_sb)
 
-        # Frecuencia
-        self.frecuencia_cb = QComboBox()
-        self.frecuencia_cb.addItems(["mensual", "quincenal", "semanal"])
-        self.frecuencia_cb.setStyleSheet(f"""
-            QComboBox {{
-                background-color: {get_color('background_tertiary')};
-                border: 2px solid {get_color('background_elevated')};
-                border-radius: 8px;
-                padding: 12px 16px;
-                font-family: {get_font('body', 14, 'normal')};
-                color: {get_color('text_primary')};
-                font-size: 14px;
-            }}
-            QComboBox:focus {{
-                border: 2px solid {get_color('accent')};
-            }}
-            QComboBox:drop-down {{
-                border: none;
-                width: 20px;
-            }}
-            QComboBox:down-arrow {{
-                image: none;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 5px solid {get_color('text_secondary')};
-            }}
-            QComboBox QAbstractItemView {{
-                background-color: {get_color('background_tertiary')};
-                border-radius: 8px;
-                selection-background-color: {get_color('accent')};
-                color: {get_color('text_primary')};
-            }}
-        """)
-        form.addRow("Frecuencia:", self.frecuencia_cb)
+        # --- SOLUCIÓN ---
+        # Se elimina el campo de frecuencia del formulario
+        # ----------------
 
         layout.addLayout(form)
 
@@ -262,12 +234,12 @@ class AddMetaDialog(QDialog):
         cancelar_btn.setStyleSheet(STYLES['secondary_button'])
         cancelar_btn.clicked.connect(self.reject)
         
-        guardar_btn = QPushButton("Guardar")
-        guardar_btn.setStyleSheet(STYLES['primary_button'])
-        guardar_btn.clicked.connect(self._guardar)
+        self.guardar_btn = QPushButton("Guardar")
+        self.guardar_btn.setStyleSheet(STYLES['primary_button'])
+        self.guardar_btn.clicked.connect(self._guardar)
         
         btn_layout.addWidget(cancelar_btn)
-        btn_layout.addWidget(guardar_btn)
+        btn_layout.addWidget(self.guardar_btn)
         layout.addLayout(btn_layout)
 
     def _validar_datos(self):
@@ -275,39 +247,55 @@ class AddMetaDialog(QDialog):
         descripcion = self.desc_le.text().strip()
         monto_objetivo = self.monto_sb.value()
         meses = self.meses_sb.value()
-        frecuencia = self.frecuencia_cb.currentText()
         
-        # Usar la lógica de validación centralizada
+        # Usar la lógica de validación centralizada (sin frecuencia)
         validation_result = self.validation_logic.validate_meta_data(
-            descripcion, monto_objetivo, meses, frecuencia
+            descripcion, monto_objetivo, meses
         )
         
         return self.ui_logic.validate_and_show_errors(self, validation_result)
 
     def _guardar(self):
         """Guarda la meta de ahorro"""
+        # Prevenir duplicación
+        if self._is_saving:
+            print("⚠️ Operación de guardado ya en progreso, ignorando clic adicional")
+            return
+            
         if not self._validar_datos():
             return
             
         try:
+            # Marcar como guardando y deshabilitar botón
+            self._is_saving = True
+            self.guardar_btn.setEnabled(False)
+            self.guardar_btn.setText("Guardando...")
+            
             emoji = self.emoji_selector.get_selected_emoji()
             desc = self.desc_le.text().strip()
             desc_con_emoji = f"{emoji} {desc}"
             monto_objetivo = self.monto_sb.value()
             meses = self.meses_sb.value()  # Ahora es entero
-            frecuencia = self.frecuencia_cb.currentText()
             
             # Confirmar antes de guardar usando la lógica centralizada
             if self.ui_logic.confirm_meta_creation(self, desc_con_emoji, monto_objetivo, meses):
-                meta_id = self.db_manager.crear_meta(desc_con_emoji, monto_objetivo, meses, frecuencia)
+                meta_id = self.db_manager.crear_meta(desc_con_emoji, monto_objetivo, meses)
                 if meta_id != -1:
                     self.ui_logic.show_success_meta_created(self, desc_con_emoji, monto_objetivo)
                     self.accept()
                 else:
                     self.ui_logic.show_database_error(self, "crear meta", "No se pudo crear la meta de ahorro.")
+                    # Rehabilitar botón en caso de error
+                    self._is_saving = False
+                    self.guardar_btn.setEnabled(True)
+                    self.guardar_btn.setText("Guardar")
                     
         except Exception as e:
             self.ui_logic.show_database_error(self, "crear meta", str(e))
+            # Rehabilitar botón en caso de error
+            self._is_saving = False
+            self.guardar_btn.setEnabled(True)
+            self.guardar_btn.setText("Guardar")
 
     def closeEvent(self, event):
         """Previene cerrar el diálogo sin completar"""

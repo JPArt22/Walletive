@@ -1,0 +1,51 @@
+# MÓDULO 3: DOCUMENTACIÓN DE TESTING
+
+## 1. Pruebas Unitarias
+
+Se han implementado **12 pruebas unitarias** en total (3 por cada miembro del equipo), cubriendo las funcionalidades centrales de la aplicación, como se detalla a continuación.
+
+*   **Herramienta Utilizada**: Se ha empleado `pytest`, un framework de testing moderno y estándar para Python, que facilita la escritura de pruebas y la automatización de su ejecución.
+
+*   **Funcionalidad Esencial Validada**: Las pruebas no son triviales y validan la lógica de negocio, la persistencia de datos y la integridad de la interfaz de usuario.
+    *   **Validación de Datos**: (Test1) Se asegura que los datos de entrada para movimientos y metas sean correctos.
+    *   **Formateo de Datos**: (Test2) Se comprueba que los valores monetarios, fechas y nombres se muestren correctamente.
+    *   **Lógica de Negocio**: (Test3, Test4, Test5, Test6, Test7, Test8, Test9) Se valida el CRUD de movimientos y metas, el cálculo de progreso y los filtros.
+    *   **Interfaz de Usuario**: (Test10, Test11, Test12) Se verifica la correcta renderización y funcionamiento de los componentes de la interfaz, como el historial y sus botones.
+
+*   **Documentación y Ejecución**:
+    *   Cada prueba está **documentada** con docstrings que explican su propósito.
+    *   Las pruebas son **ejecutables** desde el entorno del proyecto. Para ejecutarlas, se deben seguir los siguientes pasos desde la raíz del repositorio:
+      ```bash
+      # 1. Navegar a la carpeta de testing
+      cd Proyecto/Walletive_v6/testing
+
+      # 2. Ejecutar todas las pruebas con pytest
+      pytest -v
+      ```
+
+*   **Distribución de Pruebas por Integrante**:
+    *   **Derian BV**: `Test1_validacion.py`, `Test2_formato.py`, `Test3_saludo.py`
+    *   **Juan Prieto**: `Test4_movimientos.py`, `Test5_filtros.py`, `Test6_edicion.py`
+    *   **Juan Castañeda**: `Test7_metas.py`, `Test8_progreso.py`, `Test9_eliminacion.py`
+    *   **Oscar Zambrano**: `Test10_historial.py`, `Test11_botones.py`, `Test12_cambios.py`
+
+## 2. Análisis Estático de Código (Linter)
+
+Se ha ejecutado un analizador estático de código sobre toda la carpeta del proyecto (`Proyecto/Walletive_v6/`) para garantizar la calidad, estilo y consistencia del código.
+
+*   **Nombre de la Herramienta Utilizada**: Se utilizó `flake8` (versión 7.0.0), una herramienta estándar en el ecosistema Python para el análisis de estilo (PEP 8) y errores de sintaxis.
+
+*   **Configuración Aplicada**: Se utilizó una configuración personalizada definida en el archivo `.flake8` en la raíz del proyecto, con las siguientes reglas:
+    *   **max-line-length**: 100 caracteres.
+    *   **exclude**: Se ignoran directorios como `.git`, `.venv`, `__pycache__` y archivos específicos.
+    *   **ignore**: Se desactivaron los códigos de error `E501` (línea muy larga), `W503` (salto de línea antes de operador) y `F401` (import no utilizado), este último desactivado selectivamente para los tests.
+
+*   **Resultados Obtenidos**: El análisis arrojó un total de **1476 advertencias y errores** a lo largo de 30 archivos, indicando la necesidad de refactorización para mejorar la calidad del código.
+    *   **Errores Críticos (45)**: Principalmente relacionados con sintaxis incorrecta (`E722`, `E701`), espaciado de operadores (`E225`, `E231`) e imports desordenados (`E402`).
+    *   **Advertencias (1431)**: Mayormente relacionadas con formato, como espacios en blanco al final de línea (`W291`), líneas en blanco con espacios (`W293`) y falta de nueva línea al final del archivo (`W292`).
+    *   **Variables no utilizadas (F841)**: Se detectaron múltiples variables asignadas que no se usan.
+
+*   **Evidencia de Ejecución**:
+    *   **Reporte Generado**: Se generó un reporte completo con todos los errores, disponible en `Proyecto/Walletive_v6/testing/linter_report.txt`. Este archivo está incluido en el `.gitignore`.
+    *   **Comando de Ejecución**: El reporte fue generado ejecutando `flake8 .` desde la carpeta `Proyecto/Walletive_v6/`.
+    *   **Archivo de Configuración**: La configuración aplicada está disponible en `Proyecto/Walletive_v6/.flake8`. 

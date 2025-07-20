@@ -29,6 +29,9 @@ class AddMovementDialog(QDialog):
         self.setModal(True)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         
+        # Flag para prevenir duplicación
+        self._is_saving = False
+        
         self.setup_ui()
 
     def setup_ui(self):
@@ -44,36 +47,48 @@ class AddMovementDialog(QDialog):
 
         form = QFormLayout()
         form.setSpacing(16)
+        
+        # Estilo para las etiquetas del formulario
+        form.setLabelAlignment(Qt.AlignLeft)
+        form.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
 
         # Tipo de movimiento
+        tipo_label = QLabel("Tipo:")
+        tipo_label.setStyleSheet(f"color: {get_color('text_primary')}; font-family: {get_font('body', 14, 'normal')}; font-size: 14px;")
         self.tipo_cb = QComboBox()
         self.tipo_cb.addItems(["Ingreso", "Gasto"])
         self.tipo_cb.setStyleSheet(STYLES['combo_box'])
         self.tipo_cb.currentTextChanged.connect(self._on_tipo_changed)
-        form.addRow("Tipo:", self.tipo_cb)
+        form.addRow(tipo_label, self.tipo_cb)
 
         # Descripción
+        desc_label = QLabel("Descripción:")
+        desc_label.setStyleSheet(f"color: {get_color('text_primary')}; font-family: {get_font('body', 14, 'normal')}; font-size: 14px;")
         self.desc_le = QLineEdit()
         self.desc_le.setStyleSheet(STYLES['input_field'])
         self.desc_le.setPlaceholderText("Descripción del movimiento")
-        form.addRow("Descripción:", self.desc_le)
+        form.addRow(desc_label, self.desc_le)
 
         # Monto
+        monto_label = QLabel("Monto:")
+        monto_label.setStyleSheet(f"color: {get_color('text_primary')}; font-family: {get_font('body', 14, 'normal')}; font-size: 14px;")
         self.monto_sb = QDoubleSpinBox()
         self.monto_sb.setMaximum(1e9)
         self.monto_sb.setMinimum(0.01)  # Mínimo 0.01
         self.monto_sb.setPrefix("$ ")
         self.monto_sb.setStyleSheet(STYLES['spin_box'])
-        form.addRow("Monto:", self.monto_sb)
+        form.addRow(monto_label, self.monto_sb)
 
         # Categoría
+        categoria_label = QLabel("Categoría:")
+        categoria_label.setStyleSheet(f"color: {get_color('text_primary')}; font-family: {get_font('body', 14, 'normal')}; font-size: 14px;")
         self.categoria_cb = QComboBox()
         self.categoria_cb.addItems([
             "General", "Alimentación", "Transporte", "Entretenimiento", 
             "Salud", "Educación", "Vivienda", "Otros"
         ])
         self.categoria_cb.setStyleSheet(STYLES['combo_box'])
-        form.addRow("Categoría:", self.categoria_cb)
+        form.addRow(categoria_label, self.categoria_cb)
 
         # Checkbox para meta de ahorro (solo visible para ingresos)
         self.meta_checkbox = QCheckBox("Abonar a meta de ahorro")
@@ -97,12 +112,12 @@ class AddMovementDialog(QDialog):
         cancelar_btn.setStyleSheet(STYLES['secondary_button'])
         cancelar_btn.clicked.connect(self.reject)
         
-        guardar_btn = QPushButton("Guardar")
-        guardar_btn.setStyleSheet(STYLES['primary_button'])
-        guardar_btn.clicked.connect(self._guardar)
+        self.guardar_btn = QPushButton("Guardar")
+        self.guardar_btn.setStyleSheet(STYLES['primary_button'])
+        self.guardar_btn.clicked.connect(self._guardar)
         
         btn_layout.addWidget(cancelar_btn)
-        btn_layout.addWidget(guardar_btn)
+        btn_layout.addWidget(self.guardar_btn)
         layout.addLayout(btn_layout)
 
         # Configurar estado inicial
@@ -182,10 +197,20 @@ class AddMovementDialog(QDialog):
 
     def _guardar(self):
         """Guarda el movimiento"""
+        # Prevenir duplicación
+        if self._is_saving:
+            print("⚠️ Operación de guardado ya en progreso, ignorando clic adicional")
+            return
+            
         if not self._validar_datos():
             return
             
         try:
+            # Marcar como guardando y deshabilitar botón
+            self._is_saving = True
+            self.guardar_btn.setEnabled(False)
+            self.guardar_btn.setText("Guardando...")
+            
             tipo = 1 if self.tipo_cb.currentText() == "Ingreso" else 2
             descripcion = self.desc_le.text().strip()
             monto = self.monto_sb.value()
@@ -204,9 +229,17 @@ class AddMovementDialog(QDialog):
                     self.accept()
                 else:
                     self.ui_logic.show_database_error(self, "crear movimiento", "No se pudo guardar el movimiento.")
+                    # Rehabilitar botón en caso de error
+                    self._is_saving = False
+                    self.guardar_btn.setEnabled(True)
+                    self.guardar_btn.setText("Guardar")
                 
         except Exception as e:
             self.ui_logic.show_database_error(self, "crear movimiento", str(e))
+            # Rehabilitar botón en caso de error
+            self._is_saving = False
+            self.guardar_btn.setEnabled(True)
+            self.guardar_btn.setText("Guardar")
 
     def closeEvent(self, event):
         """Previene cerrar el diálogo sin completar"""

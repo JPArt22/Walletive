@@ -363,11 +363,32 @@ STYLES = {
             background-color: {COLORS['background']};
             color: {COLORS['text_primary']};
         }}
+        QDialog QLabel {{
+            color: {COLORS['text_primary']};
+        }}
+        QDialog QLineEdit {{
+            color: {COLORS['text_primary']};
+        }}
+        QDialog QComboBox {{
+            color: {COLORS['text_primary']};
+        }}
+        QDialog QDoubleSpinBox {{
+            color: {COLORS['text_primary']};
+        }}
+        QDialog QCheckBox {{
+            color: {COLORS['text_primary']};
+        }}
     """,
     
     'form_layout': f"""
         QFormLayout {{
             spacing: 16px;
+        }}
+        QFormLayout QLabel {{
+            color: {COLORS['text_primary']};
+            font-family: {get_font('body', 14, 'normal')};
+            font-size: 14px;
+            font-weight: 400;
         }}
     """,
     

@@ -67,16 +67,11 @@ class DatabaseManager:
                     """
                 )
 
-                cur.execute(
-                    """
-                    CREATE TABLE IF NOT EXISTS FrecuenciaMeta (
-                        id         INTEGER PRIMARY KEY,
-                        frecuencia TEXT,
-                        FOREIGN KEY (id) REFERENCES MetasAhorro(id)
-                          ON DELETE CASCADE
-                    );
-                    """
-                )
+                # --- SOLUCIÓN ---
+                # Eliminar la tabla FrecuenciaMeta, ya que no se usará por ahora
+                cur.execute("DROP TABLE IF EXISTS FrecuenciaMeta")
+                # ----------------
+
             print("✅ Base de datos inicializada correctamente")
         except sqlite3.Error as exc:
             print(f"❌ Error al inicializar la base de datos: {exc}")
@@ -175,7 +170,6 @@ class DatabaseManager:
         descripcion: str,
         monto_objetivo: Number,
         meses: int,
-        frecuencia: str = "mensual",
     ) -> int:
         """Crea una meta de ahorro y devuelve su `id`."""
         monto_objetivo = self._to_number(monto_objetivo)
@@ -192,14 +186,40 @@ class DatabaseManager:
                     (descripcion, monto_objetivo, fecha_limite),
                 )
                 meta_id = cur.lastrowid
-                cur.execute(
-                    "INSERT INTO FrecuenciaMeta (id, frecuencia) VALUES (?, ?)",
-                    (meta_id, frecuencia),
-                )
+                # Ya no se inserta en FrecuenciaMeta
             return meta_id
         except sqlite3.Error as exc:
             print(f"❌ Error al crear meta: {exc}")
             return -1
+
+    def obtener_meta_por_id(self, meta_id: int) -> Optional[dict]:
+        """Obtiene una meta específica por su ID."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM MetasAhorro WHERE id = ?", (meta_id,))
+                row = cur.fetchone()
+                return dict(row) if row else None
+        except sqlite3.Error as exc:
+            print(f"❌ Error al obtener la meta por ID: {exc}")
+            return None
+
+    def actualizar_meta(self, meta_id: int, descripcion: str, monto_objetivo: float, fecha_limite: str) -> None:
+        """Actualiza los datos de una meta de ahorro."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                    UPDATE MetasAhorro
+                    SET descripcion = ?, monto_objetivo = ?, fecha_limite = ?
+                    WHERE id = ?
+                    """,
+                    (descripcion, monto_objetivo, fecha_limite, meta_id),
+                )
+        except sqlite3.Error as exc:
+            print(f"❌ Error al actualizar la meta: {exc}")
 
     # Alias en inglés para compatibilidad con GUI u otras capas
     def create_meta(self, *args, **kwargs):
@@ -210,7 +230,39 @@ class DatabaseManager:
     def guardar_datos_encuesta(
         self, nombre_usuario: str, respuestas: List[Any]
     ) -> None:
-        ...  # (se mantiene igual que el bloque que ya tienes)
+        """
+        Guarda las respuestas de la encuesta y marca la configuración como completada.
+        """
+        # --- SOLUCIÓN ---
+        # 1. Guardar la configuración para que la encuesta no se vuelva a mostrar
+        self.guardar_configuracion(nombre_usuario)
+        # ----------------
+
+        # 2. Guardar las respuestas como movimientos iniciales (ejemplo)
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cur = conn.cursor()
+                ingreso_mensual = respuestas[0]
+                gastos_fijos = respuestas[1]
+                gastos_variables = respuestas[2]
+
+                if ingreso_mensual > 0:
+                    cur.execute(
+                        "INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id) VALUES (?, ?, ?, ?)",
+                        (1, "Ingreso mensual inicial", ingreso_mensual, 1) # Categoria 1: Ingreso
+                    )
+                if gastos_fijos > 0:
+                    cur.execute(
+                        "INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id) VALUES (?, ?, ?, ?)",
+                        (2, "Gastos fijos iniciales", gastos_fijos, 2) # Categoria 2: Gastos Fijos
+                    )
+                if gastos_variables > 0:
+                    cur.execute(
+                        "INSERT INTO Movimientos (tipo, descripcion, monto, categoria_id) VALUES (?, ?, ?, ?)",
+                        (2, "Gastos variables iniciales", gastos_variables, 3) # Categoria 3: Gastos Variables
+                    )
+        except sqlite3.Error as e:
+            print(f"❌ Error al guardar datos de la encuesta como movimientos: {e}")
 
     # ─────────────────────────── UTILIDADES ───────────────────────────
     @staticmethod
