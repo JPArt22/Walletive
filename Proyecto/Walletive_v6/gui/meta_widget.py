@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QFrame, QProgressBar
+    QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QFrame, QProgressBar, QSizePolicy
 )
 from PyQt5.QtCore import Qt
 from datetime import datetime
@@ -17,6 +17,10 @@ class MetaWidget(QWidget):
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
+        
+        # Configurar el widget para que se estire horizontalmente
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.setMinimumWidth(300)  # Ancho mínimo para consistencia
         
         # Color de fondo: verde oscuro si completada, gris si no
         bg_style = STYLES['meta_widget_complete'] if self.meta_info["porcentaje"] >= 100 else STYLES['meta_widget']
@@ -65,8 +69,9 @@ class MetaWidget(QWidget):
         self.progress_bar.setFixedHeight(16)  # Altura fija para la barra
         layout.addWidget(self.progress_bar)
         
-        # Mostrar progreso numérico: "ahorrado/meta" y el porcentaje
-        progreso = f"{self.meta_info['progreso']}  {self.meta_info['porcentaje']:.1f}%"
+        # Mostrar progreso numérico: "ahorrado/meta" y el porcentaje (máximo 100%)
+        porcentaje_mostrado = min(self.meta_info['porcentaje'], 100.0)
+        progreso = f"{self.meta_info['progreso']}  {porcentaje_mostrado:.1f}%"
         self.progress_label = QLabel(progreso)
         self.progress_label.setStyleSheet(STYLES['body_text'])
         self.progress_label.setAlignment(Qt.AlignCenter)
@@ -117,8 +122,9 @@ class MetaWidget(QWidget):
         progress_value = min(int(self.meta_info["porcentaje"]), 100)
         self.progress_bar.setValue(progress_value)
         
-        # Actualizar progreso numérico
-        progreso = f"{self.meta_info['progreso']}  {self.meta_info['porcentaje']:.1f}%"
+        # Actualizar progreso numérico (máximo 100%)
+        porcentaje_mostrado = min(self.meta_info['porcentaje'], 100.0)
+        progreso = f"{self.meta_info['progreso']}  {porcentaje_mostrado:.1f}%"
         self.progress_label.setText(progreso)
         
         # Actualizar información de fecha

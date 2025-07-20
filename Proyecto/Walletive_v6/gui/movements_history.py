@@ -48,7 +48,15 @@ class MovementsHistory(QWidget):
         root.setSpacing(16)
         
         title = QLabel("🧾 Últimos movimientos")
-        title.setStyleSheet(STYLES['heading'])
+        title.setStyleSheet("""
+            QLabel {
+                color: #ffffff;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-size: 24px;
+                font-weight: bold;
+                padding: 8px 0;
+            }
+        """)
         root.addWidget(title)
 
         scroll = QScrollArea()
@@ -64,6 +72,9 @@ class MovementsHistory(QWidget):
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionMode(QTableWidget.NoSelection)
         
+        # Configurar altura de filas
+        self.table.verticalHeader().setDefaultSectionSize(50)  # Filas más altas
+        
         # Configurar el redimensionamiento de columnas
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)  # Fecha
@@ -73,7 +84,7 @@ class MovementsHistory(QWidget):
         header.setSectionResizeMode(4, QHeaderView.Fixed)             # Acciones - ancho fijo
         
         # Establecer ancho fijo para la columna de acciones
-        self.table.setColumnWidth(4, 100)  # 100px para los botones
+        self.table.setColumnWidth(4, 100)  # 100px para botones más cómodos
         
         self.table.setStyleSheet(STYLES['table'])
         
@@ -104,7 +115,15 @@ class MovementsHistory(QWidget):
             self.table.insertRow(row)
             self._ids.append(mov_id)
             
-            datos = [fecha, tipomap.get(tipo, "?"), desc, f"${monto:,.2f}"]
+            # Formatear fecha: solo fecha, no hora
+            try:
+                from datetime import datetime
+                fecha_obj = datetime.strptime(fecha.split()[0], "%Y-%m-%d")
+                fecha_formateada = fecha_obj.strftime("%d/%m/%Y")
+            except:
+                fecha_formateada = fecha.split()[0] if fecha else "N/A"
+            
+            datos = [fecha_formateada, tipomap.get(tipo, "?"), desc, f"${monto:,.0f}"]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(self.COLOR_BG.get(tipo, QColor("#222")))
@@ -113,18 +132,18 @@ class MovementsHistory(QWidget):
             # acciones para movimientos
             cell = QWidget()
             h = QHBoxLayout(cell)
-            h.setContentsMargins(4, 2, 4, 2)  # Reducir márgenes
-            h.setSpacing(4)  # Reducir espaciado
+            h.setContentsMargins(4, 2, 4, 2)  # Márgenes para botones de texto
+            h.setSpacing(4)  # Espaciado para botones de texto
             
-            b_edit = QPushButton("⚙️")
+            b_edit = QPushButton("Editar")
             b_edit.setToolTip("Editar")
             b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(28, 28)  # Botones más pequeños
+            b_edit.setFixedSize(35, 25)  # Botón más pequeño
             
-            b_del = QPushButton("❌")
+            b_del = QPushButton("Eliminar")
             b_del.setToolTip("Eliminar")
             b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(28, 28)  # Botones más pequeños
+            b_del.setFixedSize(35, 25)  # Botón más pequeño
             
             b_edit.clicked.connect(partial(self._editar, mov_id))
             b_del.clicked.connect(partial(self._eliminar, mov_id))
@@ -140,7 +159,15 @@ class MovementsHistory(QWidget):
             self.table.insertRow(row)
             self._ids.append(f"meta_{meta_id}")  # Prefijo para identificar metas
             
-            datos = [fecha, "Meta de Ahorro", desc, f"${monto:,.2f}"]
+            # Formatear fecha: solo fecha, no hora
+            try:
+                from datetime import datetime
+                fecha_obj = datetime.strptime(fecha.split()[0], "%Y-%m-%d")
+                fecha_formateada = fecha_obj.strftime("%d/%m/%Y")
+            except:
+                fecha_formateada = fecha.split()[0] if fecha else "N/A"
+            
+            datos = [fecha_formateada, "Meta de Ahorro", desc, f"${monto:,.0f}"]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(QColor("#4d4212"))  # Amarillo oscuro para metas
@@ -149,18 +176,18 @@ class MovementsHistory(QWidget):
             # acciones para metas
             cell = QWidget()
             h = QHBoxLayout(cell)
-            h.setContentsMargins(4, 2, 4, 2)  # Reducir márgenes
-            h.setSpacing(4)  # Reducir espaciado
+            h.setContentsMargins(4, 2, 4, 2)  # Márgenes para botones de texto
+            h.setSpacing(4)  # Espaciado para botones de texto
             
-            b_edit = QPushButton("⚙️")
+            b_edit = QPushButton("Editar")
             b_edit.setToolTip("Editar Meta")
             b_edit.setStyleSheet(STYLES['secondary_button'])
-            b_edit.setFixedSize(28, 28)  # Botones más pequeños
+            b_edit.setFixedSize(35, 25)  # Botón más pequeño
             
-            b_del = QPushButton("❌")
+            b_del = QPushButton("Eliminar")
             b_del.setToolTip("Eliminar Meta")
             b_del.setStyleSheet(STYLES['danger_button'])
-            b_del.setFixedSize(28, 28)  # Botones más pequeños
+            b_del.setFixedSize(35, 25)  # Botón más pequeño
             
             b_edit.clicked.connect(partial(self._editar_meta, meta_id))
             b_del.clicked.connect(partial(self._eliminar_meta, meta_id))

@@ -168,6 +168,9 @@ class Walletive(QMainWindow):
         self.metas_layout = QVBoxLayout(metas_container)
         self.metas_layout.setSpacing(16)
         self.metas_layout.setContentsMargins(24, 24, 24, 24)
+        
+        # Configurar el layout para que los widgets tengan el mismo ancho
+        self.metas_layout.setStretch(0, 0)  # El título no se estira
 
         # Título de la sección
         head_metas = QLabel("🎯 Metas de Ahorro")
@@ -298,8 +301,8 @@ class Walletive(QMainWindow):
     # ──────────────────────────────
     def _cargar_resumen_financiero(self, nombre: str, resumen: dict) -> None:
         # Título del resumen
-        balance_title = QLabel("📊 Balance")
-        balance_title.setStyleSheet(STYLES['heading'])
+        balance_title = QLabel("📊 Balance General")
+        balance_title.setStyleSheet(STYLES['heading'] + "font-size: 20px; font-weight: bold; text-decoration: none;")
         self.center_layout.addWidget(balance_title)
         
         # Card del resumen
@@ -309,19 +312,55 @@ class Walletive(QMainWindow):
         stats_layout.setContentsMargins(24, 24, 24, 24)
         stats_layout.setSpacing(16)
         
-        # Valores del resumen
-        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
-        ingreso.setStyleSheet(STYLES['success_text'])
+        # Valores del resumen - Estilos específicos sin subrayado y 25% más pequeños
+        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.0f}")
+        ingreso.setStyleSheet(f"""
+            QLabel {{
+                font-family: {get_font('body', 21, 'bold')};
+                color: {get_color('success')};
+                font-size: 21px;
+                font-weight: bold;
+                text-decoration: none;
+                padding: 8px 0px;
+            }}
+        """)
         
-        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.2f}")
-        gasto.setStyleSheet(STYLES['error_text'])
+        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.0f}")
+        gasto.setStyleSheet(f"""
+            QLabel {{
+                font-family: {get_font('body', 21, 'bold')};
+                color: {get_color('error')};
+                font-size: 21px;
+                font-weight: bold;
+                text-decoration: none;
+                padding: 8px 0px;
+            }}
+        """)
         
         bal = resumen['balance']
-        balance = QLabel(f"📈 Balance: ${bal:,.2f}")
+        balance = QLabel(f"📈 Balance: ${bal:,.0f}")
         if bal >= 0:
-            balance.setStyleSheet(STYLES['success_text'])
+            balance.setStyleSheet(f"""
+                QLabel {{
+                    font-family: {get_font('body', 24, 'bold')};
+                    color: {get_color('success')};
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    padding: 8px 0px;
+                }}
+            """)
         else:
-            balance.setStyleSheet(STYLES['error_text'])
+            balance.setStyleSheet(f"""
+                QLabel {{
+                    font-family: {get_font('body', 24, 'bold')};
+                    color: {get_color('error')};
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    padding: 8px 0px;
+                }}
+            """)
         
         stats_layout.addWidget(ingreso)
         stats_layout.addWidget(gasto)
@@ -347,22 +386,60 @@ class Walletive(QMainWindow):
                             # Actualizar ingresos
                             ingreso_widget = layout.itemAt(0).widget()
                             if isinstance(ingreso_widget, QLabel) and "💰 Ingresos:" in ingreso_widget.text():
-                                ingreso_widget.setText(f"💰 Ingresos: ${resumen['ingresos']:,.2f}")
+                                ingreso_widget.setText(f"💰 Ingresos: ${resumen['ingresos']:,.0f}")
+                                ingreso_widget.setStyleSheet(f"""
+                                    QLabel {{
+                                        font-family: {get_font('body', 21, 'bold')};
+                                        color: {get_color('success')};
+                                        font-size: 21px;
+                                        font-weight: bold;
+                                        text-decoration: none;
+                                        padding: 8px 0px;
+                                    }}
+                                """)
                             
                             # Actualizar gastos
                             gasto_widget = layout.itemAt(1).widget()
                             if isinstance(gasto_widget, QLabel) and "💸 Gastos:" in gasto_widget.text():
-                                gasto_widget.setText(f"💸 Gastos: ${resumen['gastos']:,.2f}")
+                                gasto_widget.setText(f"💸 Gastos: ${resumen['gastos']:,.0f}")
+                                gasto_widget.setStyleSheet(f"""
+                                    QLabel {{
+                                        font-family: {get_font('body', 21, 'bold')};
+                                        color: {get_color('error')};
+                                        font-size: 21px;
+                                        font-weight: bold;
+                                        text-decoration: none;
+                                        padding: 8px 0px;
+                                    }}
+                                """)
                             
                             # Actualizar balance
                             balance_widget = layout.itemAt(2).widget()
                             if isinstance(balance_widget, QLabel) and "📈 Balance:" in balance_widget.text():
                                 bal = resumen['balance']
-                                balance_widget.setText(f"📈 Balance: ${bal:,.2f}")
+                                balance_widget.setText(f"📈 Balance: ${bal:,.0f}")
                                 if bal >= 0:
-                                    balance_widget.setStyleSheet(STYLES['success_text'])
+                                    balance_widget.setStyleSheet(f"""
+                                        QLabel {{
+                                            font-family: {get_font('body', 24, 'bold')};
+                                            color: {get_color('success')};
+                                            font-size: 24px;
+                                            font-weight: bold;
+                                            text-decoration: none;
+                                            padding: 8px 0px;
+                                        }}
+                                    """)
                                 else:
-                                    balance_widget.setStyleSheet(STYLES['error_text'])
+                                    balance_widget.setStyleSheet(f"""
+                                        QLabel {{
+                                            font-family: {get_font('body', 24, 'bold')};
+                                            color: {get_color('error')};
+                                            font-size: 24px;
+                                            font-weight: bold;
+                                            text-decoration: none;
+                                            padding: 8px 0px;
+                                        }}
+                                    """)
                             
                             print("✅ Resumen financiero actualizado")
                             break
