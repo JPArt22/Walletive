@@ -11,12 +11,16 @@ from PyQt5.QtWidgets import (
 
 from gui.styles import STYLES, get_color, get_font
 from logic.movement_logic import MovementLogic
+from logic.validation_logic import ValidationLogic
+from logic.ui_logic import UILogic
 
 
 class EditMovementDialog(QDialog):
     def __init__(self, movement_logic, parent=None):
         super().__init__(parent)
         self.movement_logic = movement_logic
+        self.validation_logic = ValidationLogic()
+        self.ui_logic = UILogic()
         self.setWindowTitle("⚙️ Editar Movimiento")
         self.setFixedWidth(450)
         self.setStyleSheet(STYLES['dialog'])
@@ -159,26 +163,22 @@ class EditMovementDialog(QDialog):
 
     def _validar_datos(self):
         """Valida que los datos sean correctos"""
-        # Validar descripción
+        tipo = self.tipo_cb.currentText()
         descripcion = self.desc_le.text().strip()
-        if not descripcion:
-            QMessageBox.warning(self, "Validación", "La descripción no puede estar vacía.")
-            return False
-        
-        # Validar monto
         monto = self.monto_sb.value()
-        if monto <= 0:
-            QMessageBox.warning(self, "Validación", "El monto debe ser mayor a $0.00.")
-            return False
+        categoria = self.categoria_cb.currentText()
         
-        # Validar meta si está seleccionada
+        # Meta ID si está seleccionada
+        meta_id = None
         if self.meta_checkbox.isChecked():
             meta_id = self.meta_cb.currentData()
-            if meta_id is None:
-                QMessageBox.warning(self, "Validación", "Debe seleccionar una meta de ahorro.")
-                return False
         
-        return True
+        # Usar la lógica de validación centralizada
+        validation_result = self.validation_logic.validate_movement_data(
+            tipo, descripcion, monto, categoria, meta_id
+        )
+        
+        return self.ui_logic.validate_and_show_errors(self, validation_result)
 
     def _actualizar(self):
         """Actualiza el movimiento"""
@@ -196,19 +196,14 @@ class EditMovementDialog(QDialog):
             if self.meta_checkbox.isChecked():
                 meta_id = self.meta_cb.currentData()
             
-            # Confirmar antes de actualizar
+            # Confirmar antes de actualizar usando la lógica centralizada
             tipo_texto = "ingreso" if tipo == 1 else "gasto"
-            msg = f"¿Actualizar {tipo_texto}?\n\nDescripción: {descripcion}\nMonto: ${monto:,.2f}"
-            
-            if meta_id:
-                msg += f"\nMeta: {self.meta_cb.currentText()}"
-            
-            if QMessageBox.question(self, "Confirmar Actualización", msg) == QMessageBox.Yes:
+            if self.ui_logic.confirm_movement_update(self, tipo_texto, descripcion, monto):
                 # Aquí solo validamos, la actualización se hace en el historial
                 self.accept()
                 
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Error al actualizar: {str(e)}")
+            self.ui_logic.show_database_error(self, "actualizar movimiento", str(e))
 
     def closeEvent(self, event):
         """Maneja el cierre del diálogo"""

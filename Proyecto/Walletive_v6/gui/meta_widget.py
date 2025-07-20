@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from datetime import datetime
 from gui.styles import STYLES, get_color, get_font
+from logic.formatting_logic import FormattingLogic
 
 class MetaWidget(QWidget):
     def __init__(self, meta_info: dict, on_delete=None, on_edit=None, parent=None):
@@ -11,6 +12,7 @@ class MetaWidget(QWidget):
         self.meta_info = meta_info  # Debe contener "id", "descripcion", "monto_actual", "objetivo", "porcentaje", "logrado", "fecha_limite"
         self.on_delete = on_delete
         self.on_edit = on_edit
+        self.formatting_logic = FormattingLogic()
         self.setup_ui()
 
     def setup_ui(self):
@@ -69,30 +71,21 @@ class MetaWidget(QWidget):
         self.progress_bar.setFixedHeight(16)  # Altura fija para la barra
         layout.addWidget(self.progress_bar)
         
-        # Mostrar progreso numérico: "ahorrado/meta" y el porcentaje (máximo 100%)
+        # Mostrar progreso numérico usando la lógica de formateo centralizada
         porcentaje_mostrado = min(self.meta_info['porcentaje'], 100.0)
-        progreso = f"{self.meta_info['progreso']}  {porcentaje_mostrado:.1f}%"
+        progreso = f"{self.meta_info['progreso']}  {self.formatting_logic.format_percentage(porcentaje_mostrado)}"
         self.progress_label = QLabel(progreso)
         self.progress_label.setStyleSheet(STYLES['body_text'])
         self.progress_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.progress_label)
         
-        # Información de la fecha límite en formato natural
+        # Información de la fecha límite usando la lógica de formateo centralizada
         try:
-            # Se asume que 'fecha_limite' viene en formato ISO o "YYYY-MM-DD"
-            fecha_limite = datetime.strptime(self.meta_info['fecha_limite'].split()[0], "%Y-%m-%d")
-            meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-            mes_nombre = meses[fecha_limite.month - 1]
-            hoy = datetime.now()
-            diferencia = fecha_limite - hoy
-            dias = max(diferencia.days, 0)
-            meses_restantes = dias // 30
-            dias_restantes = dias % 30
-            
             if self.meta_info["porcentaje"] >= 100:
-                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {mes_nombre} {fecha_limite.year}"
+                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {self.formatting_logic.format_month_year(self.meta_info['fecha_limite'])}"
             else:
-                fecha_text = f"📅 Fecha límite: {mes_nombre} {fecha_limite.year} • Te quedan {meses_restantes} meses y {dias_restantes} días"
+                tiempo_restante = self.formatting_logic.format_time_remaining(self.meta_info['fecha_limite'])
+                fecha_text = f"📅 Fecha límite: {self.formatting_logic.format_month_year(self.meta_info['fecha_limite'])} • {tiempo_restante}"
                 
         except Exception as e:
             if self.meta_info["porcentaje"] >= 100:
@@ -122,26 +115,18 @@ class MetaWidget(QWidget):
         progress_value = min(int(self.meta_info["porcentaje"]), 100)
         self.progress_bar.setValue(progress_value)
         
-        # Actualizar progreso numérico (máximo 100%)
+        # Actualizar progreso numérico usando la lógica de formateo centralizada
         porcentaje_mostrado = min(self.meta_info['porcentaje'], 100.0)
-        progreso = f"{self.meta_info['progreso']}  {porcentaje_mostrado:.1f}%"
+        progreso = f"{self.meta_info['progreso']}  {self.formatting_logic.format_percentage(porcentaje_mostrado)}"
         self.progress_label.setText(progreso)
         
-        # Actualizar información de fecha
+        # Actualizar información de fecha usando la lógica de formateo centralizada
         try:
-            fecha_limite = datetime.strptime(self.meta_info['fecha_limite'].split()[0], "%Y-%m-%d")
-            meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-            mes_nombre = meses[fecha_limite.month - 1]
-            hoy = datetime.now()
-            diferencia = fecha_limite - hoy
-            dias = max(diferencia.days, 0)
-            meses_restantes = dias // 30
-            dias_restantes = dias % 30
-            
             if self.meta_info["porcentaje"] >= 100:
-                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {mes_nombre} {fecha_limite.year}"
+                fecha_text = f"🎉 ¡Meta completada! Fecha límite: {self.formatting_logic.format_month_year(self.meta_info['fecha_limite'])}"
             else:
-                fecha_text = f"📅 Fecha límite: {mes_nombre} {fecha_limite.year} • Te quedan {meses_restantes} meses y {dias_restantes} días"
+                tiempo_restante = self.formatting_logic.format_time_remaining(self.meta_info['fecha_limite'])
+                fecha_text = f"📅 Fecha límite: {self.formatting_logic.format_month_year(self.meta_info['fecha_limite'])} • {tiempo_restante}"
                 
         except Exception as e:
             if self.meta_info["porcentaje"] >= 100:

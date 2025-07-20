@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from gui.styles import STYLES, get_color, get_font
+from logic.validation_logic import ValidationLogic
+from logic.ui_logic import UILogic
 
 class EmojiSelector(QWidget):
     """Widget personalizado para seleccionar emojis con galería visual"""
@@ -118,6 +120,8 @@ class EditMetaDialog(QDialog):
         super().__init__(parent)
         self.meta_logic = meta_logic
         self.meta_info = meta_info
+        self.validation_logic = ValidationLogic()
+        self.ui_logic = UILogic()
         self.setWindowTitle("⚙️ Editar Meta de Ahorro")
         self.setFixedWidth(500)
         self.setStyleSheet(STYLES['dialog'])
@@ -222,16 +226,16 @@ class EditMetaDialog(QDialog):
 
     def _validar_datos(self):
         """Valida que los datos sean correctos"""
-        # Validar descripción
         descripcion = self.desc_le.text().strip()
+        monto_objetivo = self.monto_sb.value()
+        
+        # Para edición, solo validamos descripción y monto (no meses ni frecuencia)
         if not descripcion:
-            QMessageBox.warning(self, "Validación", "La descripción no puede estar vacía.")
+            self.ui_logic.show_validation_error(self, "descripción", "La descripción no puede estar vacía.")
             return False
         
-        # Validar monto objetivo
-        monto = self.monto_sb.value()
-        if monto <= 0:
-            QMessageBox.warning(self, "Validación", "El monto objetivo debe ser mayor a $0.00.")
+        if monto_objetivo <= 0:
+            self.ui_logic.show_validation_error(self, "monto objetivo", "El monto objetivo debe ser mayor a $0.00.")
             return False
         
         return True
@@ -247,38 +251,26 @@ class EditMetaDialog(QDialog):
             desc_con_emoji = f"{emoji} {desc}"
             monto_objetivo = self.monto_sb.value()
             
-            # Confirmar antes de guardar
-            reply = QMessageBox.question(
-                self, 
-                'Confirmar cambios',
-                f'¿Estás seguro de que deseas actualizar la meta a "{desc_con_emoji}" con un objetivo de ${monto_objetivo:.2f}?',
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No
-            )
-            
-            if reply == QMessageBox.Yes:
+            # Confirmar antes de guardar usando la lógica centralizada
+            if self.ui_logic.confirm_meta_update(self, desc_con_emoji, monto_objetivo):
                 self.meta_logic.update_goal(
                     self.meta_info["id"],
                     desc_con_emoji,
                     monto_objetivo
                 )
-                QMessageBox.information(self, "Éxito", "Meta actualizada correctamente.")
+                self.ui_logic.show_success_meta_updated(self, desc_con_emoji, monto_objetivo)
                 self.accept()
                 
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo actualizar: {str(e)}")
+            self.ui_logic.show_database_error(self, "actualizar meta", str(e))
 
     def closeEvent(self, event):
         """Previene cerrar el diálogo sin completar"""
-        reply = QMessageBox.question(
+        if self.ui_logic.show_confirmation_dialog(
             self, 
             'Confirmar salida',
-            '¿Estás seguro de que deseas salir sin guardar los cambios?',
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
-        
-        if reply == QMessageBox.Yes:
+            '¿Estás seguro de que deseas salir sin guardar los cambios?'
+        ):
             event.accept()
         else:
             event.ignore()

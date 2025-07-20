@@ -11,12 +11,16 @@ from PyQt5.QtWidgets import (
 
 from gui.styles import STYLES, get_color, get_font
 from logic.movement_logic import MovementLogic
+from logic.validation_logic import ValidationLogic
+from logic.ui_logic import UILogic
 
 
 class AddMovementDialog(QDialog):
     def __init__(self, movement_logic, parent=None):
         super().__init__(parent)
         self.movement_logic = movement_logic
+        self.validation_logic = ValidationLogic()
+        self.ui_logic = UILogic()
         self.setWindowTitle("➕ Añadir Movimiento")
         self.setFixedWidth(450)
         self.setStyleSheet(STYLES['dialog'])
@@ -159,26 +163,22 @@ class AddMovementDialog(QDialog):
 
     def _validar_datos(self):
         """Valida que los datos sean correctos"""
-        # Validar descripción
+        tipo = self.tipo_cb.currentText()
         descripcion = self.desc_le.text().strip()
-        if not descripcion:
-            QMessageBox.warning(self, "Validación", "La descripción no puede estar vacía.")
-            return False
-        
-        # Validar monto
         monto = self.monto_sb.value()
-        if monto <= 0:
-            QMessageBox.warning(self, "Validación", "El monto debe ser mayor a $0.00.")
-            return False
+        categoria = self.categoria_cb.currentText()
         
-        # Validar meta si está seleccionada
+        # Meta ID si está seleccionada
+        meta_id = None
         if self.meta_checkbox.isChecked():
             meta_id = self.meta_cb.currentData()
-            if meta_id is None:
-                QMessageBox.warning(self, "Validación", "Debe seleccionar una meta de ahorro.")
-                return False
         
-        return True
+        # Usar la lógica de validación centralizada
+        validation_result = self.validation_logic.validate_movement_data(
+            tipo, descripcion, monto, categoria, meta_id
+        )
+        
+        return self.ui_logic.validate_and_show_errors(self, validation_result)
 
     def _guardar(self):
         """Guarda el movimiento"""
@@ -196,37 +196,25 @@ class AddMovementDialog(QDialog):
             if self.meta_checkbox.isChecked():
                 meta_id = self.meta_cb.currentData()
             
-            # Confirmar antes de guardar
+            # Confirmar antes de guardar usando la lógica centralizada
             tipo_texto = "ingreso" if tipo == 1 else "gasto"
-            meta_texto = f" en la meta '{self.meta_cb.currentText()}'" if meta_id else ""
-            
-            reply = QMessageBox.question(
-                self, 
-                'Confirmar movimiento',
-                f'¿Estás seguro de que deseas registrar este {tipo_texto} de ${monto:.2f}{meta_texto}?',
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No
-            )
-            
-            if reply == QMessageBox.Yes:
-                self.movement_logic.add(tipo, descripcion, monto, categoria_id, meta_id)
-                QMessageBox.information(self, "Éxito", "Movimiento registrado correctamente.")
-                self.accept()
+            if self.ui_logic.confirm_movement_creation(self, tipo_texto, descripcion, monto):
+                if self.movement_logic.add(tipo, descripcion, monto, categoria_id, meta_id):
+                    self.ui_logic.show_success_movement_created(self, tipo_texto, descripcion, monto)
+                    self.accept()
+                else:
+                    self.ui_logic.show_database_error(self, "crear movimiento", "No se pudo guardar el movimiento.")
                 
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo registrar el movimiento: {str(e)}")
+            self.ui_logic.show_database_error(self, "crear movimiento", str(e))
 
     def closeEvent(self, event):
         """Previene cerrar el diálogo sin completar"""
-        reply = QMessageBox.question(
+        if self.ui_logic.show_confirmation_dialog(
             self, 
             'Confirmar salida',
-            '¿Estás seguro de que deseas salir sin guardar el movimiento?',
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
-        
-        if reply == QMessageBox.Yes:
+            '¿Estás seguro de que deseas salir sin guardar el movimiento?'
+        ):
             event.accept()
         else:
             event.ignore()

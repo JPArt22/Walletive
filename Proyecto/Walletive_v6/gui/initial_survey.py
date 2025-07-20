@@ -9,6 +9,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 
 from logic.initial_survey_logic import InitialSurveyLogic
+from logic.validation_logic import ValidationLogic
+from logic.ui_logic import UILogic
 
 
 class InitialSurvey(QWidget):
@@ -17,6 +19,8 @@ class InitialSurvey(QWidget):
     def __init__(self, on_finish_callback):
         super().__init__()
         self.on_finish_callback = on_finish_callback
+        self.validation_logic = ValidationLogic()
+        self.ui_logic = UILogic()
         self.setStyleSheet("""
             QWidget { background-color: #181818; color: white; }
         """)
@@ -223,22 +227,19 @@ class InitialSurvey(QWidget):
         self.continue_btn.clicked.disconnect()
 
         def finish():
-            # Lógica de negocio: guarda todo en BD
-            logic = InitialSurveyLogic([self.nombre_usuario] + self.respuestas[1:])
-            logic.procesar_y_guardar()
-            # Callback al main window
-            self.on_finish_callback(self.nombre_usuario, self.respuestas[1:])
+            # Validar datos de la encuesta usando la lógica centralizada
+            respuestas_completas = [self.nombre_usuario] + self.respuestas[1:]
+            validation_result = self.validation_logic.validate_survey_data(respuestas_completas)
+            
+            if self.ui_logic.validate_and_show_errors(self, validation_result):
+                # Lógica de negocio: guarda todo en BD
+                logic = InitialSurveyLogic(respuestas_completas)
+                logic.procesar_y_guardar()
+                # Callback al main window
+                self.on_finish_callback(self.nombre_usuario, self.respuestas[1:])
 
         self.continue_btn.clicked.connect(finish)
 
     def mensaje_error(self, texto):
         """Muestra advertencia en modal oscuro."""
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Warning)
-        msg.setWindowTitle("Entrada inválida")
-        msg.setText(texto)
-        msg.setStyleSheet("""
-            QMessageBox { background-color:#2b2b2b; color:white; }
-            QMessageBox QPushButton { background-color:#006e58; color:white; padding:8px 16px; border-radius:6px; }
-        """)
-        msg.exec_()
+        self.ui_logic.show_validation_error(self, "entrada", texto)

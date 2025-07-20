@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from gui.styles import STYLES, get_color, get_font
+from logic.validation_logic import ValidationLogic
+from logic.ui_logic import UILogic
 
 class EmojiSelector(QWidget):
     """Widget personalizado para seleccionar emojis con galería visual"""
@@ -120,6 +122,8 @@ class AddMetaDialog(QDialog):
     def __init__(self, db_manager, parent=None):
         super().__init__(parent)
         self.db_manager = db_manager
+        self.validation_logic = ValidationLogic()
+        self.ui_logic = UILogic()
         self.setWindowTitle("🎯 Nueva Meta de Ahorro")
         self.setFixedWidth(500)
         self.setStyleSheet(STYLES['dialog'])
@@ -268,25 +272,17 @@ class AddMetaDialog(QDialog):
 
     def _validar_datos(self):
         """Valida que los datos sean correctos"""
-        # Validar descripción
         descripcion = self.desc_le.text().strip()
-        if not descripcion:
-            QMessageBox.warning(self, "Validación", "La descripción no puede estar vacía.")
-            return False
-        
-        # Validar monto objetivo
-        monto = self.monto_sb.value()
-        if monto <= 0:
-            QMessageBox.warning(self, "Validación", "El monto objetivo debe ser mayor a $0.00.")
-            return False
-        
-        # Validar meses
+        monto_objetivo = self.monto_sb.value()
         meses = self.meses_sb.value()
-        if meses <= 0:
-            QMessageBox.warning(self, "Validación", "El tiempo debe ser mayor a 0 meses.")
-            return False
+        frecuencia = self.frecuencia_cb.currentText()
         
-        return True
+        # Usar la lógica de validación centralizada
+        validation_result = self.validation_logic.validate_meta_data(
+            descripcion, monto_objetivo, meses, frecuencia
+        )
+        
+        return self.ui_logic.validate_and_show_errors(self, validation_result)
 
     def _guardar(self):
         """Guarda la meta de ahorro"""
@@ -301,37 +297,25 @@ class AddMetaDialog(QDialog):
             meses = self.meses_sb.value()  # Ahora es entero
             frecuencia = self.frecuencia_cb.currentText()
             
-            # Confirmar antes de guardar
-            reply = QMessageBox.question(
-                self, 
-                'Confirmar meta',
-                f'¿Estás seguro de que deseas crear la meta "{desc_con_emoji}" con un objetivo de ${monto_objetivo:.2f} en {meses} meses?',
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No
-            )
-            
-            if reply == QMessageBox.Yes:
+            # Confirmar antes de guardar usando la lógica centralizada
+            if self.ui_logic.confirm_meta_creation(self, desc_con_emoji, monto_objetivo, meses):
                 meta_id = self.db_manager.crear_meta(desc_con_emoji, monto_objetivo, meses, frecuencia)
                 if meta_id != -1:
-                    QMessageBox.information(self, "Éxito", "Meta de ahorro creada correctamente.")
+                    self.ui_logic.show_success_meta_created(self, desc_con_emoji, monto_objetivo)
                     self.accept()
                 else:
-                    QMessageBox.critical(self, "Error", "No se pudo crear la meta de ahorro.")
+                    self.ui_logic.show_database_error(self, "crear meta", "No se pudo crear la meta de ahorro.")
                     
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo crear la meta: {str(e)}")
+            self.ui_logic.show_database_error(self, "crear meta", str(e))
 
     def closeEvent(self, event):
         """Previene cerrar el diálogo sin completar"""
-        reply = QMessageBox.question(
+        if self.ui_logic.show_confirmation_dialog(
             self, 
             'Confirmar salida',
-            '¿Estás seguro de que deseas salir sin crear la meta?',
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
-        
-        if reply == QMessageBox.Yes:
+            '¿Estás seguro de que deseas salir sin crear la meta?'
+        ):
             event.accept()
         else:
             event.ignore()

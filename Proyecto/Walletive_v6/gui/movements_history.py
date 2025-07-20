@@ -25,6 +25,7 @@ from gui.add_movement_dialog import AddMovementDialog
 from gui.edit_movement_dialog import EditMovementDialog
 from gui.styles import STYLES, get_color, get_font
 from logic.movement_logic import MovementLogic
+from logic.formatting_logic import FormattingLogic
 from persistence.database_manager import DatabaseManager
 
 
@@ -42,6 +43,7 @@ class MovementsHistory(QWidget):
         super().__init__(parent)
         self.db = db
         self._ids: List[int] = []
+        self.formatting_logic = FormattingLogic()
 
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
@@ -115,15 +117,12 @@ class MovementsHistory(QWidget):
             self.table.insertRow(row)
             self._ids.append(mov_id)
             
-            # Formatear fecha: solo fecha, no hora
-            try:
-                from datetime import datetime
-                fecha_obj = datetime.strptime(fecha.split()[0], "%Y-%m-%d")
-                fecha_formateada = fecha_obj.strftime("%d/%m/%Y")
-            except:
-                fecha_formateada = fecha.split()[0] if fecha else "N/A"
+            # Usar la lógica de formateo centralizada
+            fecha_formateada = self.formatting_logic.format_date(fecha)
+            tipo_formateado = self.formatting_logic.format_movement_type(tipo)
+            monto_formateado = self.formatting_logic.format_currency(monto)
             
-            datos = [fecha_formateada, tipomap.get(tipo, "?"), desc, f"${monto:,.0f}"]
+            datos = [fecha_formateada, tipo_formateado, desc, monto_formateado]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(self.COLOR_BG.get(tipo, QColor("#222")))
@@ -159,15 +158,11 @@ class MovementsHistory(QWidget):
             self.table.insertRow(row)
             self._ids.append(f"meta_{meta_id}")  # Prefijo para identificar metas
             
-            # Formatear fecha: solo fecha, no hora
-            try:
-                from datetime import datetime
-                fecha_obj = datetime.strptime(fecha.split()[0], "%Y-%m-%d")
-                fecha_formateada = fecha_obj.strftime("%d/%m/%Y")
-            except:
-                fecha_formateada = fecha.split()[0] if fecha else "N/A"
+            # Usar la lógica de formateo centralizada
+            fecha_formateada = self.formatting_logic.format_date(fecha)
+            monto_formateado = self.formatting_logic.format_currency(monto)
             
-            datos = [fecha_formateada, "Meta de Ahorro", desc, f"${monto:,.0f}"]
+            datos = [fecha_formateada, "Meta de Ahorro", desc, monto_formateado]
             for col, val in enumerate(datos):
                 item = QTableWidgetItem(str(val))
                 item.setBackground(QColor("#4d4212"))  # Amarillo oscuro para metas

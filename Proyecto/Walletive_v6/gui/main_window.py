@@ -18,6 +18,7 @@ from gui.edit_meta_dialog import EditMetaDialog
 from gui.styles import STYLES, get_font, get_color
 from logic.dashboard_logic import DashboardLogic
 from logic.movement_logic import MovementLogic
+from logic.formatting_logic import FormattingLogic
 from persistence.database_manager import DatabaseManager
 
 
@@ -43,6 +44,7 @@ class Walletive(QMainWindow):
         
         self.db_manager = DatabaseManager(db_path)
         self.dashboard_logic = DashboardLogic()
+        self.formatting_logic = FormattingLogic()
 
         self.setWindowTitle("Walletive – Finanzas Personales")
         self.setFixedSize(1600, 900)
@@ -312,8 +314,8 @@ class Walletive(QMainWindow):
         stats_layout.setContentsMargins(24, 24, 24, 24)
         stats_layout.setSpacing(16)
         
-        # Valores del resumen - Estilos específicos sin subrayado y 25% más pequeños
-        ingreso = QLabel(f"💰 Ingresos: ${resumen['ingresos']:,.0f}")
+        # Valores del resumen usando la lógica de formateo centralizada
+        ingreso = QLabel(f"💰 Ingresos: {self.formatting_logic.format_currency(resumen['ingresos'])}")
         ingreso.setStyleSheet(f"""
             QLabel {{
                 font-family: {get_font('body', 21, 'bold')};
@@ -325,7 +327,7 @@ class Walletive(QMainWindow):
             }}
         """)
         
-        gasto = QLabel(f"💸 Gastos: ${resumen['gastos']:,.0f}")
+        gasto = QLabel(f"💸 Gastos: {self.formatting_logic.format_currency(resumen['gastos'])}")
         gasto.setStyleSheet(f"""
             QLabel {{
                 font-family: {get_font('body', 21, 'bold')};
@@ -338,7 +340,7 @@ class Walletive(QMainWindow):
         """)
         
         bal = resumen['balance']
-        balance = QLabel(f"📈 Balance: ${bal:,.0f}")
+        balance = QLabel(f"📈 Balance: {self.formatting_logic.format_currency(bal)}")
         if bal >= 0:
             balance.setStyleSheet(f"""
                 QLabel {{
@@ -386,7 +388,7 @@ class Walletive(QMainWindow):
                             # Actualizar ingresos
                             ingreso_widget = layout.itemAt(0).widget()
                             if isinstance(ingreso_widget, QLabel) and "💰 Ingresos:" in ingreso_widget.text():
-                                ingreso_widget.setText(f"💰 Ingresos: ${resumen['ingresos']:,.0f}")
+                                ingreso_widget.setText(f"💰 Ingresos: {self.formatting_logic.format_currency(resumen['ingresos'])}")
                                 ingreso_widget.setStyleSheet(f"""
                                     QLabel {{
                                         font-family: {get_font('body', 21, 'bold')};
@@ -401,7 +403,7 @@ class Walletive(QMainWindow):
                             # Actualizar gastos
                             gasto_widget = layout.itemAt(1).widget()
                             if isinstance(gasto_widget, QLabel) and "💸 Gastos:" in gasto_widget.text():
-                                gasto_widget.setText(f"💸 Gastos: ${resumen['gastos']:,.0f}")
+                                gasto_widget.setText(f"💸 Gastos: {self.formatting_logic.format_currency(resumen['gastos'])}")
                                 gasto_widget.setStyleSheet(f"""
                                     QLabel {{
                                         font-family: {get_font('body', 21, 'bold')};
@@ -417,7 +419,7 @@ class Walletive(QMainWindow):
                             balance_widget = layout.itemAt(2).widget()
                             if isinstance(balance_widget, QLabel) and "📈 Balance:" in balance_widget.text():
                                 bal = resumen['balance']
-                                balance_widget.setText(f"📈 Balance: ${bal:,.0f}")
+                                balance_widget.setText(f"📈 Balance: {self.formatting_logic.format_currency(bal)}")
                                 if bal >= 0:
                                     balance_widget.setStyleSheet(f"""
                                         QLabel {{
