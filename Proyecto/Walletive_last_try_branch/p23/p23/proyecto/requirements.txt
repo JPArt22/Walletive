@@ -1,0 +1,18 @@
+# Walletive - Requisitos del Proyecto
+# =====================================
+
+# GUI Framework
+PyQt5>=5.15.0
+
+# Visualización de datos
+matplotlib>=3.5.0
+numpy>=1.21.0
+
+# Utilidades para desarrollo
+colorama>=0.4.4
+
+# Testing (opcional para desarrollo)
+pytest>=6.2.0
+
+# Formateo de código (opcional para desarrollo)  
+black>=21.12.0

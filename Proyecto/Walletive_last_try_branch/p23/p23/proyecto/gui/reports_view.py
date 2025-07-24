@@ -194,26 +194,21 @@ class ReportsView(QWidget):
         self.transaction_report_table.setColumnCount(6)
         self.transaction_report_table.setHorizontalHeaderLabels(["ID", "Tipo", "Descripción", "Monto", "Categoría", "Fecha"])
         
-        # Configurar anchos de columnas específicos
+        # Configurar anchos de columnas para mostrar contenido completo
         header = self.transaction_report_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.Fixed)  # ID fija
-        header.setSectionResizeMode(1, QHeaderView.Fixed)  # Tipo fija
-        header.setSectionResizeMode(2, QHeaderView.Stretch)  # Descripción expandible
-        header.setSectionResizeMode(3, QHeaderView.Fixed)  # Monto fija
-        header.setSectionResizeMode(4, QHeaderView.Fixed)  # Categoría fija
-        header.setSectionResizeMode(5, QHeaderView.Fixed)  # Fecha fija
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)  # ID - ajuste automático
+        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Tipo - ajuste automático
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)  # Descripción - ajuste automático
+        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)  # Monto - ajuste automático
+        header.setSectionResizeMode(4, QHeaderView.ResizeToContents)  # Categoría - ajuste automático
+        header.setSectionResizeMode(5, QHeaderView.ResizeToContents)  # Fecha - ajuste automático
         
         # Establecer altura del header y eliminar márgenes
         header.setFixedHeight(45)
         header.setContentsMargins(0, 0, 0, 0)
         header.setDefaultAlignment(Qt.AlignCenter)
         
-        # Establecer anchos específicos
-        self.transaction_report_table.setColumnWidth(0, 60)   # ID
-        self.transaction_report_table.setColumnWidth(1, 80)   # Tipo
-        self.transaction_report_table.setColumnWidth(3, 120)  # Monto
-        self.transaction_report_table.setColumnWidth(4, 120)  # Categoría
-        self.transaction_report_table.setColumnWidth(5, 100)  # Fecha
+        # No establecer anchos específicos - permitir ajuste automático al contenido
         
         # Estilo moderno y elegante para la tabla (igual que transactions_view)
         self.transaction_report_table.setStyleSheet("""
@@ -287,10 +282,27 @@ class ReportsView(QWidget):
             QScrollBar::handle:vertical:hover {
                 background-color: #00b8d4;
             }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            QScrollBar:horizontal {
+                background-color: #1e1e1e;
+                height: 8px;
+                border-radius: 4px;
+                margin: 0px;
+            }
+            QScrollBar::handle:horizontal {
+                background-color: #00d9ff;
+                border-radius: 4px;
+                margin: 2px;
+                min-width: 20px;
+            }
+            QScrollBar::handle:horizontal:hover {
+                background-color: #00b8d4;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
                 border: none;
                 background: none;
                 height: 0px;
+                width: 0px;
             }
         """)
         
@@ -314,44 +326,79 @@ class ReportsView(QWidget):
         self.transaction_report_table.setContentsMargins(0, 0, 0, 0)
         self.transaction_report_table.horizontalHeader().setOffset(0)
         
-        # Altura mínima para mejor visualización
-        self.transaction_report_table.setMinimumHeight(300)
+        # Altura mínima para mejor visualización - Aumentada para mostrar más datos
+        self.transaction_report_table.setMinimumHeight(700)
         
         detail_layout.addWidget(self.transaction_report_table)
         self.report_content_layout.addWidget(self.detail_frame)
 
     def create_charts_section(self):
         self.charts_frame = QFrame()
-        self.charts_frame.setStyleSheet("background-color: #1f1f1f; border-radius: 12px; padding: 20px;")
+        self.charts_frame.setStyleSheet("""
+            QFrame {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                    stop:0 #1f1f1f, stop:1 #1a1a1a);
+                border-radius: 15px;
+                padding: 25px;
+                border: 1px solid #333333;
+                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+            }
+        """)
         charts_layout = QVBoxLayout(self.charts_frame)
-        charts_layout.setSpacing(10)
+        charts_layout.setSpacing(15)
 
-        charts_title = QLabel("📈 Gráficos Comparativos")
-        charts_title.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        charts_title.setStyleSheet("color: #00d9ff;")
+        charts_title = QLabel("Gráficos Comparativos")
+        charts_title.setFont(QFont("Segoe UI", 18, QFont.Bold))
+        charts_title.setStyleSheet("color: #00d9ff; margin-bottom: 15px;")
         charts_layout.addWidget(charts_title)
 
-        # Contenedor para los gráficos
-        charts_container = QHBoxLayout()
-        charts_container.setSpacing(20)
+        # Primer gráfico: Ingresos vs Gastos por Semana (ocupa toda la fila)
+        weekly_chart_frame = QFrame()
+        weekly_chart_frame.setStyleSheet("background: transparent; border: none;")
+        weekly_chart_layout = QVBoxLayout(weekly_chart_frame)
+        weekly_chart_layout.setSpacing(10)
+        
+        weekly_title = QLabel("Ingresos vs Gastos por Semana")
+        weekly_title.setFont(QFont("Segoe UI", 14, QFont.Bold))
+        weekly_title.setStyleSheet("color: #00d9ff; margin-bottom: 5px;")
+        weekly_chart_layout.addWidget(weekly_title)
+        
+        self.weekly_income_expense_canvas = FigureCanvas(plt.Figure(figsize=(11, 8)))
+        self.weekly_income_expense_canvas.setMinimumHeight(500)
+        weekly_chart_layout.addWidget(self.weekly_income_expense_canvas)
+        charts_layout.addWidget(weekly_chart_frame)
 
-        # Gráfico de Barras: Ingresos vs Gastos por Mes/Día
-        income_expense_chart_frame = QFrame()
-        income_expense_chart_layout = QVBoxLayout(income_expense_chart_frame)
-        income_expense_chart_layout.addWidget(QLabel("Ingresos vs Gastos"))
-        self.report_income_expense_canvas = FigureCanvas(plt.Figure(figsize=(5, 3)))
-        income_expense_chart_layout.addWidget(self.report_income_expense_canvas)
-        charts_container.addWidget(income_expense_chart_frame)
+        # Gráfico de Pastel 1: Distribución de Gastos por Categoría
+        expense_pie_frame = QFrame()
+        expense_pie_frame.setStyleSheet("background: transparent; border: none;")
+        expense_pie_layout = QVBoxLayout(expense_pie_frame)
+        expense_pie_layout.setSpacing(10)
+        
+        expense_pie_title = QLabel("Distribución de Gastos")
+        expense_pie_title.setFont(QFont("Segoe UI", 14, QFont.Bold))
+        expense_pie_title.setStyleSheet("color: #00d9ff; margin-bottom: 5px;")
+        expense_pie_layout.addWidget(expense_pie_title)
+        
+        self.expense_distribution_canvas = FigureCanvas(plt.Figure(figsize=(11, 8)))
+        self.expense_distribution_canvas.setMinimumHeight(500)
+        expense_pie_layout.addWidget(self.expense_distribution_canvas)
+        charts_layout.addWidget(expense_pie_frame)
 
-        # Gráfico Circular: Gastos por Categoría
-        expense_category_chart_frame = QFrame()
-        expense_category_chart_layout = QVBoxLayout(expense_category_chart_frame)
-        expense_category_chart_layout.addWidget(QLabel("Gastos por Categoría"))
-        self.report_expense_category_canvas = FigureCanvas(plt.Figure(figsize=(5, 3)))
-        expense_category_chart_layout.addWidget(self.report_expense_category_canvas)
-        charts_container.addWidget(expense_category_chart_frame)
-
-        charts_layout.addLayout(charts_container)
+        # Gráfico de Pastel 2: Balance Financiero (Ingresos vs Gastos vs Ahorro)
+        balance_pie_frame = QFrame()
+        balance_pie_frame.setStyleSheet("background: transparent; border: none;")
+        balance_pie_layout = QVBoxLayout(balance_pie_frame)
+        balance_pie_layout.setSpacing(10)
+        
+        balance_pie_title = QLabel("Balance Financiero")
+        balance_pie_title.setFont(QFont("Segoe UI", 14, QFont.Bold))
+        balance_pie_title.setStyleSheet("color: #00d9ff; margin-bottom: 5px;")
+        balance_pie_layout.addWidget(balance_pie_title)
+        
+        self.financial_balance_canvas = FigureCanvas(plt.Figure(figsize=(11, 7)))
+        self.financial_balance_canvas.setMinimumHeight(500)
+        balance_pie_layout.addWidget(self.financial_balance_canvas)
+        charts_layout.addWidget(balance_pie_frame)
         self.report_content_layout.addWidget(self.charts_frame)
 
     def generate_report(self):
@@ -440,96 +487,345 @@ class ReportsView(QWidget):
         for row in range(len(transactions_data)):
             self.transaction_report_table.setRowHeight(row, 45)
 
-        # Dibujar gráficos
-        income_expense_chart_data = self.logic.get_income_expense_data_for_report(date_from_str, date_to_str)
-        self._draw_report_income_expense_chart(income_expense_chart_data)
+        # Generar los 3 nuevos gráficos
+        self._generate_weekly_income_expense_chart(date_from_str, date_to_str)
+        self._generate_expense_distribution_pie(date_from_str, date_to_str)
+        self._generate_financial_balance_pie(date_from_str, date_to_str)
 
-        expense_category_chart_data = self.logic.get_expense_category_data_for_report(date_from_str, date_to_str)
-        self._draw_report_expense_category_chart(expense_category_chart_data)
-
-    def _draw_report_income_expense_chart(self, data):
-        """Dibuja el gráfico de barras de ingresos vs gastos para el reporte usando Matplotlib."""
-        fig = self.report_income_expense_canvas.figure
+    def _generate_weekly_income_expense_chart(self, date_from_str, date_to_str):
+        """Genera el gráfico de barras de ingresos vs gastos por semana."""
+        from datetime import datetime, timedelta
+        import numpy as np
+        
+        fig = self.weekly_income_expense_canvas.figure
         fig.clear()
         ax = fig.add_subplot(111)
         
-        # Verificar si hay datos para graficar
-        if not data["labels"] or (not any(data["ingresos"]) and not any(data["gastos"])):
-            ax.text(0.5, 0.5, "No hay datos de ingresos/gastos para este periodo.", 
-                    horizontalalignment='center', verticalalignment='center', 
-                    transform=ax.transAxes, color='white')
-            ax.set_xticks([])
-            ax.set_yticks([])
-            ax.set_title('Ingresos vs Gastos por Periodo', color='#00d9ff')
-            ax.set_facecolor('#2b2b2b')
-            fig.patch.set_facecolor('#1f1f1f')
-            self.report_income_expense_canvas.draw()
-            return
-
-        bar_width = 0.35
-        index = np.arange(len(data["labels"]))
-
-        ax.bar(index, data["ingresos"], bar_width, label='Ingresos', color='#4CAF50')
-        ax.bar(index + bar_width, data["gastos"], bar_width, label='Gastos', color='#F44336')
-
-        ax.set_xlabel('Periodo', color='white')
-        ax.set_ylabel('Monto ($)', color='white')
-        ax.set_title('Ingresos vs Gastos por Periodo', color='#00d9ff')
-        ax.set_xticks(index + bar_width / 2)
-        ax.set_xticklabels(data["labels"], rotation=45, ha='right', color='white')
-        ax.legend(facecolor='#1f1f1f', edgecolor='white', labelcolor='white')
-        ax.tick_params(axis='y', colors='white')
-        ax.tick_params(axis='x', colors='white')
+        # Configurar colores y estilo del fondo con gradiente
+        ax.set_facecolor('#1a1a1a')
+        fig.patch.set_facecolor('#0f0f0f')
         
-        # Fondo del gráfico
+        try:
+            # Convertir fechas
+            start_date = datetime.fromisoformat(date_from_str)
+            end_date = datetime.fromisoformat(date_to_str)
+            
+            # Obtener transacciones del período
+            transactions = self.logic.get_transactions_for_report(date_from_str, date_to_str)
+            
+            if not transactions:
+                ax.text(0.5, 0.5, "No hay transacciones en este período", 
+                       horizontalalignment='center', verticalalignment='center',
+                       transform=ax.transAxes, color='#00d9ff', fontsize=16, fontweight='bold')
+                ax.set_title('📊 Ingresos vs Gastos por Semana', color='#00d9ff', 
+                           fontsize=18, fontweight='bold', pad=25)
+                self.weekly_income_expense_canvas.draw()
+                return
+            
+            # Calcular semanas
+            weeks = []
+            week_income = []
+            week_expense = []
+            
+            current_date = start_date
+            week_num = 1
+            
+            while current_date <= end_date:
+                week_end = min(current_date + timedelta(days=6), end_date)
+                
+                # Calcular totales de la semana
+                income_total = 0
+                expense_total = 0
+                
+                for trans in transactions:
+                    trans_date = datetime.fromisoformat(trans['fecha'])
+                    if current_date <= trans_date <= week_end:
+                        if trans['tipo'] == 1:  # Ingreso
+                            income_total += trans['monto']
+                        elif trans['tipo'] == 2:  # Gasto
+                            expense_total += trans['monto']
+                
+                weeks.append(f"Semana {week_num}")
+                week_income.append(income_total)
+                week_expense.append(expense_total)
+                
+                current_date = week_end + timedelta(days=1)
+                week_num += 1
+            
+            # Crear gráfico de barras mejorado
+            if weeks:
+                x = np.arange(len(weeks))
+                width = 0.4
+                
+                # Barras con gradientes y efectos visuales
+                bars1 = ax.bar(x - width/2, week_income, width, 
+                              label='Ingresos', 
+                              color='#4CAF50', 
+                              alpha=0.9, 
+                              edgecolor='#2E7D32', 
+                              linewidth=2,
+                              capstyle='round')
+                
+                bars2 = ax.bar(x + width/2, week_expense, width, 
+                              label='Gastos', 
+                              color='#F44336', 
+                              alpha=0.9, 
+                              edgecolor='#C62828', 
+                              linewidth=2,
+                              capstyle='round')
+                
+                # Añadir efectos de gradiente a las barras
+                for bar in bars1:
+                    bar.set_facecolor('#4CAF50')
+                    bar.set_alpha(0.85)
+                
+                for bar in bars2:
+                    bar.set_facecolor('#F44336')
+                    bar.set_alpha(0.85)
+                
+                # Configurar ejes y etiquetas con estilo mejorado
+                ax.set_xlabel('Período de Análisis', color='#00d9ff', fontsize=13, fontweight='bold')
+                ax.set_ylabel('Monto (USD)', color='#00d9ff', fontsize=13, fontweight='bold')
+                ax.set_title('Análisis Financiero Semanal', color='#00d9ff', 
+                           fontsize=18, fontweight='bold', pad=25)
+                ax.set_xticks(x)
+                ax.set_xticklabels(weeks, color='white', fontsize=11, rotation=45, ha='right')
+                
+                # Configurar leyenda mejorada
+                legend = ax.legend(loc='upper left', 
+                                 facecolor='#1a1a1a', 
+                                 edgecolor='#00d9ff', 
+                                 labelcolor='white', 
+                                 fontsize=12,
+                                 framealpha=0.9,
+                                 shadow=True)
+                legend.get_frame().set_linewidth(2)
+                
+                # Grid mejorado
+                ax.grid(True, alpha=0.2, color='#00d9ff', linestyle='--', linewidth=0.8)
+                ax.set_axisbelow(True)
+                
+                # Configuración de ticks
+                ax.tick_params(axis='y', colors='white', labelsize=11)
+                ax.tick_params(axis='x', colors='white', labelsize=10)
+                
+                # Remover bordes y mejorar apariencia
+                ax.spines['top'].set_visible(False)
+                ax.spines['right'].set_visible(False)
+                ax.spines['left'].set_color('#00d9ff')
+                ax.spines['left'].set_linewidth(2)
+                ax.spines['bottom'].set_color('#00d9ff')
+                ax.spines['bottom'].set_linewidth(2)
+                
+                # Añadir valores en las barras con mejor formato
+                max_value = max(max(week_income) if week_income else 0, max(week_expense) if week_expense else 0)
+                
+                for i, bar in enumerate(bars1):
+                    height = bar.get_height()
+                    if height > 0:
+                        ax.text(bar.get_x() + bar.get_width()/2., height + max_value * 0.02,
+                               f'${height:,.0f}', ha='center', va='bottom', 
+                               color='#4CAF50', fontsize=10, fontweight='bold',
+                               bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8))
+                
+                for i, bar in enumerate(bars2):
+                    height = bar.get_height()
+                    if height > 0:
+                        ax.text(bar.get_x() + bar.get_width()/2., height + max_value * 0.02,
+                               f'${height:,.0f}', ha='center', va='bottom', 
+                               color='#F44336', fontsize=10, fontweight='bold',
+                               bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8))
+                
+                # Ajustar márgenes para mejor visualización
+                plt.subplots_adjust(bottom=0.15, left=0.1, right=0.95, top=0.9)
+            
+        except Exception as e:
+            ax.text(0.5, 0.5, f"❌ Error al generar gráfico: {str(e)}", 
+                   horizontalalignment='center', verticalalignment='center',
+                   transform=ax.transAxes, color='#F44336', fontsize=12, fontweight='bold')
+            ax.set_title('📊 Análisis Financiero Semanal', color='#00d9ff', 
+                        fontsize=18, fontweight='bold', pad=25)
+        
+        self.weekly_income_expense_canvas.draw()
+
+    def _generate_expense_distribution_pie(self, date_from_str, date_to_str):
+        """Genera el gráfico de pastel de distribución de gastos por categoría."""
+        fig = self.expense_distribution_canvas.figure
+        fig.clear()
+        ax = fig.add_subplot(111)
+        
+        # Configurar fondo
         ax.set_facecolor('#2b2b2b')
         fig.patch.set_facecolor('#1f1f1f')
-
-        # Eliminar bordes del gráfico
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['left'].set_color('white')
-        ax.spines['bottom'].set_color('white')
-
-        # Intenta primero sin tight_layout
-        # fig.tight_layout()
         
-        # Alternativa 1: Usar un layout menos ajustado
-        # fig.subplots_adjust(left=0.15, right=0.95, top=0.9, bottom=0.25)
+        try:
+            # Obtener datos de gastos por categoría
+            transactions = self.logic.get_transactions_for_report(date_from_str, date_to_str)
+            categories = self.logic.get_categories()
+            
+            # Filtrar solo gastos
+            expenses = [t for t in transactions if t['tipo'] == 2]
+            
+            if not expenses:
+                ax.text(0.5, 0.5, "No hay gastos en este período", 
+                       horizontalalignment='center', verticalalignment='center',
+                       transform=ax.transAxes, color='white', fontsize=14, fontweight='bold')
+                ax.set_title('🍰 Distribución de Gastos por Categoría', color='#00d9ff', 
+                           fontsize=16, fontweight='bold', pad=20)
+                self.expense_distribution_canvas.draw()
+                return
+            
+            # Agrupar por categoría
+            category_totals = {}
+            for expense in expenses:
+                cat_id = expense.get('categoria_id')
+                cat_name = categories.get(cat_id, 'Sin Categoría')
+                category_totals[cat_name] = category_totals.get(cat_name, 0) + expense['monto']
+            
+            # Preparar datos para el gráfico
+            labels = list(category_totals.keys())
+            sizes = list(category_totals.values())
+            total_gastos = sum(sizes)
+            
+            # Colores
+            colors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                '#FF9F40', '#E7E9ED', '#8D6E63', '#FFD700', '#00d9ff',
+                '#FF5722', '#795548', '#607D8B', '#9C27B0', '#673AB7'
+            ][:len(labels)]
+            
+            # Crear gráfico de pastel CON etiquetas alrededor de cada sección
+            wedges, texts = ax.pie(
+                sizes, 
+                labels=labels,
+                autopct=None,
+                startangle=90,
+                colors=colors,
+                explode=[0.03] * len(labels),
+                shadow=True,
+                wedgeprops={'linewidth': 2, 'edgecolor': '#2b2b2b'},
+                textprops={'color': 'white', 'fontsize': 10, 'fontweight': 'bold'}
+            )
+            
+            # Título
+            ax.set_title('Distribución de Gastos por Categoría', color='#00d9ff', 
+                        fontsize=16, fontweight='bold', pad=20)
+            
+            # Leyenda con cuadritos de colores
+            legend = ax.legend(wedges, labels, 
+                             title="Categorías",
+                             loc="center left", 
+                             bbox_to_anchor=(0.85, 0, 0.3, 1),
+                             fontsize=10,
+                             title_fontsize=12,
+                             facecolor='#2b2b2b',
+                             edgecolor='#00d9ff',
+                             labelcolor='white',
+                             framealpha=0.9)
+            legend.get_title().set_color('#00d9ff')
+            legend.get_title().set_fontweight('bold')
+            
+            ax.axis('equal')
+            
+            # Ajustar layout para incluir leyenda
+            plt.subplots_adjust(left=0.05, right=0.85, top=0.9, bottom=0.1)
+            
+        except Exception as e:
+            ax.text(0.5, 0.5, f"❌ Error: {str(e)}", 
+                   horizontalalignment='center', verticalalignment='center',
+                   transform=ax.transAxes, color='#F44336', fontsize=11, fontweight='bold')
+            ax.set_title('🍰 Distribución de Gastos por Categoría', color='#00d9ff', 
+                        fontsize=16, fontweight='bold', pad=20)
         
-        # Alternativa 2: Prueba con constrained_layout
-        # fig.set_constrained_layout(True)
-        
-        # Dibujar el canvas sin tight_layout para prueba
-        self.report_income_expense_canvas.draw()
+        self.expense_distribution_canvas.draw()
 
-
-    # Y modifica también la función para gráficos circulares de manera similar
-    def _draw_report_expense_category_chart(self, data):
-        """Dibuja el gráfico circular de gastos por categoría para el reporte usando Matplotlib."""
-        fig = self.report_expense_category_canvas.figure
+    def _generate_financial_balance_pie(self, date_from_str, date_to_str):
+        """Genera el gráfico de pastel del balance financiero."""
+        fig = self.financial_balance_canvas.figure
         fig.clear()
         ax = fig.add_subplot(111)
-
-        # Verificar si hay datos para graficar
-        if not data["labels"] or not any(data["data"]):
-            ax.text(0.5, 0.5, "No hay datos de gastos por categoría para este periodo.", 
-                    horizontalalignment='center', verticalalignment='center', 
-                    transform=ax.transAxes, color='white')
-            ax.set_xticks([])
-            ax.set_yticks([])
-            ax.set_title('Gastos por Categoría', color='#00d9ff')
-            ax.set_facecolor('#2b2b2b')
-            fig.patch.set_facecolor('#1f1f1f')
-            self.report_expense_category_canvas.draw()
-            return
         
-        # Resto del código para gráfico circular...
-        # ...
+        # Configurar fondo
+        ax.set_facecolor('#2b2b2b')
+        fig.patch.set_facecolor('#1f1f1f')
         
-        # Comentar tight_layout aquí también
-        # fig.tight_layout()
-        self.report_expense_category_canvas.draw()
+        try:
+            # Obtener resumen financiero
+            summary = self.logic.get_report_summary(date_from_str, date_to_str)
+            
+            # Preparar datos
+            labels = []
+            sizes = []
+            colors = []
+            
+            if summary['ingresos'] > 0:
+                labels.append('Ingresos')
+                sizes.append(summary['ingresos'])
+                colors.append('#4CAF50')
+            
+            if summary['gastos'] > 0:
+                labels.append('Gastos')
+                sizes.append(summary['gastos'])
+                colors.append('#F44336')
+            
+            if summary['ahorro_metas'] > 0:
+                labels.append('Ahorro a Metas')
+                sizes.append(summary['ahorro_metas'])
+                colors.append('#FF9800')
+            
+            if not sizes:
+                ax.text(0.5, 0.5, "No hay datos financieros en este período", 
+                       horizontalalignment='center', verticalalignment='center',
+                       transform=ax.transAxes, color='white', fontsize=14, fontweight='bold')
+                ax.set_title('💰 Balance Financiero', color='#00d9ff', 
+                           fontsize=16, fontweight='bold', pad=20)
+                self.financial_balance_canvas.draw()
+                return
+            
+            # Crear gráfico de pastel CON etiquetas alrededor de cada sección
+            wedges, texts = ax.pie(
+                sizes, 
+                labels=labels,
+                autopct=None,
+                startangle=90,
+                colors=colors,
+                explode=[0.03] * len(labels),
+                shadow=True,
+                wedgeprops={'linewidth': 2, 'edgecolor': '#2b2b2b'},
+                textprops={'color': 'white', 'fontsize': 10, 'fontweight': 'bold'}
+            )
+            
+            # Título simple
+            ax.set_title('Balance Financiero', color='#00d9ff', 
+                        fontsize=16, fontweight='bold', pad=20)
+            
+            # Leyenda con cuadritos de colores
+            legend = ax.legend(wedges, labels, 
+                             title="Componentes",
+                             loc="center left", 
+                             bbox_to_anchor=(0.85, 0, 0.3, 1),
+                             fontsize=10,
+                             title_fontsize=12,
+                             facecolor='#2b2b2b',
+                             edgecolor='#00d9ff',
+                             labelcolor='white',
+                             framealpha=0.9)
+            legend.get_title().set_color('#00d9ff')
+            legend.get_title().set_fontweight('bold')
+            
+            ax.axis('equal')
+            
+            # Ajustar layout para incluir leyenda
+            plt.subplots_adjust(left=0.05, right=0.85, top=0.9, bottom=0.1)
+            
+        except Exception as e:
+            ax.text(0.5, 0.5, f"❌ Error: {str(e)}", 
+                   horizontalalignment='center', verticalalignment='center',
+                   transform=ax.transAxes, color='#F44336', fontsize=11, fontweight='bold')
+            ax.set_title('💰 Balance Financiero', color='#00d9ff', 
+                        fontsize=16, fontweight='bold', pad=20)
+        
+        self.financial_balance_canvas.draw()
 
 
     def show_message(self, title, message, icon):
