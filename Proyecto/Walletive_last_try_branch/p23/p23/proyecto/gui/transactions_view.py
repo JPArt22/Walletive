@@ -454,23 +454,32 @@ class TransactionsView(QWidget):
     def show_form(self, form_type: str):
         self.history_frame.hide()
         self.form_frame.show()
-        self.current_transaction_id = None # Reset para añadir
-        self.form_title.setText("Añadir Nueva Transacción")
-        self.submit_btn.setText("Guardar Transacción")
+
+        if form_type in ["income", "expense"]:
+            self.current_transaction_id = None  # Solo resetear si es nuevo ingreso/gasto
+            self.form_title.setText("Añadir Nueva Transacción")
+            self.submit_btn.setText("Guardar Transacción")
+        else:
+            self.form_title.setText("Editar Transacción")
+            self.submit_btn.setText("Actualizar Transacción")
+
         self.clear_form()
 
         self.type_label.hide()
         self.type_combo.hide()
 
         if form_type == "income":
-            self.type_combo.setCurrentIndex(0) # Ingreso
+            self.type_combo.setCurrentIndex(0)  # Ingreso
             self.category_label.hide()
             self.category_combo.hide()
         elif form_type == "expense":
-            self.type_combo.setCurrentIndex(1) # Gasto
+            self.type_combo.setCurrentIndex(1)  # Gasto
             self.category_label.show()
             self.category_combo.show()
-        
+        elif form_type == "edit":
+            self.type_label.show()
+            self.type_combo.show()
+
         self.desc_input.setFocus()
 
     def show_history(self):

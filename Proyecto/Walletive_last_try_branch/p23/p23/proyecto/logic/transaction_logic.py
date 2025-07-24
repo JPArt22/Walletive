@@ -22,7 +22,7 @@ class TransactionLogic:
 
     def update_transaction(self, transaction_id: int, transaction_type: int, description: str, amount: float, category_id: int = None):
         """Actualiza una transacción existente."""
-        if not description or amount <= 0:
+        if not description or amount is None or amount <= 0:
             return False, "Descripción y monto válidos son requeridos."
         
         return self.db.editar_movimiento(transaction_id, transaction_type, description, amount, category_id), ""

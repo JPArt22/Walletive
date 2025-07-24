@@ -3,7 +3,7 @@
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QFrame, QMessageBox, QTableWidget, QTableWidgetItem,
-    QHeaderView, QSizePolicy, QStackedWidget
+    QHeaderView, QSizePolicy, QStackedWidget, QProgressBar
 )
 from PyQt5.QtGui import QFont, QColor
 from PyQt5.QtCore import Qt, QDate
@@ -114,6 +114,44 @@ class GoalsView(QWidget):
         financial_layout.addLayout(left_column)
         financial_layout.addLayout(right_column)
         info_grid_layout.addWidget(financial_frame)
+        
+        # Barra de progreso visual de la meta
+        progress_frame = QFrame()
+        progress_frame.setStyleSheet("background: transparent; border: none;")
+        progress_layout = QVBoxLayout(progress_frame)
+        progress_layout.setSpacing(5)
+        progress_layout.setContentsMargins(0, 10, 0, 0)
+        
+        progress_title = QLabel("📊 Progreso Visual")
+        progress_title.setFont(QFont("Segoe UI", 14, QFont.Bold))
+        progress_title.setStyleSheet("color: #00d9ff; margin-bottom: 5px;")
+        progress_layout.addWidget(progress_title)
+        
+        self.goal_progress_bar = QProgressBar()
+        self.goal_progress_bar.setTextVisible(True)
+        self.goal_progress_bar.setFormat("%p%")
+        self.goal_progress_bar.setMinimumHeight(70)  # Misma altura que en main_window
+        self.goal_progress_bar.setStyleSheet("""
+            QProgressBar {
+                border: 2px solid #00d9ff;
+                border-radius: 35px;
+                background-color: #2b2b2b;
+                text-align: center;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 0px;
+            }
+            QProgressBar::chunk {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+                    stop:0 #00d9ff, stop:0.5 #00b8d4, stop:1 #006e58);
+                border-radius: 33px;
+                margin: 0px;
+            }
+        """)
+        progress_layout.addWidget(self.goal_progress_bar)
+        
+        info_grid_layout.addWidget(progress_frame)
         
         goal_display_layout.addWidget(info_grid_frame)
         
@@ -551,6 +589,10 @@ class GoalsView(QWidget):
             else:
                 self.lbl_progress.setStyleSheet("color: #e0e0e0; padding: 0px;")
             
+            # Actualizar barra de progreso visual
+            self.goal_progress_bar.setValue(int(progress_percentage))
+            self.goal_progress_bar.show()
+            
             self.btn_add_saving.setEnabled(True)
             self.btn_delete_goal.setEnabled(True)
             self.amount_to_add_input.setEnabled(True)
@@ -571,6 +613,8 @@ class GoalsView(QWidget):
             self.current_goal_id = None
             self.goal_display_frame.hide() # Ocultar el marco de info
             self.history_frame.hide() # Ocultar el historial
+            self.goal_progress_bar.setValue(0) # Resetear barra de progreso
+            self.goal_progress_bar.hide() # Ocultar barra de progreso
             self.btn_add_saving.setEnabled(False)
             self.btn_delete_goal.setEnabled(False)
             self.amount_to_add_input.setEnabled(False)

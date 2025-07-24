@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame,
     QTableWidget, QTableWidgetItem, QHeaderView, QDateEdit, QMessageBox
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QColor
 from PyQt5.QtCore import Qt, QDate
 
 # Importaciones de Matplotlib
@@ -61,17 +61,29 @@ class ReportsView(QWidget):
         """)
         filter_layout.addWidget(self.date_to)
 
-        self.btn_generate_report = QPushButton("Generar Reporte")
+        self.btn_generate_report = QPushButton("📊 Generar Reporte")
         self.btn_generate_report.setFont(QFont("Segoe UI", 11, QFont.Bold))
         self.btn_generate_report.setStyleSheet("""
             QPushButton {
-                background-color: #006e58;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                    stop:0 #006e58, stop:1 #005a4a);
                 color: white;
-                border-radius: 8px;
-                padding: 8px 15px;
+                border-radius: 10px;
+                padding: 12px 20px;
+                border: 1px solid #004a3a;
+                font-weight: bold;
+                min-height: 20px;
             }
             QPushButton:hover {
-                background-color: #005a4a;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                    stop:0 #007a68, stop:1 #006858);
+                border: 1px solid #00d9ff;
+                box-shadow: 0px 2px 8px rgba(0, 217, 255, 0.3);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                    stop:0 #005a4a, stop:1 #004a3a);
+                transform: translateY(1px);
             }
         """)
         self.btn_generate_report.clicked.connect(self.generate_report)
@@ -95,66 +107,216 @@ class ReportsView(QWidget):
 
     def create_summary_section(self):
         self.summary_frame = QFrame()
-        self.summary_frame.setStyleSheet("background-color: #1f1f1f; border-radius: 12px; padding: 20px;")
+        self.summary_frame.setStyleSheet("""
+            QFrame {
+                background-color: #1f1f1f;
+                border-radius: 15px;
+                padding: 25px;
+            }
+        """)
         summary_layout = QVBoxLayout(self.summary_frame)
-        summary_layout.setSpacing(10)
+        summary_layout.setSpacing(15)
 
         summary_title = QLabel("📋 Resumen General")
-        summary_title.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        summary_title.setStyleSheet("color: #00d9ff;")
+        summary_title.setFont(QFont("Segoe UI", 18, QFont.Bold))
+        summary_title.setStyleSheet("color:#00d9ff; margin-bottom: 10px;")
         summary_layout.addWidget(summary_title)
 
-        self.lbl_report_ingresos = QLabel("Ingresos: $0.00")
-        self.lbl_report_gastos = QLabel("Gastos: $0.00")
-        self.lbl_report_balance = QLabel("Balance: $0.00")
-        self.lbl_report_ahorro = QLabel("Ahorro a Metas: $0.00")
+        # Grid de estadísticas mejorado
+        stats_grid = QFrame()
+        stats_grid_layout = QVBoxLayout(stats_grid)
+        stats_grid_layout.setSpacing(8)
 
-        for lbl in [self.lbl_report_ingresos, self.lbl_report_gastos, self.lbl_report_balance, self.lbl_report_ahorro]:
-            lbl.setFont(QFont("Segoe UI", 12))
-            lbl.setStyleSheet("color: white;")
-            summary_layout.addWidget(lbl)
+        # Crear labels con mejor formato (igual que en main_window)
+        self.lbl_report_ingresos = QLabel("💰 Ingresos: $0.00")
+        self.lbl_report_ingresos.setFont(QFont("Segoe UI", 15, QFont.Medium))
+        self.lbl_report_ingresos.setStyleSheet("color:#4CAF50; padding: 8px; background-color: rgba(76, 175, 80, 0.1); border-radius: 8px;")
         
+        self.lbl_report_gastos = QLabel("💸 Gastos: $0.00")
+        self.lbl_report_gastos.setFont(QFont("Segoe UI", 15, QFont.Medium))
+        self.lbl_report_gastos.setStyleSheet("color:#F44336; padding: 8px; background-color: rgba(244, 67, 54, 0.1); border-radius: 8px;")
+        
+        self.lbl_report_balance = QLabel("📈 Balance: $0.00")
+        self.lbl_report_balance.setFont(QFont("Segoe UI", 15, QFont.Bold))
+        self.lbl_report_balance.setStyleSheet("color:#4CAF50; padding: 8px; background-color: rgba(0, 217, 255, 0.1); border-radius: 8px;")
+        
+        self.lbl_report_ahorro = QLabel("🎯 Ahorro a Metas: $0.00")
+        self.lbl_report_ahorro.setFont(QFont("Segoe UI", 15, QFont.Medium))
+        self.lbl_report_ahorro.setStyleSheet("color:#FF9800; padding: 8px; background-color: rgba(255, 152, 0, 0.1); border-radius: 8px;")
+
+        for w in (self.lbl_report_ingresos, self.lbl_report_gastos, self.lbl_report_balance, self.lbl_report_ahorro):
+            stats_grid_layout.addWidget(w)
+        
+        summary_layout.addWidget(stats_grid)
         self.report_content_layout.addWidget(self.summary_frame)
 
     def create_transaction_detail_section(self):
         self.detail_frame = QFrame()
-        self.detail_frame.setStyleSheet("background-color: #1f1f1f; border-radius: 12px; padding: 20px;")
+        self.detail_frame.setStyleSheet("""
+            QFrame {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                    stop:0 #1f1f1f, stop:1 #1a1a1a);
+                border-radius: 15px;
+                padding: 25px;
+                border: 1px solid #333333;
+                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+            }
+        """)
         detail_layout = QVBoxLayout(self.detail_frame)
-        detail_layout.setSpacing(10)
+        detail_layout.setSpacing(20)
 
+        # Header con icono y estadísticas (igual que en transactions_view)
+        header_frame = QFrame()
+        header_frame.setStyleSheet("background: transparent; border: none;")
+        header_layout = QHBoxLayout(header_frame)
+        header_layout.setContentsMargins(0, 0, 0, 10)
+        
+        # Título principal
+        title_container = QVBoxLayout()
         detail_title = QLabel("📝 Detalle de Transacciones")
-        detail_title.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        detail_title.setStyleSheet("color: #00d9ff;")
-        detail_layout.addWidget(detail_title)
+        detail_title.setFont(QFont("Segoe UI", 18, QFont.Bold))
+        detail_title.setStyleSheet("color: #00d9ff; margin-bottom: 5px;")
+        
+        # Subtítulo con información
+        self.transactions_count_label = QLabel("Transacciones del período seleccionado")
+        self.transactions_count_label.setFont(QFont("Segoe UI", 11))
+        self.transactions_count_label.setStyleSheet("color: #aaa;")
+        
+        title_container.addWidget(detail_title)
+        title_container.addWidget(self.transactions_count_label)
+        header_layout.addLayout(title_container)
+        header_layout.addStretch()
+        
+        detail_layout.addWidget(header_frame)
 
+        # Tabla mejorada con estilo moderno (igual que transactions_view)
         self.transaction_report_table = QTableWidget()
         self.transaction_report_table.setColumnCount(6)
         self.transaction_report_table.setHorizontalHeaderLabels(["ID", "Tipo", "Descripción", "Monto", "Categoría", "Fecha"])
-        self.transaction_report_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        
+        # Configurar anchos de columnas específicos
+        header = self.transaction_report_table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.Fixed)  # ID fija
+        header.setSectionResizeMode(1, QHeaderView.Fixed)  # Tipo fija
+        header.setSectionResizeMode(2, QHeaderView.Stretch)  # Descripción expandible
+        header.setSectionResizeMode(3, QHeaderView.Fixed)  # Monto fija
+        header.setSectionResizeMode(4, QHeaderView.Fixed)  # Categoría fija
+        header.setSectionResizeMode(5, QHeaderView.Fixed)  # Fecha fija
+        
+        # Establecer altura del header y eliminar márgenes
+        header.setFixedHeight(45)
+        header.setContentsMargins(0, 0, 0, 0)
+        header.setDefaultAlignment(Qt.AlignCenter)
+        
+        # Establecer anchos específicos
+        self.transaction_report_table.setColumnWidth(0, 60)   # ID
+        self.transaction_report_table.setColumnWidth(1, 80)   # Tipo
+        self.transaction_report_table.setColumnWidth(3, 120)  # Monto
+        self.transaction_report_table.setColumnWidth(4, 120)  # Categoría
+        self.transaction_report_table.setColumnWidth(5, 100)  # Fecha
+        
+        # Estilo moderno y elegante para la tabla (igual que transactions_view)
         self.transaction_report_table.setStyleSheet("""
             QTableWidget {
-                background-color: #2b2b2b;
+                background-color: #242424;
                 color: white;
-                border: 1px solid #333;
-                border-radius: 8px;
-                gridline-color: #444;
+                border: none;
+                border-radius: 12px;
+                gridline-color: #404040;
                 font-size: 13px;
+                selection-background-color: transparent;
+                outline: none;
             }
             QHeaderView::section {
-                background-color: #1e1e1e;
+                background-color: transparent;
                 color: #00d9ff;
-                padding: 8px;
-                border: 1px solid #333;
+                padding: 0px;
+                margin: 0px;
+                border: none;
+                border-bottom: 2px solid #00d9ff;
+                border-right: 1px solid #404040;
                 font-weight: bold;
+                font-size: 13px;
+                text-align: center;
+                height: 45px;
+                max-height: 45px;
+                min-height: 45px;
+            }
+            QHeaderView {
+                background-color: transparent;
+                border: none;
+                margin: 0px;
+                padding: 0px;
+            }
+            QHeaderView::section:first {
+                border-top-left-radius: 12px;
+                border-left: none;
+            }
+            QHeaderView::section:last {
+                border-top-right-radius: 12px;
+                border-right: none;
             }
             QTableWidget::item {
-                padding: 5px;
+                padding: 12px 8px;
+                border-bottom: 1px solid #333333;
+                background-color: transparent;
             }
             QTableWidget::item:selected {
-                background-color: #006e58;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+                    stop:0 rgba(0, 217, 255, 0.2), stop:1 rgba(0, 110, 88, 0.3));
                 color: white;
+                border: 1px solid #00d9ff;
+                border-radius: 6px;
+            }
+            QTableWidget::item:hover {
+                background-color: rgba(0, 217, 255, 0.08);
+                border-radius: 4px;
+            }
+            QScrollBar:vertical {
+                background-color: #1e1e1e;
+                width: 8px;
+                border-radius: 4px;
+                margin: 0px;
+            }
+            QScrollBar::handle:vertical {
+                background-color: #00d9ff;
+                border-radius: 4px;
+                margin: 2px;
+                min-height: 20px;
+            }
+            QScrollBar::handle:vertical:hover {
+                background-color: #00b8d4;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                border: none;
+                background: none;
+                height: 0px;
             }
         """)
+        
+        # Configuraciones adicionales de la tabla (igual que transactions_view)
+        self.transaction_report_table.setSelectionBehavior(QTableWidget.SelectRows)
+        self.transaction_report_table.setSelectionMode(QTableWidget.SingleSelection)
+        self.transaction_report_table.setAlternatingRowColors(False)
+        self.transaction_report_table.verticalHeader().setVisible(False)
+        self.transaction_report_table.horizontalHeader().setVisible(True)
+        self.transaction_report_table.setShowGrid(True)
+        self.transaction_report_table.setSortingEnabled(True)
+        
+        # Configuraciones adicionales del header para perfecta alineación
+        header.setStretchLastSection(False)
+        header.setDefaultSectionSize(100)
+        header.setHighlightSections(False)
+        header.setSectionsClickable(True)
+        header.setSectionsMovable(False)
+        
+        # Eliminar cualquier offset del header
+        self.transaction_report_table.setContentsMargins(0, 0, 0, 0)
+        self.transaction_report_table.horizontalHeader().setOffset(0)
+        
+        # Altura mínima para mejor visualización
+        self.transaction_report_table.setMinimumHeight(300)
+        
         detail_layout.addWidget(self.transaction_report_table)
         self.report_content_layout.addWidget(self.detail_frame)
 
@@ -202,26 +364,81 @@ class ReportsView(QWidget):
 
         # Obtener datos del resumen
         summary_data = self.logic.get_report_summary(date_from_str, date_to_str)
-        self.lbl_report_ingresos.setText(f"Ingresos: ${summary_data['ingresos']:,.2f}")
-        self.lbl_report_gastos.setText(f"Gastos: ${summary_data['gastos']:,.2f}")
+        self.lbl_report_ingresos.setText(f"💰 Ingresos: ${summary_data['ingresos']:,.2f}")
+        self.lbl_report_gastos.setText(f"💸 Gastos: ${summary_data['gastos']:,.2f}")
+        
+        # Actualizar balance con color dinámico
         balance_color = "#4CAF50" if summary_data['balance'] >= 0 else "#F44336"
-        self.lbl_report_balance.setText(f"Balance: ${summary_data['balance']:,.2f}")
-        self.lbl_report_balance.setStyleSheet(f"color: {balance_color};")
-        self.lbl_report_ahorro.setText(f"Ahorro a Metas: ${summary_data['ahorro_metas']:,.2f}")
+        self.lbl_report_balance.setText(f"📈 Balance: ${summary_data['balance']:,.2f}")
+        self.lbl_report_balance.setStyleSheet(f"color:{balance_color}; padding: 8px; background-color: rgba(0, 217, 255, 0.1); border-radius: 8px;")
+        
+        self.lbl_report_ahorro.setText(f"🎯 Ahorro a Metas: ${summary_data['ahorro_metas']:,.2f}")
 
         # Obtener y mostrar detalle de transacciones
         transactions_data = self.logic.get_transactions_for_report(date_from_str, date_to_str)
         self.transaction_report_table.setRowCount(len(transactions_data))
         categories = self.logic.get_categories()
         transaction_types = self.logic.get_transaction_types()
+        
+        # Actualizar contador de transacciones
+        if len(transactions_data) == 0:
+            self.transactions_count_label.setText("No hay transacciones en este período")
+        elif len(transactions_data) == 1:
+            self.transactions_count_label.setText("1 transacción encontrada")
+        else:
+            self.transactions_count_label.setText(f"{len(transactions_data)} transacciones encontradas")
 
         for row_idx, trans in enumerate(transactions_data):
-            self.transaction_report_table.setItem(row_idx, 0, QTableWidgetItem(str(trans["id"])))
-            self.transaction_report_table.setItem(row_idx, 1, QTableWidgetItem(transaction_types.get(trans["tipo"], "Desconocido")))
-            self.transaction_report_table.setItem(row_idx, 2, QTableWidgetItem(trans["descripcion"]))
-            self.transaction_report_table.setItem(row_idx, 3, QTableWidgetItem(f"${trans['monto']:,.2f}"))
-            self.transaction_report_table.setItem(row_idx, 4, QTableWidgetItem(categories.get(trans["categoria_id"], "N/A")))
-            self.transaction_report_table.setItem(row_idx, 5, QTableWidgetItem(trans["fecha"]))
+            # ID
+            id_item = QTableWidgetItem(str(trans["id"]))
+            id_item.setTextAlignment(Qt.AlignCenter)
+            id_item.setForeground(QColor("#aaa"))
+            id_item.setFont(QFont("Segoe UI", 11))
+            self.transaction_report_table.setItem(row_idx, 0, id_item)
+            
+            # Tipo con color
+            type_item = QTableWidgetItem(transaction_types.get(trans["tipo"], "Desconocido"))
+            type_item.setTextAlignment(Qt.AlignCenter)
+            type_item.setFont(QFont("Segoe UI", 11, QFont.Bold))
+            if trans["tipo"] == 1:  # Ingreso
+                type_item.setForeground(QColor("#4CAF50"))
+            else:  # Gasto
+                type_item.setForeground(QColor("#F44336"))
+            self.transaction_report_table.setItem(row_idx, 1, type_item)
+            
+            # Descripción
+            desc_item = QTableWidgetItem(trans["descripcion"])
+            desc_item.setForeground(QColor("#ffffff"))
+            desc_item.setFont(QFont("Segoe UI", 11))
+            self.transaction_report_table.setItem(row_idx, 2, desc_item)
+            
+            # Monto con formato y color
+            amount_item = QTableWidgetItem(f"${trans['monto']:,.2f}")
+            amount_item.setTextAlignment(Qt.AlignCenter)
+            amount_item.setFont(QFont("Segoe UI", 12, QFont.Bold))
+            if trans["tipo"] == 1:  # Ingreso
+                amount_item.setForeground(QColor("#4CAF50"))
+            else:  # Gasto
+                amount_item.setForeground(QColor("#F44336"))
+            self.transaction_report_table.setItem(row_idx, 3, amount_item)
+            
+            # Categoría
+            category_item = QTableWidgetItem(categories.get(trans["categoria_id"], "N/A"))
+            category_item.setTextAlignment(Qt.AlignCenter)
+            category_item.setForeground(QColor("#aaaaaa"))
+            category_item.setFont(QFont("Segoe UI", 11))
+            self.transaction_report_table.setItem(row_idx, 4, category_item)
+            
+            # Fecha
+            date_item = QTableWidgetItem(trans["fecha"])
+            date_item.setTextAlignment(Qt.AlignCenter)
+            date_item.setForeground(QColor("#aaaaaa"))
+            date_item.setFont(QFont("Segoe UI", 11))
+            self.transaction_report_table.setItem(row_idx, 5, date_item)
+        
+        # Ajustar altura de filas para mejor visualización
+        for row in range(len(transactions_data)):
+            self.transaction_report_table.setRowHeight(row, 45)
 
         # Dibujar gráficos
         income_expense_chart_data = self.logic.get_income_expense_data_for_report(date_from_str, date_to_str)

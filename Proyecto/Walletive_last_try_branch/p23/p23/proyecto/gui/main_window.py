@@ -457,22 +457,22 @@ class Walletive(QMainWindow):
         self.goal_progress_bar = QProgressBar()
         self.goal_progress_bar.setTextVisible(True)
         self.goal_progress_bar.setFormat("%p%")
-        self.goal_progress_bar.setMinimumHeight(40) # Barra más ancha - aumentado de 30 a 40
+        self.goal_progress_bar.setMinimumHeight(70) # Duplicado: de 40 a 80px para mayor visibilidad
         self.goal_progress_bar.setStyleSheet("""
             QProgressBar {
                 border: 2px solid #00d9ff;
-                border-radius: 20px;
+                border-radius: 40px;
                 background-color: #2b2b2b;
                 text-align: center;
                 color: white;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: bold;
                 padding: 0px;
             }
             QProgressBar::chunk {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
                     stop:0 #00d9ff, stop:0.5 #00b8d4, stop:1 #006e58);
-                border-radius: 18px;
+                border-radius: 38px;
                 margin: 0px;
             }
         """)
