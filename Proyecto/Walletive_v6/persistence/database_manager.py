@@ -17,9 +17,41 @@ class DatabaseManager:
     del usuario (walletive_config.json).
     """
 
-    def __init__(self, db_path: str | Path = "/home/derianbv/ingesoft1/Walletive/walletive.db") -> None:
+    def __init__(self, db_path: str | Path | None = None, config_path: str | Path | None = None) -> None:
+        # Determine default paths relative to current working directory
+        if db_path is None:
+            current_dir = os.getcwd()
+            if 'Proyecto/Walletive_v6' in current_dir:
+                # Running from within the v6 directory
+                db_path = os.path.join(current_dir, '..', '..', 'walletive.db')
+            else:
+                # Running from project root
+                db_path = "walletive.db"
+        
+        if config_path is None:
+            current_dir = os.getcwd()
+            if 'Proyecto/Walletive_v6' in current_dir:
+                # Running from within the v6 directory  
+                config_path = os.path.join(current_dir, 'walletive_config.json')
+            else:
+                # Running from project root
+                config_path = "walletive_config.json"
+        
         self.db_path: str = str(db_path)
-        self.config_path: str = "/home/derianbv/ingesoft1/Walletive/walletive_config.json"
+        self.config_path: str = str(config_path)
+        
+        # Ensure database directory exists
+        db_dir = os.path.dirname(os.path.abspath(self.db_path))
+        if db_dir and not os.path.exists(db_dir):
+            os.makedirs(db_dir, exist_ok=True)
+            
+        # Ensure config directory exists
+        config_dir = os.path.dirname(os.path.abspath(self.config_path))
+        if config_dir and not os.path.exists(config_dir):
+            os.makedirs(config_dir, exist_ok=True)
+            
+        print(f"🔍 Usando base de datos: {os.path.abspath(self.db_path)}")
+        print(f"🔍 Usando configuración: {os.path.abspath(self.config_path)}")
         self.init_database()
 
     # ─────────────────────────  CREAR TABLAS ──────────────────────────

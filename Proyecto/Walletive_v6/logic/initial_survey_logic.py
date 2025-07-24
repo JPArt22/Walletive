@@ -1,5 +1,6 @@
 # logic/initial_survey_logic.py
 
+from typing import Optional
 from persistence.database_manager import DatabaseManager
 
 
@@ -8,9 +9,9 @@ class InitialSurveyLogic:
     Procesa, valida y persiste los resultados de la encuesta inicial.
     """
 
-    def __init__(self, respuestas: list):
+    def __init__(self, respuestas: list, db: Optional[DatabaseManager] = None):
         self.respuestas = respuestas
-        self.db = DatabaseManager()
+        self.db = db or DatabaseManager()
 
     def procesar_y_guardar(self):
         """

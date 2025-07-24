@@ -34,7 +34,7 @@ class Walletive(QMainWindow):
         if 'Proyecto/Walletive_v6' in current_dir:
             # Estamos en el directorio del proyecto, usar BD del directorio raíz
             db_path = os.path.join(current_dir, '..', '..', 'walletive.db')
-            config_path = os.path.join(current_dir, '..', '..', 'walletive_config.json')
+            config_path = os.path.join(current_dir, 'walletive_config.json')
         else:
             # Estamos en el directorio raíz, usar BD local
             db_path = "walletive.db"
@@ -42,8 +42,8 @@ class Walletive(QMainWindow):
         
         print(f"🔍 Usando base de datos: {os.path.abspath(db_path)}")
         
-        self.db_manager = DatabaseManager(db_path)
-        self.dashboard_logic = DashboardLogic()
+        self.db_manager = DatabaseManager(db_path, config_path)
+        self.dashboard_logic = DashboardLogic(self.db_manager)
         self.formatting_logic = FormattingLogic()
 
         self.setWindowTitle("Walletive – Finanzas Personales")
@@ -57,7 +57,7 @@ class Walletive(QMainWindow):
 
     # ────────────────── ENCUESTA INICIAL ──────────────────
     def _mostrar_encuesta(self) -> None:
-        self.setCentralWidget(InitialSurvey(self._encuesta_finalizada))
+        self.setCentralWidget(InitialSurvey(self._encuesta_finalizada, self.db_manager))
 
     def _encuesta_finalizada(self, nombre: str, respuestas: list) -> None:
         self.db_manager.guardar_datos_encuesta(nombre, respuestas)

@@ -1,5 +1,4 @@
-# gui/initial_survey.py
-
+from typing import Optional
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QComboBox,
     QPushButton, QFrame, QMessageBox
@@ -11,14 +10,16 @@ from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from logic.initial_survey_logic import InitialSurveyLogic
 from logic.validation_logic import ValidationLogic
 from logic.ui_logic import UILogic
+from persistence.database_manager import DatabaseManager
 
 
 class InitialSurvey(QWidget):
     """Pantalla paso a paso para configurar al usuario por primera vez."""
 
-    def __init__(self, on_finish_callback):
+    def __init__(self, on_finish_callback, db_manager: Optional[DatabaseManager] = None):
         super().__init__()
         self.on_finish_callback = on_finish_callback
+        self.db_manager = db_manager
         self.validation_logic = ValidationLogic()
         self.ui_logic = UILogic()
         self.setStyleSheet("""
@@ -234,7 +235,7 @@ class InitialSurvey(QWidget):
             
             if self.ui_logic.validate_and_show_errors(self, validation_result):
                 # Lógica de negocio: guarda todo en BD
-                logic = InitialSurveyLogic(respuestas_completas)
+                logic = InitialSurveyLogic(respuestas_completas, self.db_manager)
                 logic.procesar_y_guardar()
                 # Callback al main window
                 self.on_finish_callback(self.nombre_usuario, self.respuestas[1:])

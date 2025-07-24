@@ -1,5 +1,4 @@
-# logic/dashboard_logic.py
-
+from typing import Optional
 from persistence.database_manager import DatabaseManager
 from logic.meta_logic import MetaLogic
 
@@ -8,8 +7,8 @@ class DashboardLogic:
     Lógica de negocio para el dashboard de Walletive:
     - Obtiene y procesa datos financieros para la vista.
     """
-    def __init__(self):
-        self.db = DatabaseManager()
+    def __init__(self, db: Optional[DatabaseManager] = None):
+        self.db = db or DatabaseManager()
         self.meta_logic = MetaLogic(self.db)
 
     def obtener_resumen(self) -> dict:
